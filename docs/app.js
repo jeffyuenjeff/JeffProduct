@@ -995,7 +995,7 @@ function renderCoordResults(tab, items) {
     const price = item.priceHKD ? `HK$${item.priceHKD}` : (item.priceHKD || '');
     const sub = item.region || item.area || item.type || '';
     const distLabel = item._dist < 1 ? `${Math.round(item._dist * 1000)}m` : `${item._dist.toFixed(1)}km`;
-    return `<div class="qa-item" onclick="addToDay('${JSON.stringify({type:tab==='attractions'?'attraction':tab==='food'?'food':'shopping',id:item.id,name:item.name}).replace(/'/g,"\\'")}')">
+    return `<div class="qa-item" onclick="addToDay('${JSON.stringify({type:tab==='attractions'?'attraction':tab==='food'?'food':'shopping',id:item.id,name:item.name}).replace(/"/g, '&quot;')}')">
       <img class="qa-item-img" src="${img}" alt="${item.name||''}" onerror="this.src='https://placehold.co/40x40/1a1a2e/777?text=?'"/>
       <div class="qa-item-info">
         <div class="qa-item-name">${item.name||''}</div>
@@ -1025,7 +1025,7 @@ function renderQaList(tab, query) {
     const img = item.img || `https://source.unsplash.com/80x80/?japan,osaka,${encodeURIComponent(item.name||'japan')}`;
     const price = item.priceHKD ? `HK$${item.priceHKD}` : (item.priceHKD || '');
     const sub = item.region || item.area || item.type || '';
-    return `<div class="qa-item" onclick="addToDay('${JSON.stringify({type:tab==='attractions'?'attraction':tab==='food'?'food':'shopping',id:item.id,name:item.name}).replace(/'/g,"\\'")}')">
+    return `<div class="qa-item" onclick="addToDay('${JSON.stringify({type:tab==='attractions'?'attraction':tab==='food'?'food':'shopping',id:item.id,name:item.name}).replace(/"/g, '&quot;')}')">
       <img class="qa-item-img" src="${img}" alt="${item.name||''}" onerror="this.src='https://placehold.co/40x40/1a1a2e/777?text=?'"/>
       <div class="qa-item-info">
         <div class="qa-item-name">${item.name||''}</div>
