@@ -1818,25 +1818,27 @@ body.cute-theme .cute-map-fab {
   body.cute-theme .brand-icon { font-size: 18px; }
   body.cute-theme .brand-title { font-size: 13px; }
   body.cute-theme .brand-sub { display: none; }
-  /* ── Compact action buttons ── */
+  /* ── Compact action buttons — remove border pill on mobile ── */
   body.cute-theme .header-actions {
-    padding: 3px 6px;
+    padding: 0;
     gap: 4px;
-    border-width: 2px;
-    border-radius: 16px;
-    box-shadow: 2px 2px 0px rgba(74, 63, 53, 0.1);
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
   }
   body.cute-theme .hdr-btn,
   body.cute-theme .style-toggle {
-    width: 30px;
-    height: 30px;
-    font-size: 13px;
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
     border-width: 1.5px;
-    box-shadow: 1px 1px 0px rgba(74, 63, 53, 0.1);
+    box-shadow: 1px 1px 0px rgba(74, 63, 53, 0.12);
   }
   body.cute-theme .cloud-status {
     font-size: 9px;
-    padding: 2px 6px;
+    padding: 1px 5px;
+    border-radius: 8px;
   }
   body.cute-theme .tab-btn span { display: none; }
   body.cute-theme .tab-btn { padding: 6px 8px; }
@@ -2009,20 +2011,18 @@ body.cute-theme .cute-map-fab {
   body.cute-theme .brand-icon { font-size: 16px; }
   body.cute-theme .brand-title { font-size: 12px; }
   body.cute-theme .header-actions {
-    padding: 2px 5px;
     gap: 3px;
-    border-radius: 14px;
   }
   body.cute-theme .hdr-btn,
   body.cute-theme .style-toggle {
-    width: 26px;
-    height: 26px;
-    font-size: 11px;
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
     border-width: 1.5px;
   }
   body.cute-theme .cloud-status {
     font-size: 8px;
-    padding: 1px 5px;
+    padding: 1px 4px;
   }
   body.cute-theme .tab-nav { height: var(--nav-h); }
   body.cute-theme .tab-btn { padding: 5px 6px; }
