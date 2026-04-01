@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎌 大阪旅遊規劃 2026</title>
+
+  <!-- Leaflet Maps -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <!-- Leaflet routing / polyline decorator -->
+  <script src="https://unpkg.com/leaflet-polylinedecorator@1.7.0/dist/leaflet.polylineDecorator.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/cute-styles.css" />
+</head>
+<body>
+
+<!-- ============ TOP HEADER ============ -->
+<header class="app-header" id="appHeader">
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="brand-icon">🎌</div>
+      <div class="brand-text">
+        <span class="brand-title">大阪旅遊規劃</span>
+        <span class="brand-sub">2026 春遊</span>
+      </div>
+    </div>
+    <div class="trip-chips">
+      <span class="chip chip-flight"><i class="fa fa-plane-departure"></i> HX614</span>
+      <span class="chip chip-date"><i class="fa fa-calendar"></i> 4/29 – 5/4</span>
+      <span class="chip chip-city"><i class="fa fa-location-dot"></i> 大阪 / KIX</span>
+      <span class="chip chip-days"><i class="fa fa-moon"></i> 6天5夜</span>
+    </div>
+    <!-- Cute Theme Trip Summary -->
+    <div class="cute-trip-summary">
+      <div class="cts-item">
+        <div class="cts-icon flight"><i class="fa fa-plane"></i></div>
+        <div class="cts-text">
+          <span class="cts-label">航班</span>
+          <span class="cts-value">HX614 / HX619</span>
+        </div>
+      </div>
+      <div class="cts-item">
+        <div class="cts-icon date"><i class="fa fa-calendar-alt"></i></div>
+        <div class="cts-text">
+          <span class="cts-label">日期</span>
+          <span class="cts-value">4/29 – 5/4</span>
+        </div>
+      </div>
+      <div class="cts-item">
+        <div class="cts-icon city"><i class="fa fa-map-marker-alt"></i></div>
+        <div class="cts-text">
+          <span class="cts-label">目的地</span>
+          <span class="cts-value">大阪 KIX</span>
+        </div>
+      </div>
+      <div class="cts-item">
+        <div class="cts-icon days"><i class="fa fa-suitcase"></i></div>
+        <div class="cts-text">
+          <span class="cts-label">行程</span>
+          <span class="cts-value">6天5夜</span>
+        </div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="style-toggle" id="btnStyleToggle" title="切換風格" onclick="toggleThemeStyle()">
+        <i class="fa fa-star"></i>
+      </button>
+      <button class="hdr-btn" id="btnLocation" title="定位我的位置">
+        <i class="fa fa-location-crosshairs"></i>
+      </button>
+      <button class="hdr-btn" id="btnSave" title="儲存行程" onclick="savePlan()">
+        <i class="fa fa-floppy-disk"></i>
+      </button>
+    </div>
+  </div>
+  <!-- Flight ticker -->
+  <div class="flight-ticker">
+    <div class="ticker-track">
+      <span>✈ 出發 HX614 &nbsp;|&nbsp; 香港 HKG 08:50 T1 → 大阪 KIX 14:00 T1 &nbsp;|&nbsp; 座位: 32U &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      <span>✈ 回程 HX619 &nbsp;|&nbsp; 大阪 KIX 17:00 T1 → 香港 HKG 20:20 T1 &nbsp;|&nbsp; A330-300 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      <span>🎫 機票號碼: NE2603042020388495 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ TAB NAV ============ -->
+<nav class="tab-nav" id="tabNav">
+  <button class="tab-btn active" data-tab="planner">
+    <i class="fa fa-calendar-days"></i><span>行程規劃</span>
+  </button>
+  <button class="tab-btn" data-tab="attractions">
+    <i class="fa fa-torii-gate"></i><span>景點</span>
+  </button>
+  <button class="tab-btn" data-tab="food">
+    <i class="fa fa-bowl-rice"></i><span>美食</span>
+  </button>
+  <button class="tab-btn" data-tab="transport">
+    <i class="fa fa-train-subway"></i><span>交通</span>
+  </button>
+  <button class="tab-btn" data-tab="shopping">
+    <i class="fa fa-bag-shopping"></i><span>購物</span>
+  </button>
+  <button class="tab-btn" data-tab="tour">
+    <i class="fa fa-map-location-dot"></i><span>當地遊</span>
+  </button>
+  <button class="tab-btn" data-tab="reminders">
+    <i class="fa fa-bell"></i><span>注忘事項</span>
+  </button>
+  <button class="tab-btn" data-tab="hotels">
+    <i class="fa fa-bed"></i><span>酒店推薦</span>
+  </button>
+  <button class="tab-btn" data-tab="locmeasure">
+    <i class="fa fa-map-pin"></i><span>位置測量</span>
+  </button>
+</nav>
+
+<!-- ============ MAIN CONTENT ============ -->
+<main class="app-main" id="appMain">
+
+  <!-- ====== TAB: PLANNER ====== -->
+  <section class="tab-panel active" id="panel-planner">
+    <div class="planner-layout">
+      <!-- Left: Day Planner -->
+      <aside class="planner-sidebar" id="plannerSidebar">
+        <div class="sidebar-header">
+          <h2>🗓 行程規劃</h2>
+          <div class="sidebar-actions">
+            <button class="btn-sm btn-primary" onclick="savePlan()" title="儲存">
+              <i class="fa fa-save"></i> 儲存
+            </button>
+          </div>
+        </div>
+        <!-- Plan Type Toggle -->
+        <div class="plan-type-toggle" id="planTypeToggle">
+          <button class="ptb active" id="ptbCore" onclick="switchPlan('core')">
+            <i class="fa fa-sun"></i> 正選行程
+          </button>
+          <button class="ptb" id="ptbBackup" onclick="switchPlan('backup')">
+            <i class="fa fa-cloud-rain"></i> 備用（雨天）
+          </button>
+        </div>
+        <div class="day-tabs" id="dayTabs">
+          <!-- Day tabs populated by JS -->
+        </div>
+        <div class="day-content" id="dayContent">
+          <!-- Day content populated by JS -->
+        </div>
+        <!-- Quick Add Panel -->
+        <div class="quick-add-panel" id="quickAddPanel" style="display:none">
+          <div class="quick-add-panel-inner">
+          <div class="qa-header">
+            <span>快速添加項目</span>
+            <button onclick="closeQuickAdd()" class="qa-close">✕</button>
+          </div>
+          <div class="qa-search">
+            <input type="text" id="qaSearch" placeholder="搜尋景點/美食/購物..." oninput="filterQuickAdd()" />
+            <button class="qa-coord-toggle" id="qaCoordToggle" onclick="toggleCoordSearch()" title="座標搜尋">
+              <i class="fa fa-crosshairs"></i>
+            </button>
+          </div>
+          <div class="qa-coord-bar" id="qaCoordBar" style="display:none">
+            <div class="qa-coord-inputs">
+              <label>Lat</label>
+              <input type="number" id="qaCoordLat" step="0.0001" placeholder="34.6937" />
+              <label>Lng</label>
+              <input type="number" id="qaCoordLng" step="0.0001" placeholder="135.5023" />
+              <label>半徑</label>
+              <select id="qaCoordRadius">
+                <option value="0.5">500m</option>
+                <option value="1" selected>1km</option>
+                <option value="2">2km</option>
+                <option value="5">5km</option>
+                <option value="999">全部</option>
+              </select>
+            </div>
+            <button class="qa-coord-go" onclick="searchByCoord()"><i class="fa fa-search"></i> 搜尋</button>
+          </div>
+          <div class="qa-tabs">
+            <button class="qa-tab active" onclick="setQaTab('attractions')">景點</button>
+            <button class="qa-tab" onclick="setQaTab('food')">美食</button>
+            <button class="qa-tab" onclick="setQaTab('shopping')">購物</button>
+            <button class="qa-tab" onclick="setQaTab('custom')">✏️ 自訂</button>
+          </div>
+          <div class="qa-list" id="qaList"></div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right: Map -->
+      <div class="map-container">
+        <div id="mainMap"></div>
+        <!-- Map controls overlay -->
+        <div class="map-controls">
+          <button class="map-ctrl-btn" id="btnMyLocation" title="我的位置" onclick="locateMe()">
+            <i class="fa fa-location-crosshairs"></i>
+          </button>
+          <button class="map-ctrl-btn" id="btnFitBounds" title="顯示所有點" onclick="fitAllMarkers()">
+            <i class="fa fa-maximize"></i>
+          </button>
+          <button class="map-ctrl-btn active-toggle" id="btnDrawRoute" title="連接路線" onclick="toggleRoute()">
+            <i class="fa fa-route"></i>
+          </button>
+          <button class="map-ctrl-btn" id="btnToggleSidebar" title="收合側欄" onclick="toggleSidebar()">
+            <i class="fa fa-sidebar"></i>
+          </button>
+          <button class="map-ctrl-btn" id="btnAllDaysMap" title="全覽六天行程地圖" onclick="openAllDaysMap()" style="margin-top:8px;background:var(--primary);color:white;border-color:var(--primary)">
+            <i class="fa fa-map"></i>
+          </button>
+        </div>
+        <!-- Map day legend -->
+        <div class="map-legend" id="mapLegend"></div>
+      </div>
+
+      <!-- ── Cute Theme: Core timeline area (replaces map) ── -->
+      <div class="cute-core-area" id="cuteCoreArea">
+        <!-- Summary View (hero image + overview) -->
+        <div class="cute-summary-view active" id="cuteSummaryView">
+          <div class="cute-summary-hero">
+            <img src="/img/2026Japanosakav4.png" alt="2026 Osaka Adventure" />
+          </div>
+          <div class="cute-summary-info">
+            <div class="cute-grid-toggle-wrapper">
+              <button class="cute-grid-toggle-btn" id="cuteGridToggleBtn" onclick="toggleCuteGrid()" title="隱藏/顯示概覽">
+                <i class="fa fa-chevron-left" id="cuteGridToggleIcon"></i>
+              </button>
+            </div>
+            <div class="cute-summary-grid" id="cuteSummaryGrid">
+              <!-- populated by JS -->
+            </div>
+          </div>
+        </div>
+        <!-- Timeline Day View -->
+        <div class="cute-timeline-view" id="cuteTimelineView">
+          <!-- populated by JS -->
+        </div>
+      </div>
+
+      <!-- ── Cute Theme: Map Slide-out Panel ── -->
+      <div class="cute-map-backdrop" id="cuteMapBackdrop" onclick="closeCuteMap()"></div>
+      <div class="cute-map-slideout" id="cuteMapSlideout">
+        <div class="cute-map-slideout-header">
+          <div class="cute-map-slideout-title"><i class="fa fa-map-location-dot"></i> 行程地圖</div>
+          <button class="cute-map-slideout-close" onclick="closeCuteMap()"><i class="fa fa-xmark"></i></button>
+        </div>
+        <div class="cute-map-slideout-body" id="cuteMapBody">
+          <!-- mainMap gets moved here in cute mode -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Cute Theme: Floating Map Button -->
+  <button class="cute-map-fab" id="cuteMapFab" onclick="openCuteMap()" title="顯示地圖">
+    <i class="fa fa-map-location-dot"></i>
+  </button>
+
+  <!-- ====== TAB: ATTRACTIONS ====== -->
+  <section class="tab-panel" id="panel-attractions">
+    <div class="panel-inner">
+      <div class="section-header">
+        <h2>🗼 大阪周遊卡景點大全</h2>
+        <p class="section-desc">以下40個景點均可使用<strong>大阪周遊卡</strong>免費入場。購買周遊卡一日券約 <strong>HK$148</strong>，可於一天內無限次乘地鐵並免費參觀以下所有景點。</p>
+      </div>
+      <!-- Filter bar -->
+      <div class="filter-bar">
+        <div class="search-box">
+          <i class="fa fa-search"></i>
+          <input type="text" id="attrSearch" placeholder="搜尋景點..." oninput="filterAttractions()" />
+        </div>
+        <div class="filter-chips" id="attrRegionFilter">
+          <button class="fc active" onclick="filterAttrByRegion('all', this)">全部</button>
+          <button class="fc" onclick="filterAttrByRegion('北地區・梅田', this)">梅田</button>
+          <button class="fc" onclick="filterAttrByRegion('南地區・難波道頓堀', this)">難波</button>
+          <button class="fc" onclick="filterAttrByRegion('南地區・新世界天王寺', this)">新世界</button>
+          <button class="fc" onclick="filterAttrByRegion('大阪城週邊', this)">大阪城</button>
+          <button class="fc" onclick="filterAttrByRegion('天保山・南港海灣', this)">天保山</button>
+          <button class="fc" onclick="filterAttrByRegion('其他地區', this)">其他</button>
+        </div>
+      </div>
+      <div class="cards-grid" id="attractionsGrid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== TAB: FOOD ====== -->
+  <section class="tab-panel" id="panel-food">
+    <div class="panel-inner">
+      <div class="section-header">
+        <h2>🍜 大阪美食指南</h2>
+        <p class="section-desc">大阪是美食之都，有「天下の台所」之稱。以下精選大阪最必試的道地美食，包括地址、價格及特色介紹。</p>
+      </div>
+      <div class="filter-bar">
+        <div class="search-box">
+          <i class="fa fa-search"></i>
+          <input type="text" id="foodSearch" placeholder="搜尋美食..." oninput="filterFood()" />
+        </div>
+        <div class="filter-chips" id="foodTagFilter">
+          <button class="fc active" onclick="filterFoodByTag('all', this)">全部</button>
+          <button class="fc" onclick="filterFoodByTag('必吃', this)">必吃</button>
+          <button class="fc" onclick="filterFoodByTag('大阪名物', this)">大阪名物</button>
+          <button class="fc" onclick="filterFoodByTag('街食', this)">街食</button>
+          <button class="fc" onclick="filterFoodByTag('海鮮', this)">海鮮</button>
+          <button class="fc" onclick="filterFoodByTag('高級', this)">高級</button>
+        </div>
+      </div>
+      <div class="cards-grid food-grid" id="foodGrid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== TAB: TRANSPORT ====== -->
+  <section class="tab-panel" id="panel-transport">
+    <div class="panel-inner">
+      <div class="section-header">
+        <h2>🚆 大阪交通指南</h2>
+        <p class="section-desc">關西機場往返大阪市中心交通、大阪Metro地鐵、JR鐵路的完整指引。</p>
+      </div>
+      <div id="transportContent">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== TAB: SHOPPING ====== -->
+  <section class="tab-panel" id="panel-shopping">
+    <div class="panel-inner">
+      <div class="section-header">
+        <h2>🛍 大阪購物天堂</h2>
+        <p class="section-desc">大阪10大必去購物中心及50件必買商品完整清單，附HKD參考價格。</p>
+      </div>
+      <!-- Shopping Centers -->
+      <div class="sub-section">
+        <h3 class="sub-title"><i class="fa fa-store"></i> 10大必去購物中心</h3>
+        <div class="cards-grid shopping-mall-grid" id="shoppingMallGrid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+      <!-- Must Buy Items -->
+      <div class="sub-section">
+        <h3 class="sub-title"><i class="fa fa-star"></i> 50件必買商品清單</h3>
+        <div class="filter-bar">
+          <div class="filter-chips" id="buyFilter">
+            <button class="fc active" onclick="filterBuyItems('all', this)">全部</button>
+            <button class="fc" onclick="filterBuyItems('食品・零食', this)">食品</button>
+            <button class="fc" onclick="filterBuyItems('藥粧・美容', this)">藥粧</button>
+            <button class="fc" onclick="filterBuyItems('家品・生活', this)">家品</button>
+            <button class="fc" onclick="filterBuyItems('時裝・配飾', this)">時裝</button>
+            <button class="fc" onclick="filterBuyItems('電子・特色', this)">電子</button>
+            <button class="fc" onclick="filterBuyItems('甜點・飲品', this)">甜點</button>
+            <button class="fc" onclick="filterBuyItems('特色紀念品', this)">紀念品</button>
+            <button class="fc" onclick="filterBuyItems('限定版', this)">限定版</button>
+          </div>
+        </div>
+        <div class="must-buy-grid" id="mustBuyGrid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== TAB: TOUR ====== -->
+  <section class="tab-panel" id="panel-tour">
+    <div class="panel-inner">
+      <div class="section-header">
+        <h2>🍓 近江八幡・La Collina 草莓一日遊</h2>
+        <p class="section-desc">從大阪出發，前往滋賀縣近江八幡，體驗無限量草莓採摘，並遊覽如童話般的La Collina農場建築。</p>
+      </div>
+      <div id="tourContent">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== TAB: REMINDERS (注忘事項) ====== -->
+  <section class="tab-panel" id="panel-reminders">
+    <div class="panel-inner">
+      <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <div>
+          <h2>🔔 注忘事項</h2>
+          <p class="section-desc">出發前必確認的重要事項。可自由新增、編輯、儲存及讀取提醒清單。</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn-sm btn-primary" onclick="addReminder()"><i class="fa fa-plus"></i> 新增</button>
+          <button class="btn-sm" style="background:var(--success);color:white;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px" onclick="saveReminders()"><i class="fa fa-save"></i> 儲存</button>
+          <button class="btn-sm" style="background:var(--info);color:white;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px" onclick="loadReminders()"><i class="fa fa-rotate"></i> 讀取</button>
+        </div>
+      </div>
+      <!-- Category Filter -->
+      <div class="filter-bar" style="margin-bottom:20px">
+        <div class="filter-chips" id="reminderCatFilter">
+          <button class="fc active" onclick="filterReminders('all', this)">全部</button>
+          <button class="fc" onclick="filterReminders('證件・票務', this)">🎫 證件票務</button>
+          <button class="fc" onclick="filterReminders('餐飲預訂', this)">🍽 餐飲預訂</button>
+          <button class="fc" onclick="filterReminders('現金・金融', this)">💴 現金金融</button>
+          <button class="fc" onclick="filterReminders('電話・通訊', this)">📱 電話通訊</button>
+          <button class="fc" onclick="filterReminders('行李・裝備', this)">🧳 行李裝備</button>
+          <button class="fc" onclick="filterReminders('保險・安全', this)">🛡 保險安全</button>
+          <button class="fc" onclick="filterReminders('景點・注意', this)">🗺 景點注意</button>
+          <button class="fc" onclick="filterReminders('日本禮儀', this)">🎌 日本禮儀</button>
+        </div>
+      </div>
+      <!-- Reminders List -->
+      <div id="remindersList"></div>
+    </div>
+  </section>
+
+  <!-- ====== TAB: HOTELS ====== -->
+  <section class="tab-panel" id="panel-hotels">
+    <div class="hotel-layout">
+
+      <!-- Left: Hotel List -->
+      <div class="hotel-listcol" id="hotelListCol">
+        <div class="hotel-listcol-inner">
+          <!-- Header -->
+          <div class="section-header" style="margin-bottom:14px">
+            <h2>🏨 大阪酒店推薦</h2>
+            <p class="section-desc">精選難波・道頓堀及梅田兩大區域頂級及高性價比酒店各10間，含地圖連接及加入行程功能。</p>
+          </div>
+
+          <!-- Filter + Search -->
+          <div class="filter-bar" style="margin-bottom:14px">
+            <div class="search-box">
+              <i class="fa fa-search"></i>
+              <input type="text" id="hotelSearch" placeholder="搜尋酒店..." oninput="filterHotels()" />
+            </div>
+            <div class="filter-chips" id="hotelAreaFilter">
+              <button class="fc active" onclick="filterHotelsByArea('all', this)">全部 (20)</button>
+              <button class="fc" onclick="filterHotelsByArea('難波・道頓堀', this)">🌃 難波・道頓堀</button>
+              <button class="fc" onclick="filterHotelsByArea('梅田・北區', this)">🌆 梅田・北區</button>
+            </div>
+          </div>
+
+          <!-- Sort -->
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+            <span style="font-size:11px;color:var(--text3)">排序：</span>
+            <button class="hotel-sort-btn active" id="sortByRating" onclick="sortHotels('rating', this)"><i class="fa fa-star"></i> 評分</button>
+            <button class="hotel-sort-btn" id="sortByPrice" onclick="sortHotels('price', this)"><i class="fa fa-yen-sign"></i> 價格</button>
+            <button class="hotel-sort-btn" id="sortByStars" onclick="sortHotels('stars', this)"><i class="fa fa-hotel"></i> 星級</button>
+          </div>
+
+          <!-- Hotel Cards -->
+          <div id="hotelGrid">
+            <!-- Populated by JS -->
+          </div>
+
+          <!-- Custom Hotel Form -->
+          <div class="custom-hotel-form" id="customHotelForm">
+            <div class="chf-header">
+              <i class="fa fa-plus-circle"></i>
+              <span>加入自訂酒店</span>
+            </div>
+            <div class="chf-body">
+              <div class="chf-row">
+                <div class="chf-field">
+                  <label>酒店名稱 *</label>
+                  <input type="text" id="chfName" placeholder="e.g. Hotel Granvia Osaka" />
+                </div>
+                <div class="chf-field">
+                  <label>地區</label>
+                  <select id="chfArea">
+                    <option value="難波・道頓堀">難波・道頓堀</option>
+                    <option value="梅田・北區">梅田・北區</option>
+                    <option value="其他地區">其他地區</option>
+                  </select>
+                </div>
+              </div>
+              <div class="chf-row">
+                <div class="chf-field">
+                  <label>地址 / 地標（用於地圖定位）</label>
+                  <input type="text" id="chfAddress" placeholder="e.g. 大阪市北区梅田 or Hotel Granvia Osaka" />
+                </div>
+              </div>
+              <div class="chf-row">
+                <div class="chf-field chf-field-sm">
+                  <label>每晚HKD（選填）</label>
+                  <input type="number" id="chfPrice" placeholder="e.g. 800" min="0" />
+                </div>
+                <div class="chf-field">
+                  <label>備註</label>
+                  <input type="text" id="chfNote" placeholder="e.g. Booking.com預訂，免費取消" />
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:6px">
+                <button class="btn-sm" style="background:var(--text3);color:white;border:none;border-radius:8px;padding:7px 16px;font-size:12px;font-weight:600;cursor:pointer" onclick="geocodeCustomHotel()"><i class="fa fa-location-dot"></i> 地圖定位</button>
+                <button class="btn-sm btn-primary" onclick="addCustomHotelToList()"><i class="fa fa-plus"></i> 加入列表</button>
+              </div>
+              <div id="geocodeStatus" style="font-size:11px;color:var(--text3);margin-top:6px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Hotel Map -->
+      <div class="hotel-mapcol">
+        <div id="hotelMap"></div>
+        <div class="hotel-map-controls">
+          <button class="map-ctrl-btn" title="顯示全部酒店" onclick="fitHotelBounds()"><i class="fa fa-maximize"></i></button>
+          <button class="map-ctrl-btn" title="難波區酒店" onclick="focusHotelArea('難波・道頓堀')">難波</button>
+          <button class="map-ctrl-btn" title="梅田區酒店" onclick="focusHotelArea('梅田・北區')">梅田</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Add-to-Day Modal -->
+    <div class="add-to-day-modal" id="addToDayModal" style="display:none">
+      <div class="atd-panel">
+        <div class="atd-header">
+          <span id="atdHotelName">選擇加入哪一天</span>
+          <button onclick="closeAddToDayModal()"><i class="fa fa-xmark"></i></button>
+        </div>
+        <div class="atd-body">
+          <p style="font-size:12px;color:var(--text2);margin-bottom:12px">選擇將酒店加入哪一天的行程：</p>
+          <div id="atdDayList" style="display:flex;flex-direction:column;gap:8px"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== TAB: LOCATION MEASURE ====== -->
+  <section class="tab-panel" id="panel-locmeasure">
+    <div class="loc-layout">
+
+      <!-- Left: Control Sidebar -->
+      <div class="loc-sidebar" id="locSidebar">
+        <div class="loc-sidebar-inner">
+          <!-- Header -->
+          <div class="section-header" style="margin-bottom:12px">
+            <h2>📍 位置測量工具</h2>
+            <p class="section-desc">在地圖上標記酒店、餐廳、購物中心及景點位置，配合每日行程規劃進行距離與路線評估。</p>
+          </div>
+
+          <!-- Save / Load -->
+          <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+            <button class="btn-sm btn-primary" onclick="saveLocPins()" title="儲存所有標記"><i class="fa fa-save"></i> 儲存標記</button>
+            <button class="btn-sm" style="background:var(--info);color:white;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px" onclick="loadLocPins()" title="讀取已存標記"><i class="fa fa-rotate"></i> 讀取</button>
+            <button class="btn-sm" style="background:var(--danger);color:white;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px" onclick="clearAllLocPins()" title="清除全部標記"><i class="fa fa-trash"></i> 清除全部</button>
+          </div>
+
+          <!-- Day Plan Overlay -->
+          <div class="loc-section">
+            <div class="loc-section-title" onclick="toggleLocSection('dayOverlay')">
+              <i class="fa fa-calendar-days"></i> 行程景點疊加
+              <i class="fa fa-chevron-down loc-section-arrow" id="arrow-dayOverlay"></i>
+            </div>
+            <div class="loc-section-body" id="body-dayOverlay">
+              <div id="locDayToggles" style="display:flex;flex-direction:column;gap:6px"></div>
+            </div>
+          </div>
+
+          <!-- Attractions Overlay -->
+          <div class="loc-section">
+            <div class="loc-section-title" onclick="toggleLocSection('attrOverlay')">
+              <i class="fa fa-torii-gate"></i> 景點一覽 (地圖疊加)
+              <i class="fa fa-chevron-down loc-section-arrow" id="arrow-attrOverlay"></i>
+            </div>
+            <div class="loc-section-body hidden" id="body-attrOverlay">
+              <div style="display:flex;gap:6px;margin-bottom:8px">
+                <button class="btn-sm" style="background:var(--success);color:white;border:none;border-radius:8px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer" onclick="toggleAllLocAttr(true)">全部顯示</button>
+                <button class="btn-sm" style="background:var(--text3);color:white;border:none;border-radius:8px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer" onclick="toggleAllLocAttr(false)">全部隱藏</button>
+              </div>
+              <div class="loc-field" style="margin-bottom:8px">
+                <input type="text" id="locAttrSearch" placeholder="搜尋景點名稱..." oninput="filterLocAttrList()" />
+              </div>
+              <div id="locAttrToggles" style="display:flex;flex-direction:column;gap:5px;max-height:260px;overflow-y:auto"></div>
+            </div>
+          </div>
+
+          <!-- Key Locations -->
+          <div class="loc-section">
+            <div class="loc-section-title" onclick="toggleLocSection('keyLocs')">
+              <i class="fa fa-star"></i> 重點位置 (車站/機場)
+              <i class="fa fa-chevron-down loc-section-arrow" id="arrow-keyLocs"></i>
+            </div>
+            <div class="loc-section-body hidden" id="body-keyLocs">
+              <div id="locKeyLocToggles" style="display:flex;flex-direction:column;gap:6px"></div>
+            </div>
+          </div>
+
+          <!-- Add New Pin -->
+          <div class="loc-section">
+            <div class="loc-section-title" onclick="toggleLocSection('addPin')">
+              <i class="fa fa-plus-circle"></i> 新增地點標記
+              <i class="fa fa-chevron-down loc-section-arrow" id="arrow-addPin"></i>
+            </div>
+            <div class="loc-section-body" id="body-addPin">
+              <div class="loc-form">
+                <div class="loc-field">
+                  <label>類別</label>
+                  <select id="locPinCat">
+                    <option value="hotel">🏨 酒店</option>
+                    <option value="shopping">🛍 購物中心</option>
+                    <option value="restaurant">🍽 餐廳</option>
+                    <option value="attraction">⛩ 景點</option>
+                    <option value="transport">🚉 交通站點</option>
+                    <option value="other">📌 其他</option>
+                  </select>
+                </div>
+                <div class="loc-field">
+                  <label>名稱 *</label>
+                  <input type="text" id="locPinName" placeholder="例：道頓堀大阪王將" />
+                </div>
+                <div class="loc-field">
+                  <label>🔍 搜尋位置（地址/名稱/日文）</label>
+                  <div style="display:flex;gap:6px">
+                    <input type="text" id="locPinSearch" placeholder="例：道頓堀 大阪王將" style="flex:1" onkeydown="if(event.key==='Enter') geocodeLocPin()" />
+                    <button onclick="geocodeLocPin()" class="loc-search-btn">搜尋</button>
+                  </div>
+                </div>
+                <div id="locGeocodeResult" style="display:none;padding:8px;border-radius:8px;background:rgba(44,182,125,0.10);border:1px solid rgba(44,182,125,0.25);margin-bottom:6px;font-size:11px;color:var(--success)"></div>
+                <div class="loc-field">
+                  <label>參考價格 (HKD, 選填)</label>
+                  <input type="text" id="locPinPrice" placeholder="例：200/人" />
+                </div>
+                <div class="loc-field">
+                  <label>備註 (選填)</label>
+                  <input type="text" id="locPinNote" placeholder="例：需預約，營業至22:00" />
+                </div>
+                <div class="loc-field">
+                  <label>🔗 連結 (選填)</label>
+                  <input type="text" id="locPinLink" placeholder="例：https://tabelog.com/osaka/..." />
+                </div>
+                <button class="loc-add-btn" onclick="addLocPin()">
+                  <i class="fa fa-plus"></i> 加入地圖
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category Visibility -->
+          <div class="loc-section">
+            <div class="loc-section-title" onclick="toggleLocSection('catVis')">
+              <i class="fa fa-eye"></i> 分類顯示控制
+              <i class="fa fa-chevron-down loc-section-arrow" id="arrow-catVis"></i>
+            </div>
+            <div class="loc-section-body" id="body-catVis">
+              <div id="locCatToggles" style="display:flex;flex-direction:column;gap:6px"></div>
+            </div>
+          </div>
+
+          <!-- Train Lines -->
+          <div class="loc-section">
+            <div class="loc-section-title" onclick="toggleLocSection('trainLines')">
+              <i class="fa fa-train-subway"></i> 日本電車路線圖
+              <i class="fa fa-chevron-down loc-section-arrow" id="arrow-trainLines"></i>
+            </div>
+            <div class="loc-section-body" id="body-trainLines">
+              <div style="display:flex;gap:6px;margin-bottom:8px">
+                <button class="btn-sm" style="background:var(--success);color:white;border:none;border-radius:8px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer" onclick="toggleAllTrainLines(true)">全部顯示</button>
+                <button class="btn-sm" style="background:var(--text3);color:white;border:none;border-radius:8px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer" onclick="toggleAllTrainLines(false)">全部隱藏</button>
+              </div>
+              <div id="locTrainToggles" style="display:flex;flex-direction:column;gap:6px"></div>
+            </div>
+          </div>
+
+          <!-- Pin List -->
+          <div class="loc-section">
+            <div class="loc-section-title" onclick="toggleLocSection('pinList')">
+              <i class="fa fa-list"></i> 已標記地點 (<span id="locPinCount">0</span>)
+              <i class="fa fa-chevron-down loc-section-arrow" id="arrow-pinList"></i>
+            </div>
+            <div class="loc-section-body" id="body-pinList">
+              <div id="locPinList" style="display:flex;flex-direction:column;gap:6px"></div>
+            </div>
+          </div>
+
+          <!-- Distance Measurement -->
+          <div class="loc-section">
+            <div class="loc-section-title" onclick="toggleLocSection('measure')">
+              <i class="fa fa-ruler"></i> 距離測量
+              <i class="fa fa-chevron-down loc-section-arrow" id="arrow-measure"></i>
+            </div>
+            <div class="loc-section-body" id="body-measure">
+              <p style="font-size:11px;color:var(--text3);margin-bottom:8px">點擊地圖上的兩個標記點即可測量直線距離，或使用下方按鈕啟動路線測量模式。</p>
+              <div style="display:flex;gap:6px;margin-bottom:8px">
+                <button class="btn-sm" id="locMeasureBtn" style="background:var(--accent);color:white;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px" onclick="toggleMeasureMode()">
+                  <i class="fa fa-ruler"></i> <span id="locMeasureBtnText">啟動測量</span>
+                </button>
+                <button class="btn-sm" style="background:var(--text3);color:white;border:none;border-radius:8px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer" onclick="clearMeasureLine()">清除路線</button>
+              </div>
+              <div id="locMeasureResult" style="font-size:12px;color:var(--text2);padding:8px;border-radius:8px;background:var(--surface);border:1px solid var(--border);display:none"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right: Map -->
+      <div class="loc-mapcol">
+        <div id="locMap"></div>
+        <div class="loc-map-controls">
+          <button class="map-ctrl-btn" title="顯示所有標記" onclick="fitLocBounds()"><i class="fa fa-maximize"></i></button>
+          <button class="map-ctrl-btn" title="我的位置" onclick="locateOnLocMap()"><i class="fa fa-location-crosshairs"></i></button>
+          <button class="map-ctrl-btn" title="切換衛星圖" onclick="toggleLocMapSatellite()" id="locSatelliteBtn"><i class="fa fa-satellite"></i></button>
+          <button class="map-ctrl-btn" title="收合側欄" onclick="toggleLocSidebar()"><i class="fa fa-sidebar"></i></button>
+        </div>
+        <div class="loc-map-info" id="locMapInfo">
+          <span>📍 點擊地圖或搜尋地點加入標記</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ ALL DAYS MAP MODAL ============ -->
+<div class="modal-overlay" id="allDaysMapOverlay" style="display:none" onclick="closeAllDaysMap()">
+  <div class="modal-panel" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">🗺 六天行程全覽地圖</div>
+        <div class="modal-sub">顯示全部6天行程景點，按顏色區分天數</div>
+      </div>
+      <button class="modal-close" onclick="closeAllDaysMap()"><i class="fa fa-xmark"></i></button>
+    </div>
+    <div class="modal-legend" id="allDaysLegend"></div>
+    <div id="allDaysMap" style="flex:1;min-height:0"></div>
+  </div>
+</div>
+
+<!-- ============ TOAST NOTIFICATION ============ -->
+<div class="toast" id="toast"></div>
+
+<!-- ============ DATA SCRIPTS ============ -->
+<script src="/data/attractions.js"></script>
+<script src="/data/hotels.js"></script>
+<script src="/data/food.js"></script>
+<script src="/data/shopping.js"></script>
+<script src="/data/transport.js"></script>
+<script src="/data/locationPins.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>
