@@ -930,6 +930,83 @@ body.cute-theme .card {
   body.cute-theme .tab-btn {
     padding: 12px 14px;
   }
+
+  /* Cute planner: vertical sidebar → horizontal strip at top */
+  body.cute-theme .planner-layout {
+    flex-direction: column;
+  }
+  body.cute-theme .planner-sidebar {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: auto;
+    flex-direction: row;
+    border-right: none;
+    border-bottom: 2px solid var(--border);
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  body.cute-theme .planner-sidebar .day-tabs {
+    flex-direction: row !important;
+    padding: 6px 8px !important;
+    gap: 4px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    flex-wrap: nowrap;
+  }
+  body.cute-theme .day-tab {
+    flex-direction: row !important;
+    width: auto !important;
+    min-width: auto !important;
+    padding: 6px 12px !important;
+    gap: 4px !important;
+    border-radius: 10px !important;
+  }
+  body.cute-theme .day-tab .dt-num { font-size: 14px !important; }
+  body.cute-theme .day-tab .dt-label { font-size: 7px !important; }
+  body.cute-theme .day-tab .dt-date { font-size: 7px !important; }
+  body.cute-theme .cute-core-area {
+    min-height: 0;
+    flex: 1;
+  }
+  /* Timeline padding on mobile */
+  body.cute-theme .cute-tl-header { padding: 12px 14px 10px; }
+  body.cute-theme .cute-tl-items { padding: 14px 14px 24px; }
+  body.cute-theme .cute-tl-items::before { left: 36px; }
+  body.cute-theme .cute-tl-dot { width: 36px; height: 36px; font-size: 13px; }
+  body.cute-theme .cute-tl-item { gap: 10px; }
+  body.cute-theme .cute-tl-day-badge { width: 40px; height: 40px; font-size: 18px; }
+  body.cute-theme .cute-tl-title { font-size: 18px; }
+  body.cute-theme .cute-tl-card-name { font-size: 14px; }
+  body.cute-theme .cute-tl-card { padding: 10px 12px; border-radius: 12px; }
+  body.cute-theme .cute-tl-card::before { left: -8px; top: 12px; border-top-width: 6px; border-bottom-width: 6px; border-right-width: 8px; }
+  body.cute-theme .cute-tl-card::after { left: -5px; top: 12px; border-top-width: 6px; border-bottom-width: 6px; border-right-width: 8px; }
+  /* Make action buttons always visible on touch */
+  body.cute-theme .cute-tl-card-actions { opacity: 1; }
+  /* Map slideout full-width on mobile */
+  body.cute-theme .cute-map-slideout { width: 100%; max-width: 100%; }
+  /* FAB position safe area */
+  body.cute-theme .cute-map-fab {
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    right: 16px;
+    width: 48px; height: 48px; font-size: 18px;
+  }
+  /* Summary grid */
+  body.cute-theme .cute-summary-grid { grid-template-columns: 1fr !important; gap: 8px; }
+  body.cute-theme .cute-summary-card { padding: 12px; }
+  /* Plan toggle in header */
+  body.cute-theme .cute-tl-plan-toggle { display: none; }
+  body.cute-theme .cute-tl-actions { gap: 4px; }
+}
+
+@media (max-width: 480px) {
+  body.cute-theme .cts-item { flex: 1 1 100%; }
+  body.cute-theme .cute-tl-header {
+    flex-direction: column; align-items: flex-start; gap: 8px; padding: 10px 12px;
+  }
+  body.cute-theme .cute-tl-title { font-size: 16px; }
+  body.cute-theme .cute-tl-card-name { font-size: 13px; }
+  body.cute-theme .cute-summary-hero img { object-fit: cover; }
 }
 
 /* ======= HIDE DEFAULT ELEMENTS IN CUTE MODE ======= */

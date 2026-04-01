@@ -1,7 +1,7 @@
 {
   "version": "2.0",
   "activePlan": "core",
-  "lastSaved": "2026-03-31T16:51:43.956Z",
+  "lastSaved": "2026-04-01T13:34:04.265Z",
   "tripInfo": {
     "ticketNo": "NE2603042020388495",
     "departure": "2026-04-29",
@@ -283,6 +283,13 @@
               "lng": 136.098,
               "time": "08:00",
               "note": "在難波/梅田集合出發。Klook預約必備！全程約11小時"
+            },
+            {
+              "type": "attraction",
+              "id": 1,
+              "name": "梅田藍天大廈 空中庭園展望台",
+              "time": "14:00",
+              "note": ""
             }
           ]
         },
@@ -313,7 +320,7 @@
               "id": "rinku_outlet",
               "name": "🛍️ りんくうPremium Outlets",
               "lat": 34.4127,
-              "lng": 135.2990,
+              "lng": 135.299,
               "time": "09:30",
               "note": "關西最大Outlet！約210間店舖，Nike、Adidas、Coach、GAP等國際品牌3-7折。建議11:30前完成購物"
             },
@@ -603,7 +610,7 @@
               "id": "rinku_outlet",
               "name": "🛍️ りんくうPremium Outlets",
               "lat": 34.4127,
-              "lng": 135.2990,
+              "lng": 135.299,
               "time": "09:30",
               "note": "部分有蓋設計，雨天仍可購物。國際品牌3-7折"
             },
@@ -903,6 +910,13 @@
           "lng": 136.098,
           "time": "08:00",
           "note": "在難波/梅田集合出發。Klook預約必備！全程約11小時"
+        },
+        {
+          "type": "attraction",
+          "id": 1,
+          "name": "梅田藍天大廈 空中庭園展望台",
+          "time": "14:00",
+          "note": ""
         }
       ]
     },
@@ -933,7 +947,7 @@
           "id": "rinku_outlet",
           "name": "🛍️ りんくうPremium Outlets",
           "lat": 34.4127,
-          "lng": 135.2990,
+          "lng": 135.299,
           "time": "09:30",
           "note": "關西最大Outlet！約210間店舖，Nike、Adidas、Coach、GAP等國際品牌3-7折。建議11:30前完成購物"
         },

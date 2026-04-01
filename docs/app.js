@@ -46,6 +46,74 @@ const ITEM_ICONS = {
   custom:     '<i class="fa fa-location-pin"></i>'
 };
 
+// ─────────────────── CLOUD SYNC (GitHub Gist) ───────────────────
+// After running `node scripts/setup-cloud.js`, fill in gistId below.
+// Admin token is stored in your browser via ?setup=1 parameter.
+const CLOUD = {
+  enabled: false,          // Set true after setup
+  gistId: '',              // Secret Gist ID (from setup-cloud.js)
+  get token() { return localStorage.getItem('osaka_cloud_token') || ''; },
+  set token(v) { v ? localStorage.setItem('osaka_cloud_token', v) : localStorage.removeItem('osaka_cloud_token'); },
+  get canWrite() { return this.enabled && !!this.token; },
+  files: { plan: 'plan.json', reminders: 'reminders.json', locpins: 'locpins.json' },
+  _cache: null, _cacheTime: 0
+};
+
+async function cloudLoadAll() {
+  if (!CLOUD.enabled || !CLOUD.gistId) return null;
+  if (CLOUD._cache && Date.now() - CLOUD._cacheTime < 30000) return CLOUD._cache;
+  try {
+    const hdrs = { 'Accept': 'application/json' };
+    if (CLOUD.token) hdrs['Authorization'] = `Bearer ${CLOUD.token}`;
+    const res = await fetch(`https://api.github.com/gists/${CLOUD.gistId}`, { headers: hdrs });
+    if (res.ok) { CLOUD._cache = await res.json(); CLOUD._cacheTime = Date.now(); return CLOUD._cache; }
+  } catch (e) { console.warn('[Cloud] Load failed:', e.message); }
+  return null;
+}
+
+async function cloudGet(type) {
+  const gist = await cloudLoadAll();
+  if (!gist || !gist.files) return null;
+  const f = gist.files[CLOUD.files[type]];
+  if (f && f.content) { try { return JSON.parse(f.content); } catch { return null; } }
+  return null;
+}
+
+async function cloudPut(type, data) {
+  if (!CLOUD.canWrite) return false;
+  try {
+    const res = await fetch(`https://api.github.com/gists/${CLOUD.gistId}`, {
+      method: 'PATCH',
+      headers: { 'Authorization': `Bearer ${CLOUD.token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ files: { [CLOUD.files[type]]: { content: JSON.stringify(data, null, 2) } } })
+    });
+    if (res.ok) { CLOUD._cache = null; return true; }
+  } catch (e) { console.warn('[Cloud] Save failed:', e.message); }
+  return false;
+}
+
+function initCloudSetup() {
+  const params = new URLSearchParams(location.search);
+  if (params.get('setup') === '1') {
+    const token = prompt('Enter your GitHub Personal Access Token (with gist scope):');
+    if (token) { CLOUD.token = token; showToast('✅ Token 已儲存！可編輯及雲端同步', 'success'); }
+  }
+}
+
+function updateCloudIndicator() {
+  const el = document.getElementById('cloudStatus');
+  if (!el) return;
+  if (!CLOUD.enabled) { el.style.display = 'none'; return; }
+  el.style.display = 'flex';
+  if (CLOUD.canWrite) {
+    el.innerHTML = '<i class="fa fa-cloud"></i> 雲端同步';
+    el.className = 'cloud-status cloud-write';
+  } else {
+    el.innerHTML = '<i class="fa fa-cloud"></i> 唯讀';
+    el.className = 'cloud-status cloud-read';
+  }
+}
+
 // ─────────────────── COORDINATE PARSER ───────────────────
 // Detects "lat, lng" / "lat lng" patterns in user input and returns {lat, lng} or null
 function parseCoordinates(input) {
@@ -62,9 +130,12 @@ function parseCoordinates(input) {
 
 // ─────────────────── INIT ───────────────────
 document.addEventListener('DOMContentLoaded', async () => {
+  // Initialize cloud setup (checks for ?setup=1 URL param)
+  initCloudSetup();
   // Initialize theme (cute is default)
   initTheme();
   await loadPlan();
+  updateCloudIndicator();
   initTabs();
   initMap();
   renderDayTabs();
@@ -396,15 +467,19 @@ function removeCuteItem(dayKey, idx) {
 
 // ─────────────────── PLAN LOAD/SAVE ───────────────────
 async function loadPlan() {
-  const _planSaved = localStorage.getItem('osaka_plan_2026');
-  if (_planSaved) {
-    try { plan = JSON.parse(_planSaved); } catch { plan = { days: {} }; }
-  } else {
-    try {
-      const res = await fetch('data/plan.json');
-      if (res.ok) plan = await res.json();
-      else plan = { days: {} };
-    } catch { plan = { days: {} }; }
+  // Cloud → localStorage → static file
+  const cloudData = await cloudGet('plan');
+  if (cloudData) { plan = cloudData; }
+  else {
+    const saved = localStorage.getItem('osaka_plan_2026');
+    if (saved) { try { plan = JSON.parse(saved); } catch { plan = { days: {} }; } }
+    else {
+      try {
+        const res = await fetch('data/plan.json');
+        if (res.ok) plan = await res.json();
+        else plan = { days: {} };
+      } catch { plan = { days: {} }; }
+    }
   }
   // Migrate old format (plan.days) to new plans structure
   if (!plan.plans) {
@@ -424,8 +499,9 @@ async function savePlan() {
     plan.plans[plan.activePlan].days = plan.days;
   }
   plan.lastSaved = new Date().toISOString();
+  const cloudOk = await cloudPut('plan', plan);
   localStorage.setItem('osaka_plan_2026', JSON.stringify(plan));
-  showToast('✅ 行程已儲存！', 'success');
+  showToast(cloudOk ? '✅ 行程已儲存（雲端同步）！' : '✅ 行程已儲存！', 'success');
 }
 
 // ─────────────────── TABS ───────────────────
@@ -1793,14 +1869,19 @@ let reminders = [];
 let reminderFilter = 'all';
 
 async function loadReminders() {
-  const saved = localStorage.getItem('osaka_reminders_2026');
-  reminders = saved ? JSON.parse(saved) : [];
+  const cloudData = await cloudGet('reminders');
+  if (cloudData) { reminders = cloudData; }
+  else {
+    const saved = localStorage.getItem('osaka_reminders_2026');
+    reminders = saved ? JSON.parse(saved) : [];
+  }
   renderReminders(reminders);
 }
 
 async function saveReminders() {
+  const cloudOk = await cloudPut('reminders', reminders);
   localStorage.setItem('osaka_reminders_2026', JSON.stringify(reminders));
-  showToast('✅ 注忘事項已儲存！', 'success');
+  showToast(cloudOk ? '✅ 注忘事項已儲存（雲端）！' : '✅ 注忘事項已儲存！', 'success');
 }
 
 function renderReminders(list) {
@@ -2984,14 +3065,18 @@ async function saveLocPins() {
   // Save which train lines are visible
   Object.entries(locTrainOverlays).forEach(([k, v]) => { saveData.trainOverlayState[k] = v.visible; });
 
+  const cloudOk = await cloudPut('locpins', saveData);
   localStorage.setItem('osaka_locpins_2026', JSON.stringify(saveData));
-  showToast('✅ 位置標記已儲存！', 'success');
+  showToast(cloudOk ? '✅ 位置標記已儲存（雲端）！' : '✅ 位置標記已儲存！', 'success');
 }
 
 async function loadLocPins() {
   let saveData = null;
-  const _locSaved = localStorage.getItem('osaka_locpins_2026');
-  if (_locSaved) saveData = JSON.parse(_locSaved);
+  saveData = await cloudGet('locpins');
+  if (!saveData) {
+    const saved = localStorage.getItem('osaka_locpins_2026');
+    if (saved) saveData = JSON.parse(saved);
+  }
 
   if (!saveData) return;
 
@@ -3200,3 +3285,5 @@ window.toggleLocAttr = toggleLocAttr;
 window.toggleAllLocAttr = toggleAllLocAttr;
 window.renderLocKeyLocToggles = renderLocKeyLocToggles;
 window.toggleLocKeyLoc = toggleLocKeyLoc;
+window.initCloudSetup = initCloudSetup;
+window.updateCloudIndicator = updateCloudIndicator;

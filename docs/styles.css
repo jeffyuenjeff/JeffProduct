@@ -881,8 +881,22 @@ html, body {
 .card:nth-child(4) { animation-delay: 0.15s; }
 .card:nth-child(5) { animation-delay: 0.2s; }
 
+/* ======= CLOUD STATUS INDICATOR ======= */
+.cloud-status {
+  display: flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 20px;
+  font-size: 11px; font-weight: 600; white-space: nowrap;
+}
+.cloud-status.cloud-write {
+  background: rgba(44,182,125,0.15); color: #2cb67d; border: 1px solid rgba(44,182,125,0.3);
+}
+.cloud-status.cloud-read {
+  background: rgba(58,134,255,0.15); color: #3a86ff; border: 1px solid rgba(58,134,255,0.3);
+}
+
 /* ======= RESPONSIVE ======= */
 @media (max-width: 768px) {
+  :root { --hdr-h: 56px; --nav-h: 46px; }
   .trip-chips .chip { display: none; }
   .trip-chips .chip:first-child { display: flex; }
   .planner-sidebar { width: 100%; position: absolute; top: 0; bottom: 0; z-index: 20; }
@@ -892,6 +906,29 @@ html, body {
   .tc-img { width: 100%; height: 160px; }
   .transport-card { flex-direction: column; }
   .tour-content { grid-template-columns: 1fr; }
+  .header-actions { gap: 4px; }
+  .hdr-btn, .style-toggle { width: 36px; height: 36px; font-size: 14px; }
+  .cloud-status { padding: 3px 8px; font-size: 10px; }
+  .brand-title { font-size: 16px; }
+  .brand-sub { font-size: 10px; }
+  .search-box { flex: 1 1 auto; min-width: 0; }
+  .tab-btn { padding: 8px 12px; font-size: 12px; }
+  .tab-btn span { display: none; }
+  .tab-btn i { font-size: 16px; }
+}
+
+@media (max-width: 480px) {
+  :root { --hdr-h: 50px; --ticker-h: 24px; --nav-h: 42px; }
+  .app-header .header-inner { padding: 0 10px; }
+  .brand-icon { font-size: 20px; }
+  .brand-title { font-size: 14px; }
+  .brand-sub { display: none; }
+  .flight-ticker { font-size: 11px; }
+  .trip-chips { display: none; }
+  .tab-btn { padding: 6px 10px; }
+  .hdr-btn, .style-toggle { width: 32px; height: 32px; font-size: 12px; }
+  .cloud-status { font-size: 9px; padding: 2px 6px; }
+  .sidebar-header h2 { font-size: 15px; }
 }
 
 /* ======= UTILITIES ======= */
@@ -1218,8 +1255,12 @@ html, body {
 
 @media (max-width: 768px) {
   .hotel-layout { flex-direction: column; }
-  .hotel-listcol { width: 100%; min-width: 0; max-height: 60vh; }
-  .hotel-mapcol { min-height: 300px; }
+  .hotel-listcol { width: 100%; min-width: 0; max-height: 50vh; }
+  .hotel-mapcol { min-height: 250px; }
+}
+@media (max-width: 480px) {
+  .hotel-listcol { max-height: 45vh; }
+  .hotel-mapcol { min-height: 200px; }
 }
 
 /* ======= LOCATION MEASURE TAB ======= */
@@ -1378,8 +1419,12 @@ html, body {
 
 @media (max-width: 768px) {
   .loc-layout { flex-direction: column; }
-  .loc-sidebar { width: 100%; min-width: 0; max-height: 55vh; }
-  .loc-mapcol { min-height: 300px; }
+  .loc-sidebar { width: 100%; min-width: 0; max-height: 50vh; }
+  .loc-mapcol { min-height: 250px; }
+}
+@media (max-width: 480px) {
+  .loc-sidebar { max-height: 45vh; }
+  .loc-mapcol { min-height: 200px; }
 }
 
 /* ======= EDIT ITEM MODAL ======= */
