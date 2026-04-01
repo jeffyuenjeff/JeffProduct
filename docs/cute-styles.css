@@ -900,243 +900,6 @@ body.cute-theme .card {
   }
 }
 
-/* ======= RESPONSIVE ADJUSTMENTS ======= */
-@media (max-width: 768px) {
-  /* ── Shrink header + nav for mobile ── */
-  body.cute-theme {
-    --hdr-h: 56px;
-    --nav-h: 44px;
-  }
-  body.cute-theme .app-header {
-    height: var(--hdr-h);
-    background-position: center 35%;
-  }
-  body.cute-theme .header-inner {
-    height: var(--hdr-h);
-    padding: 0 12px;
-  }
-  body.cute-theme .tab-nav {
-    height: var(--nav-h);
-    padding: 0 8px;
-  }
-  /* ── Safe-area for notched phones ── */
-  body.cute-theme .app-main {
-    bottom: env(safe-area-inset-bottom, 0px);
-  }
-  body.cute-theme .cute-trip-summary {
-    padding: 4px 10px;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-  body.cute-theme .cts-item {
-    flex: 1 1 45%;
-    min-width: 80px;
-  }
-  body.cute-theme .cts-icon {
-    width: 22px; height: 22px; font-size: 10px;
-  }
-  body.cute-theme .cts-text .cts-label { font-size: 9px; }
-  body.cute-theme .cts-text .cts-value { font-size: 11px; }
-  body.cute-theme .brand-title { font-size: 15px; }
-  body.cute-theme .brand-sub { display: none; }
-  body.cute-theme .tab-btn span { display: none; }
-  body.cute-theme .tab-btn { padding: 8px 10px; }
-  body.cute-theme .tab-btn i { font-size: 15px; }
-
-  /* ── Cute planner: vertical sidebar → compact horizontal strip ── */
-  body.cute-theme .planner-layout {
-    flex-direction: column;
-    overflow: hidden;
-  }
-  body.cute-theme .planner-sidebar {
-    width: 100% !important;
-    min-width: 100% !important;
-    max-width: 100% !important;
-    height: auto !important;
-    max-height: 50px !important;
-    flex-direction: row;
-    flex-shrink: 0;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    overflow: hidden;
-    background: var(--surface) !important;
-    position: relative !important;
-  }
-  body.cute-theme .planner-sidebar .day-tabs {
-    flex-direction: row !important;
-    padding: 5px 8px !important;
-    gap: 4px !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    flex-wrap: nowrap !important;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  body.cute-theme .planner-sidebar .day-tabs::-webkit-scrollbar { display: none; }
-
-  /* Day tab pills: compact single-line */
-  body.cute-theme .day-tab {
-    flex-direction: row !important;
-    width: auto !important;
-    min-width: auto !important;
-    padding: 5px 12px !important;
-    gap: 4px !important;
-    border-radius: 18px !important;
-    border-width: 2px !important;
-    flex-shrink: 0;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-  body.cute-theme .day-tab .dt-num {
-    font-size: 13px !important;
-    line-height: 1 !important;
-  }
-  body.cute-theme .day-tab .dt-label {
-    display: none !important;
-  }
-  body.cute-theme .day-tab .dt-date {
-    font-size: 10px !important;
-    font-weight: 600 !important;
-    color: var(--text2) !important;
-  }
-  body.cute-theme .day-tab.active .dt-date {
-    color: var(--text) !important;
-  }
-  /* Summary tab compact */
-  body.cute-theme .day-tab.cute-summary-tab .dt-num {
-    font-size: 12px !important;
-  }
-
-  /* ── Core area takes all remaining space ── */
-  body.cute-theme .cute-core-area {
-    flex: 1 1 0% !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* ── Timeline header: compact single-row ── */
-  body.cute-theme .cute-tl-header {
-    padding: 10px 14px 8px;
-    gap: 8px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  body.cute-theme .cute-tl-header-left { gap: 10px; }
-  body.cute-theme .cute-tl-day-badge {
-    width: 36px; height: 36px; font-size: 16px; border-width: 2px;
-  }
-  body.cute-theme .cute-tl-title { font-size: 16px; }
-  body.cute-theme .cute-tl-date { font-size: 11px; }
-  body.cute-theme .cute-tl-note { font-size: 11px; }
-  body.cute-theme .cute-tl-plan-toggle { display: none; }
-  body.cute-theme .cute-tl-actions { gap: 4px; }
-
-  /* ── Timeline items: tighter spacing ── */
-  body.cute-theme .cute-tl-items {
-    padding: 10px 12px 80px;
-  }
-  body.cute-theme .cute-tl-items::before { left: 30px; width: 2px; }
-  body.cute-theme .cute-tl-item { gap: 10px; padding: 5px 0; }
-  body.cute-theme .cute-tl-dot {
-    width: 32px; height: 32px; font-size: 12px; border-width: 2px;
-  }
-  body.cute-theme .cute-tl-card {
-    padding: 10px 12px;
-    border-radius: 12px;
-    border-width: 2px;
-  }
-  body.cute-theme .cute-tl-card::before {
-    left: -8px; top: 10px;
-    border-top-width: 6px; border-bottom-width: 6px; border-right-width: 8px;
-  }
-  body.cute-theme .cute-tl-card::after {
-    left: -6px; top: 10px;
-    border-top-width: 6px; border-bottom-width: 6px; border-right-width: 8px;
-  }
-  body.cute-theme .cute-tl-card-name { font-size: 14px; }
-  body.cute-theme .cute-tl-card-note { font-size: 12px; }
-  body.cute-theme .cute-tl-card-time { font-size: 12px; }
-  /* Touch: always show action buttons */
-  body.cute-theme .cute-tl-card-actions { opacity: 1; }
-  body.cute-theme .cute-tl-add {
-    padding: 10px; font-size: 12px; border-width: 2px;
-  }
-
-  /* ── Map slideout full-width ── */
-  body.cute-theme .cute-map-slideout {
-    width: 100%; max-width: 100%; border-left-width: 2px;
-  }
-  body.cute-theme .cute-map-fab {
-    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-    right: 14px;
-    width: 46px; height: 46px; font-size: 17px; border-width: 2px;
-  }
-
-  /* ── Summary grid ── */
-  body.cute-theme .cute-summary-grid {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 8px;
-    padding: 0 4px;
-  }
-  body.cute-theme .cute-summary-card {
-    padding: 10px;
-    border-radius: 12px;
-    border-width: 2px;
-  }
-  body.cute-theme .cute-summary-card-icon {
-    width: 36px; height: 36px; font-size: 15px; border-width: 2px;
-  }
-  body.cute-theme .cute-summary-card-label { font-size: 10px; }
-  body.cute-theme .cute-summary-card-value { font-size: 13px; }
-  body.cute-theme .cute-summary-info { padding: 12px; }
-}
-
-@media (max-width: 480px) {
-  body.cute-theme {
-    --hdr-h: 48px;
-    --nav-h: 40px;
-  }
-  body.cute-theme .app-header { height: var(--hdr-h); }
-  body.cute-theme .header-inner { height: var(--hdr-h); padding: 0 8px; }
-  body.cute-theme .brand-icon { font-size: 20px; }
-  body.cute-theme .brand-title { font-size: 13px; }
-  body.cute-theme .tab-nav { height: var(--nav-h); }
-  body.cute-theme .tab-btn { padding: 6px 8px; }
-  body.cute-theme .tab-btn i { font-size: 14px; }
-  body.cute-theme .cts-item { flex: 1 1 100%; }
-  body.cute-theme .cute-trip-summary { display: none !important; }
-  body.cute-theme .planner-sidebar { max-height: 44px !important; }
-  body.cute-theme .planner-sidebar .day-tabs { padding: 4px 6px !important; gap: 3px !important; }
-  body.cute-theme .day-tab { padding: 4px 8px !important; border-radius: 14px !important; }
-  body.cute-theme .day-tab .dt-num { font-size: 12px !important; }
-  body.cute-theme .day-tab .dt-date { display: none !important; }
-  body.cute-theme .cute-tl-header {
-    flex-direction: row; align-items: center; gap: 8px; padding: 6px 10px;
-  }
-  body.cute-theme .cute-tl-day-badge { width: 30px; height: 30px; font-size: 14px; }
-  body.cute-theme .cute-tl-title { font-size: 14px; }
-  body.cute-theme .cute-tl-date { font-size: 10px; }
-  body.cute-theme .cute-tl-card-name { font-size: 13px; }
-  body.cute-theme .cute-tl-card-note { font-size: 11px; }
-  body.cute-theme .cute-summary-hero img { object-fit: cover; }
-  body.cute-theme .cute-summary-grid { grid-template-columns: 1fr !important; }
-}
-
-/* ── Portrait-specific: maximize content area ── */
-@media (max-width: 768px) and (orientation: portrait) {
-  body.cute-theme .planner-sidebar { max-height: 46px !important; }
-  body.cute-theme .cute-tl-items { padding: 8px 10px 80px; }
-  body.cute-theme .cute-tl-item { padding: 3px 0; }
-  body.cute-theme .cute-map-fab {
-    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
-    right: 12px;
-    width: 44px; height: 44px; font-size: 16px;
-  }
-}
-
 /* ======= HIDE DEFAULT ELEMENTS IN CUTE MODE ======= */
 body.cute-theme .trip-chips {
   display: none !important;
@@ -2009,4 +1772,237 @@ body.cute-theme .cute-map-fab {
 @keyframes twinkle {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.7; transform: scale(0.9); }
+}
+
+/* ======================================================================
+   RESPONSIVE — placed AFTER all desktop styles so media queries win
+   ====================================================================== */
+@media (max-width: 768px) {
+  /* ── Shrink header + nav for mobile ── */
+  body.cute-theme {
+    --hdr-h: 52px;
+    --nav-h: 42px;
+  }
+  body.cute-theme .app-header {
+    height: var(--hdr-h);
+    background-position: center 35%;
+  }
+  body.cute-theme .header-inner {
+    height: var(--hdr-h);
+    padding: 0 10px;
+  }
+  body.cute-theme .tab-nav {
+    height: var(--nav-h);
+    padding: 0 6px;
+  }
+  /* ── Safe-area for notched phones ── */
+  body.cute-theme .app-main {
+    bottom: env(safe-area-inset-bottom, 0px);
+  }
+  /* ── Hide cute-trip-summary on mobile — it overflows the header ── */
+  body.cute-theme .cute-trip-summary {
+    display: none !important;
+  }
+  body.cute-theme .brand-title { font-size: 15px; }
+  body.cute-theme .brand-sub { display: none; }
+  body.cute-theme .tab-btn span { display: none; }
+  body.cute-theme .tab-btn { padding: 7px 9px; }
+  body.cute-theme .tab-btn i { font-size: 14px; }
+  body.cute-theme .header-actions {
+    padding: 4px 8px;
+    gap: 5px;
+    border-width: 2px;
+  }
+
+  /* ── Cute planner: vertical sidebar → compact horizontal strip ── */
+  body.cute-theme .planner-layout {
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+  body.cute-theme .planner-sidebar {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: 48px !important;
+    flex-direction: row !important;
+    flex-shrink: 0 !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border) !important;
+    overflow: hidden !important;
+    background: var(--surface) !important;
+    position: relative !important;
+    padding: 0 !important;
+  }
+  body.cute-theme .planner-sidebar .day-tabs {
+    flex-direction: row !important;
+    padding: 5px 8px !important;
+    gap: 4px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex: 1 !important;
+    border-bottom: none !important;
+  }
+  body.cute-theme .planner-sidebar .day-tabs::-webkit-scrollbar { display: none; }
+
+  /* Day tab pills: compact single-line */
+  body.cute-theme .day-tab {
+    flex-direction: row !important;
+    width: auto !important;
+    min-width: auto !important;
+    padding: 5px 12px !important;
+    gap: 4px !important;
+    border-radius: 18px !important;
+    border-width: 2px !important;
+    flex-shrink: 0 !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  body.cute-theme .day-tab .dt-num {
+    font-size: 13px !important;
+    line-height: 1 !important;
+  }
+  body.cute-theme .day-tab .dt-label {
+    display: none !important;
+  }
+  body.cute-theme .day-tab .dt-date {
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    color: var(--text2) !important;
+  }
+  body.cute-theme .day-tab.active .dt-date {
+    color: var(--text) !important;
+  }
+  body.cute-theme .day-tab.cute-summary-tab .dt-num {
+    font-size: 12px !important;
+  }
+
+  /* ── Core area takes all remaining space ── */
+  body.cute-theme .cute-core-area {
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── Timeline header: compact single-row ── */
+  body.cute-theme .cute-tl-header {
+    padding: 8px 12px 6px;
+    gap: 8px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  body.cute-theme .cute-tl-header-left { gap: 8px; }
+  body.cute-theme .cute-tl-day-badge {
+    width: 34px; height: 34px; font-size: 15px; border-width: 2px;
+  }
+  body.cute-theme .cute-tl-title { font-size: 15px; }
+  body.cute-theme .cute-tl-date { font-size: 11px; }
+  body.cute-theme .cute-tl-note { font-size: 11px; }
+  body.cute-theme .cute-tl-plan-toggle { display: none; }
+  body.cute-theme .cute-tl-actions { gap: 4px; }
+
+  /* ── Timeline items: tighter spacing ── */
+  body.cute-theme .cute-tl-items {
+    padding: 8px 10px 80px;
+  }
+  body.cute-theme .cute-tl-items::before { left: 28px; width: 2px; }
+  body.cute-theme .cute-tl-item { gap: 8px; padding: 4px 0; }
+  body.cute-theme .cute-tl-dot {
+    width: 30px; height: 30px; font-size: 11px; border-width: 2px;
+  }
+  body.cute-theme .cute-tl-card {
+    padding: 8px 10px;
+    border-radius: 10px;
+    border-width: 2px;
+  }
+  body.cute-theme .cute-tl-card::before {
+    left: -8px; top: 10px;
+    border-top-width: 6px; border-bottom-width: 6px; border-right-width: 8px;
+  }
+  body.cute-theme .cute-tl-card::after {
+    left: -6px; top: 10px;
+    border-top-width: 6px; border-bottom-width: 6px; border-right-width: 8px;
+  }
+  body.cute-theme .cute-tl-card-name { font-size: 13px; }
+  body.cute-theme .cute-tl-card-note { font-size: 11px; }
+  body.cute-theme .cute-tl-card-time { font-size: 11px; }
+  body.cute-theme .cute-tl-card-actions { opacity: 1; }
+  body.cute-theme .cute-tl-add {
+    padding: 8px; font-size: 11px; border-width: 2px;
+  }
+
+  /* ── Map slideout full-width ── */
+  body.cute-theme .cute-map-slideout {
+    width: 100%; max-width: 100%; border-left-width: 2px;
+  }
+  body.cute-theme .cute-map-fab {
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    right: 14px;
+    width: 44px; height: 44px; font-size: 16px; border-width: 2px;
+  }
+
+  /* ── Summary grid ── */
+  body.cute-theme .cute-summary-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px;
+    padding: 0 4px;
+  }
+  body.cute-theme .cute-summary-card {
+    padding: 10px;
+    border-radius: 12px;
+    border-width: 2px;
+  }
+  body.cute-theme .cute-summary-card-icon {
+    width: 34px; height: 34px; font-size: 14px; border-width: 2px;
+  }
+  body.cute-theme .cute-summary-card-label { font-size: 10px; }
+  body.cute-theme .cute-summary-card-value { font-size: 12px; }
+  body.cute-theme .cute-summary-info { padding: 10px; }
+}
+
+@media (max-width: 480px) {
+  body.cute-theme {
+    --hdr-h: 46px;
+    --nav-h: 38px;
+  }
+  body.cute-theme .app-header { height: var(--hdr-h); }
+  body.cute-theme .header-inner { height: var(--hdr-h); padding: 0 8px; }
+  body.cute-theme .brand-icon { font-size: 18px; }
+  body.cute-theme .brand-title { font-size: 12px; }
+  body.cute-theme .tab-nav { height: var(--nav-h); }
+  body.cute-theme .tab-btn { padding: 5px 7px; }
+  body.cute-theme .tab-btn i { font-size: 13px; }
+  body.cute-theme .planner-sidebar { max-height: 42px !important; }
+  body.cute-theme .planner-sidebar .day-tabs { padding: 4px 6px !important; gap: 3px !important; }
+  body.cute-theme .day-tab { padding: 4px 8px !important; border-radius: 14px !important; }
+  body.cute-theme .day-tab .dt-num { font-size: 11px !important; }
+  body.cute-theme .day-tab .dt-date { display: none !important; }
+  body.cute-theme .cute-tl-header {
+    flex-direction: row; align-items: center; gap: 6px; padding: 5px 8px;
+  }
+  body.cute-theme .cute-tl-day-badge { width: 28px; height: 28px; font-size: 13px; }
+  body.cute-theme .cute-tl-title { font-size: 13px; }
+  body.cute-theme .cute-tl-date { font-size: 9px; }
+  body.cute-theme .cute-tl-card-name { font-size: 12px; }
+  body.cute-theme .cute-tl-card-note { font-size: 10px; }
+  body.cute-theme .cute-summary-hero img { object-fit: cover; }
+  body.cute-theme .cute-summary-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ── Portrait-specific: maximize content area ── */
+@media (max-width: 768px) and (orientation: portrait) {
+  body.cute-theme .planner-sidebar { max-height: 44px !important; }
+  body.cute-theme .cute-tl-items { padding: 6px 8px 80px; }
+  body.cute-theme .cute-tl-item { padding: 3px 0; }
+  body.cute-theme .cute-map-fab {
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    right: 10px;
+    width: 42px; height: 42px; font-size: 15px;
+  }
 }

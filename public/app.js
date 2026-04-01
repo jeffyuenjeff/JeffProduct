@@ -147,7 +147,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   initCloudSetup();
   // Initialize theme (cute is default)
   initTheme();
-  await loadPlan();
+  // Fast-load from localStorage first (instant), then cloud-refresh in background
+  loadPlanFast();
   updateCloudIndicator();
   initTabs();
   initMap();
@@ -161,7 +162,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderHotels();
   updateMapLegend();
   updatePlanToggleUI();
-  await loadReminders();
+  loadRemindersFast();
   // Re-render ticker duplicate for seamless loop
   const track = document.querySelector('.ticker-track');
   if (track) track.innerHTML += track.innerHTML;
@@ -172,6 +173,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderCuteSummaryGrid();
     setupCuteLayout();
   }
+
+  // Background cloud refresh — fetches latest data and re-renders if updated
+  cloudRefreshAll();
 });
 
 // ─────────────────── THEME SWITCHING ───────────────────
@@ -509,6 +513,78 @@ async function loadPlan() {
   }
   if (!plan.activePlan) plan.activePlan = 'core';
   plan.days = plan.plans[plan.activePlan].days || {};
+}
+
+function migratePlan() {
+  if (!plan.plans) {
+    plan.plans = {
+      core:   { name: '正選行程',     desc: '天晴時的最佳行程', days: plan.days || {} },
+      backup: { name: '備用行程（雨天）', desc: '下雨時的備用行程', days: {} }
+    };
+    plan.activePlan = 'core';
+  }
+  if (!plan.activePlan) plan.activePlan = 'core';
+  plan.days = plan.plans[plan.activePlan].days || {};
+}
+
+// ── Fast load: instant from localStorage/static, no network wait ──
+function loadPlanFast() {
+  const saved = localStorage.getItem('osaka_plan_2026');
+  if (saved) {
+    try { plan = JSON.parse(saved); } catch { plan = { days: {} }; }
+  }
+  migratePlan();
+}
+
+function loadRemindersFast() {
+  const saved = localStorage.getItem('osaka_reminders_2026');
+  if (saved) {
+    try { reminders = JSON.parse(saved); } catch { reminders = []; }
+  }
+  renderReminders(reminders);
+}
+
+// ── Background cloud refresh: fetch latest, re-render if data changed ──
+async function cloudRefreshAll() {
+  if (!CLOUD.enabled) return;
+  try {
+    const [cloudPlan, cloudReminders] = await Promise.all([
+      cloudGet('plan'),
+      cloudGet('reminders')
+    ]);
+    let updated = false;
+    if (cloudPlan) {
+      const cloudStr = JSON.stringify(cloudPlan);
+      if (cloudStr !== JSON.stringify(plan)) {
+        plan = cloudPlan;
+        migratePlan();
+        localStorage.setItem('osaka_plan_2026', cloudStr);
+        renderDayTabs();
+        renderDayContent(currentDay);
+        renderDayMarkersOnMap(currentDay);
+        updateMapLegend();
+        updatePlanToggleUI();
+        if (currentTheme === 'cute') {
+          renderCuteDayTabs();
+          renderCuteTimeline(currentDay);
+          renderCuteSummaryGrid();
+        }
+        updated = true;
+      }
+    }
+    if (cloudReminders) {
+      const cloudStr = JSON.stringify(cloudReminders);
+      if (cloudStr !== JSON.stringify(reminders)) {
+        reminders = cloudReminders;
+        localStorage.setItem('osaka_reminders_2026', cloudStr);
+        renderReminders(reminders);
+        updated = true;
+      }
+    }
+    if (updated) updateCloudIndicator();
+  } catch (e) {
+    console.warn('[Cloud Refresh]', e.message);
+  }
 }
 
 async function savePlan() {
@@ -872,7 +948,12 @@ function editPlanItem(dayKey, idx) {
         </div>
         <div class="edit-item-field">
           <label>時間</label>
-          <input type="text" id="editItemTime" value="${item.time || ''}" placeholder="例: 09:00" />
+          <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+            <input type="text" id="editItemTime" value="${item.time || ''}" placeholder="點選或輸入" style="width:70px;text-align:center;flex-shrink:0;" />
+            ${['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'].map(t =>
+              `<button onclick="document.getElementById('editItemTime').value='${t}'" style="padding:3px 7px;border-radius:6px;border:1px solid var(--border);background:${item.time===t?'var(--primary)':'var(--surface)'};color:${item.time===t?'white':'var(--text2)'};font-size:11px;font-weight:600;cursor:pointer;">${t}</button>`
+            ).join('')}
+          </div>
         </div>
         <div class="edit-item-field">
           <label>備註</label>
@@ -908,6 +989,75 @@ function editPlanItem(dayKey, idx) {
     </div>
   `;
   document.body.appendChild(modal);
+}
+
+// ─────────────────── SMART TIME PICKER ───────────────────
+// One-tap time selection with common travel time slots + optional note
+function showTimePicker(callback, defaultTime) {
+  const existing = document.getElementById('timePickerModal');
+  if (existing) existing.remove();
+
+  const slots = [
+    { label: '早餐', icon: '🌅', times: ['07:00','07:30','08:00','08:30','09:00'] },
+    { label: '上午', icon: '☀️', times: ['09:30','10:00','10:30','11:00','11:30'] },
+    { label: '午餐', icon: '🍱', times: ['12:00','12:30','13:00','13:30'] },
+    { label: '下午', icon: '🏯', times: ['14:00','14:30','15:00','15:30','16:00','16:30'] },
+    { label: '傍晚', icon: '🌇', times: ['17:00','17:30','18:00','18:30'] },
+    { label: '晚餐', icon: '🍜', times: ['19:00','19:30','20:00','20:30'] },
+    { label: '夜間', icon: '🌙', times: ['21:00','21:30','22:00','22:30','23:00'] },
+  ];
+
+  const modal = document.createElement('div');
+  modal.id = 'timePickerModal';
+  modal.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:12px;';
+  modal.innerHTML = `
+    <div style="background:var(--surface2,#fff);border-radius:20px;border:3px solid var(--text,#333);box-shadow:6px 6px 0 rgba(74,63,53,0.2);width:100%;max-width:400px;max-height:85vh;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="padding:12px 16px;border-bottom:2px dashed var(--border,#ddd);display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:15px;font-weight:800;color:var(--text,#333);">⏰ 選擇時間</span>
+        <button id="tpClose" style="width:30px;height:30px;border-radius:8px;border:2px solid var(--border,#ddd);background:var(--surface,#fff);color:var(--text3,#999);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;"><i class="fa fa-xmark"></i></button>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:10px 14px;">
+        ${slots.map(s => `
+          <div style="margin-bottom:10px;">
+            <div style="font-size:11px;font-weight:700;color:var(--text2,#666);margin-bottom:5px;">${s.icon} ${s.label}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+              ${s.times.map(t => `<button class="tp-slot" data-time="${t}" style="padding:6px 12px;border-radius:10px;border:2px solid var(--border,#ddd);background:var(--surface,#fff);color:var(--text,#333);font-size:13px;font-weight:700;cursor:pointer;transition:all 0.15s;flex-shrink:0;">${t}</button>`).join('')}
+            </div>
+          </div>
+        `).join('')}
+        <div style="margin-top:8px;">
+          <label style="font-size:11px;font-weight:700;color:var(--text2,#666);display:block;margin-bottom:4px;">📝 備註（可選）</label>
+          <input type="text" id="tpNote" placeholder="例: 需預約 / 排隊約30分鐘" style="width:100%;padding:8px 12px;border-radius:10px;border:2px solid var(--border,#ddd);background:var(--surface,#fff);color:var(--text,#333);font-size:12px;outline:none;box-sizing:border-box;" />
+        </div>
+      </div>
+      <div style="padding:10px 14px;border-top:2px dashed var(--border,#ddd);display:flex;gap:8px;">
+        <button id="tpSkip" style="flex:1;padding:10px;border-radius:10px;border:2px solid var(--border,#ddd);background:var(--surface,#fff);color:var(--text2,#666);font-size:13px;font-weight:700;cursor:pointer;">跳過（不設時間）</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  // Highlight on hover
+  modal.querySelectorAll('.tp-slot').forEach(btn => {
+    btn.onmouseenter = () => { btn.style.borderColor = 'var(--primary,#e85d04)'; btn.style.background = 'rgba(232,93,4,0.08)'; };
+    btn.onmouseleave = () => { btn.style.borderColor = 'var(--border,#ddd)'; btn.style.background = 'var(--surface,#fff)'; };
+    btn.onclick = () => {
+      const note = document.getElementById('tpNote')?.value?.trim() || '';
+      modal.remove();
+      callback(btn.dataset.time, note);
+    };
+  });
+
+  // Skip (no time)
+  document.getElementById('tpSkip').onclick = () => {
+    const note = document.getElementById('tpNote')?.value?.trim() || '';
+    modal.remove();
+    callback('', note);
+  };
+
+  // Close
+  document.getElementById('tpClose').onclick = () => modal.remove();
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
 }
 
 function closeEditItemModal() {
@@ -1149,18 +1299,17 @@ function addToDay(itemJSON) {
     const exists = plan.days[qaCurrentDay].items.find(x => String(x.id) === String(item.id) && x.type === item.type);
     if (exists) { showToast('⚠️ 此項目已在行程中', ''); return; }
 
-    const time = prompt(`設定時間 (例: 14:00)，留空則不填:`, '') || '';
-    const note = prompt(`添加備注 (可留空):`, '') || '';
-    plan.days[qaCurrentDay].items.push({ ...item, time, note });
-    renderDayContent(qaCurrentDay);
-    renderDayMarkersOnMap(qaCurrentDay);
-    // Update cute timeline if in cute mode
-    if (currentTheme === 'cute') {
-      renderCuteTimeline(qaCurrentDay);
-      renderCuteSummaryGrid();
-    }
-    showToast('✅ 已添加到行程！', 'success');
-    closeQuickAdd();
+    showTimePicker((time, note) => {
+      plan.days[qaCurrentDay].items.push({ ...item, time, note });
+      renderDayContent(qaCurrentDay);
+      renderDayMarkersOnMap(qaCurrentDay);
+      if (currentTheme === 'cute') {
+        renderCuteTimeline(qaCurrentDay);
+        renderCuteSummaryGrid();
+      }
+      showToast('✅ 已添加到行程！', 'success');
+      closeQuickAdd();
+    });
   } catch(e) {
     showToast('❌ 添加失敗', 'error');
   }
@@ -1469,11 +1618,12 @@ function addAttrToDay(e, id) {
   if (!plan.days[dayKey].items) plan.days[dayKey].items = [];
   const exists = plan.days[dayKey].items.find(x => String(x.id) === String(id) && x.type === 'attraction');
   if (exists) { showToast('⚠️ 此景點已在該天行程中', ''); return; }
-  const time = prompt('設定時間 (例: 10:00)，留空則不填:', '') || '';
-  const note = prompt('添加備注 (可留空):', '') || '';
-  plan.days[dayKey].items.push({ type: 'attraction', id, name: a.name, time, note });
-  if (dayKey === currentDay) { renderDayContent(dayKey); renderDayMarkersOnMap(dayKey); }
-  showToast(`✅ 已加入第${day}天行程！`, 'success');
+  showTimePicker((time, note) => {
+    plan.days[dayKey].items.push({ type: 'attraction', id, name: a.name, time, note });
+    if (dayKey === currentDay) { renderDayContent(dayKey); renderDayMarkersOnMap(dayKey); }
+    if (currentTheme === 'cute') { renderCuteTimeline(dayKey); renderCuteSummaryGrid(); }
+    showToast(`✅ 已加入第${day}天行程！`, 'success');
+  });
 }
 
 function showAttractionDetail(id) {
@@ -1559,10 +1709,12 @@ function addFoodToDay(e, id) {
   const dayKey = `day${parseInt(day)}`;
   if (!plan.days[dayKey]) plan.days[dayKey] = { items: [] };
   if (!plan.days[dayKey].items) plan.days[dayKey].items = [];
-  const time = prompt('設定時間 (例: 12:00)，留空則不填:', '') || '';
-  plan.days[dayKey].items.push({ type: 'food', id, name: f.name, time, note: f.shopName });
-  if (dayKey === currentDay) renderDayContent(dayKey);
-  showToast(`✅ ${f.name} 已加入第${day}天！`, 'success');
+  showTimePicker((time, note) => {
+    plan.days[dayKey].items.push({ type: 'food', id, name: f.name, time, note: note || f.shopName });
+    if (dayKey === currentDay) renderDayContent(dayKey);
+    if (currentTheme === 'cute') { renderCuteTimeline(dayKey); renderCuteSummaryGrid(); }
+    showToast(`✅ ${f.name} 已加入第${day}天！`, 'success');
+  });
 }
 
 // ─────────────────── TRANSPORT ───────────────────
