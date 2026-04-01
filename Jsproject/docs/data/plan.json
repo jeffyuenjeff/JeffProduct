@@ -1,0 +1,964 @@
+{
+  "version": "2.0",
+  "activePlan": "core",
+  "lastSaved": "2026-03-31T16:51:43.956Z",
+  "tripInfo": {
+    "ticketNo": "NE2603042020388495",
+    "departure": "2026-04-29",
+    "return": "2026-05-04",
+    "flightOut": "HX614 | 香港 08:50 HKG → 大阪 14:00 KIX",
+    "flightBack": "HX619 | 大阪 17:00 KIX → 香港 20:20 HKG"
+  },
+  "plans": {
+    "core": {
+      "name": "正選行程",
+      "desc": "天晴時的最佳行程，充分發揮大阪周遊卡",
+      "days": {
+        "day1": {
+          "date": "2026-04-29",
+          "dayLabel": "第一天",
+          "title": "抵達・道頓堀・難波美食之夜",
+          "note": "下午抵達關西機場，乘南海Rapi:t到難波。先遊道頓堀水上觀光船感受大阪夜色，晚上享用道地蟹道樂盛宴，飯後乘WONDER CRUISE夜遊。",
+          "items": [
+            {
+              "type": "transport",
+              "id": "airport-namba",
+              "name": "關西機場→難波 南海Rapi:t",
+              "time": "14:30",
+              "note": "機場1F南海電鐵售票購票或出示電子票，約38分鐘抵達難波"
+            },
+            {
+              "type": "custom",
+              "id": "hotel_cross",
+              "name": "🏨 Cross Hotel 大阪 Check-in",
+              "lat": 34.66992763831978,
+              "lng": 135.50072918683398,
+              "time": "15:00",
+              "note": "已預訂 ✅ 住宿 4/29-5/1（2晚）。心齋橋站步行4分鐘 / 難波站步行8分鐘"
+            },
+            {
+              "type": "food",
+              "id": "f6",
+              "name": "蟹道樂 晚餐",
+              "time": "16:30",
+              "note": "道頓堀1-6-18，建議提前預約！電話+81-6-6211-8975。大蟹招牌地標餐廳"
+            },
+            {
+              "type": "attraction",
+              "id": 7,
+              "name": "道頓堀水上觀光船",
+              "time": "19:00",
+              "note": "近距離欣賞格力高跑步人及蟹道樂霓虹燈招牌，下午光線最美"
+            },
+            {
+              "type": "food",
+              "id": "f4",
+              "name": "串カツだるま 宵夜",
+              "time": "21:00",
+              "note": "道頓堀店，炸串必試，記住不可雙蘸醬汁！"
+            },
+            {
+              "type": "attraction",
+              "id": 8,
+              "name": "WONDER CRUISE 夜遊",
+              "time": "21:30",
+              "note": "夜間道頓堀精緻遊船，17:00-21:30，需提前預訂座位（另收費）"
+            }
+          ]
+        },
+        "day2": {
+          "date": "2026-04-30",
+          "dayLabel": "第二天",
+          "title": "大阪城歷史探索・道頓堀夜遊",
+          "note": "住宿：Cross Hotel 大阪（第2晚）。上午遊覽大阪城週邊歷史文化景點，下午轉戰道頓堀享受大阪美食街魅力。",
+          "items": [
+            {
+              "type": "attraction",
+              "id": 17,
+              "name": "大阪城天守閣",
+              "time": "09:00",
+              "note": "大阪最著名地標！8樓展望台俯瞰全景，使用周遊卡免費，建議早到避開人潮"
+            },
+            {
+              "type": "attraction",
+              "id": 18,
+              "name": "大阪城西之丸庭園",
+              "time": "10:30",
+              "note": "春季垂枝櫻花地，300棵以上，使用周遊卡免費"
+            },
+            {
+              "type": "attraction",
+              "id": 21,
+              "name": "大阪城御座船",
+              "time": "11:30",
+              "note": "豐臣秀吉風格御座船遊護城河，感受戰國風情！使用周遊卡免費"
+            },
+            {
+              "type": "attraction",
+              "id": 25,
+              "name": "大阪歷史博物館",
+              "time": "13:00",
+              "note": "10樓展示從古代到近代大阪史，使用周遊卡免費"
+            },
+            {
+              "type": "attraction",
+              "id": 22,
+              "name": "大阪水上巴士 Aqua-Liner",
+              "time": "14:30",
+              "note": "連接大阪城至中之島，沿途欣賞城景，使用周遊卡免費"
+            },
+            {
+              "type": "shopping",
+              "id": "sc1",
+              "name": "心齋橋筋商店街",
+              "time": "16:00",
+              "note": "回程順路逛日本最長有蓋商店街，藥妝、服裝、手信齊全"
+            },
+            {
+              "type": "food",
+              "id": "f1",
+              "name": "章魚燒晚餐",
+              "time": "18:00",
+              "note": "道頓堀必試大阪靈魂美食！推薦赤鬼或道頓堀くくる"
+            },
+            {
+              "type": "shopping",
+              "id": "sc6",
+              "name": "驚安殿堂 道頓堀店",
+              "time": "19:30",
+              "note": "24小時營業！零食、藥妝、電器齊全，退稅方便"
+            },
+            {
+              "type": "attraction",
+              "id": 9,
+              "name": "上方浮世繪館",
+              "time": "20:30",
+              "note": "道頓堀旁的江戶浮世繪展館，可體驗版畫製作"
+            }
+          ]
+        },
+        "day3": {
+          "date": "2026-05-01",
+          "dayLabel": "第三天",
+          "title": "新世界・天王寺・四天王寺 全攻略",
+          "note": "Cross Hotel退房→轉住OMO7大阪（星野集團）5/1-5/4。全日集中遊覽新世界、天王寺及四天王寺地區。OMO7就在新世界腳下，下午可先check-in再繼續遊覽。",
+          "items": [
+            {
+              "type": "custom",
+              "id": "hotel_cross_out",
+              "name": "🏨 Cross Hotel 大阪 Check-out",
+              "lat": 34.6673,
+              "lng": 135.4963,
+              "time": "08:30",
+              "note": "退房寄存行李，乘地鐵前往四天王寺"
+            },
+            {
+              "type": "attraction",
+              "id": 16,
+              "name": "四天王寺",
+              "time": "09:00",
+              "note": "日本最古老寺院，早上參拜最莊嚴，庭園幽靜。中心伽藍+本坊庭園"
+            },
+            {
+              "type": "attraction",
+              "id": 10,
+              "name": "通天閣 一般展望台",
+              "time": "10:30",
+              "note": "大阪象徵！必摸比利肯神像腳底許願，使用周遊卡免費"
+            },
+            {
+              "type": "attraction",
+              "id": 11,
+              "name": "TOWER SLIDER（通天閣）",
+              "time": "11:30",
+              "note": "從高空滑下的超刺激體驗！身高120cm以上才可乘，需另購票"
+            },
+            {
+              "type": "food",
+              "id": "f4",
+              "name": "新世界炸串午餐",
+              "time": "12:00",
+              "note": "在新世界本家吃最道地炸串！多間老字號任選"
+            },
+            {
+              "type": "attraction",
+              "id": 15,
+              "name": "新世界喜劇小劇場（Comedy Yose）",
+              "time": "13:00",
+              "note": "體驗大阪道地落語相聲，即使聽不懂日文也超有趣！"
+            },
+            {
+              "type": "custom",
+              "id": "hotel_omo7_in",
+              "name": "🏨 OMO7大阪 星野集團 Check-in",
+              "lat": 34.6527,
+              "lng": 135.5064,
+              "time": "14:00",
+              "note": "已預訂 ✅ 住宿 5/1-5/4（3晚）。JR新今宮站步行1分鐘，新世界通天閣腳下。先放行李再繼續遊覽"
+            },
+            {
+              "type": "attraction",
+              "id": 13,
+              "name": "天王寺動物園",
+              "time": "14:30",
+              "note": "使用周遊卡免費！可見長頸鹿、河馬等，開放至17:00（16:00最後入場）"
+            },
+            {
+              "type": "attraction",
+              "id": 14,
+              "name": "慶澤園",
+              "time": "16:30",
+              "note": "明治時代傳統日本庭園，天王寺動物園旁，典雅池塘假山"
+            },
+            {
+              "type": "food",
+              "id": "f2",
+              "name": "大阪燒晚餐",
+              "time": "18:00",
+              "note": "新世界周邊大阪燒名店，鐵板燒製大阪靈魂料理"
+            }
+          ]
+        },
+        "day4": {
+          "date": "2026-05-02",
+          "dayLabel": "第四天",
+          "title": "天保山・海遊館 海洋奇觀之日",
+          "note": "住宿：OMO7大阪 星野集團（第2晚）。前往天保山港口區，全日體驗海洋主題。海遊館世界級水族館為當日主角，配合摩天輪、帆船觀光，感受大阪灣的壯麗。",
+          "items": [
+            {
+              "type": "attraction",
+              "id": 41,
+              "name": "大阪海遊館（Kaiyukan水族館）",
+              "time": "10:00",
+              "note": "建議提前購買e-ticket！太平洋大魚缸可見鯨鯊，全程約2-3小時"
+            },
+            {
+              "type": "attraction",
+              "id": 31,
+              "name": "LEGOLAND Discovery Center Osaka",
+              "time": "13:00",
+              "note": "樂高迷必去！需要網上預約，Tempozan Market Place內"
+            },
+            {
+              "type": "attraction",
+              "id": 27,
+              "name": "天保山大摩天輪",
+              "time": "14:30",
+              "note": "曾是世界最大摩天輪！透明車廂俯瞰大阪灣，使用周遊卡免費"
+            },
+            {
+              "type": "attraction",
+              "id": 28,
+              "name": "聖瑪麗亞號白天遊覽",
+              "time": "16:00",
+              "note": "仿哥倫布帆船！遊覽大阪港及海灣，使用周遊卡免費。每整點出發"
+            },
+            {
+              "type": "attraction",
+              "id": 32,
+              "name": "GLION MUSEUM（古董車博物館）",
+              "time": "17:30",
+              "note": "天保山區的精緻古董名車博物館，使用周遊卡免費"
+            },
+            {
+              "type": "food",
+              "id": "f10",
+              "name": "和牛燒肉晚餐",
+              "time": "19:00",
+              "note": "回新世界/難波享用和牛燒肉慶祝旅程過半！"
+            }
+          ]
+        },
+        "day5": {
+          "date": "2026-05-03",
+          "dayLabel": "第五天",
+          "title": "近江八幡一日遊・La Collina草莓之旅",
+          "note": "住宿：OMO7大阪 星野集團（第3晚 / 最後一晚）。Klook一日遊：從大阪出發前往滋賀縣近江八幡，體驗無限量草莓採摘及遊覽童話式La Collina農場建築。全程約11小時，請提前在Klook完成預約！",
+          "items": [
+            {
+              "type": "custom",
+              "id": "custom_lacollina",
+              "name": "近江八幡La Collina草莓無限食之旅",
+              "lat": 35.1316,
+              "lng": 136.098,
+              "time": "08:00",
+              "note": "在難波/梅田集合出發。Klook預約必備！全程約11小時"
+            }
+          ]
+        },
+        "day6": {
+          "date": "2026-05-04",
+          "dayLabel": "第六天",
+          "title": "りんくうOutlet購物・飛返香港",
+          "note": "OMO7大阪退房。前往關西機場旁りんくうPremium Outlets最後血拼，之後步行或接駁巴士到關西機場，乘HX619返港。",
+          "items": [
+            {
+              "type": "custom",
+              "id": "hotel_omo7_out",
+              "name": "🏨 OMO7大阪 星野集團 Check-out",
+              "lat": 34.6527,
+              "lng": 135.5064,
+              "time": "08:00",
+              "note": "退房取行李，乘南海電鐵前往りんくうタウン站（約45分鐘）"
+            },
+            {
+              "type": "transport",
+              "id": "namba-rinku",
+              "name": "新今宮→りんくうタウン 南海電鐵",
+              "time": "08:30",
+              "note": "南海本線空港急行約45分鐘，りんくうタウン站下車步行6分鐘到Outlet"
+            },
+            {
+              "type": "custom",
+              "id": "rinku_outlet",
+              "name": "🛍️ りんくうPremium Outlets",
+              "lat": 34.4127,
+              "lng": 135.2990,
+              "time": "09:30",
+              "note": "關西最大Outlet！約210間店舖，Nike、Adidas、Coach、GAP等國際品牌3-7折。建議11:30前完成購物"
+            },
+            {
+              "type": "food",
+              "id": "f13",
+              "name": "551蓬萊豬肉包 帶走",
+              "time": "11:30",
+              "note": "りんくう或關西機場內購買！現蒸最新鮮，帶走保存約4小時"
+            },
+            {
+              "type": "transport",
+              "id": "rinku-airport",
+              "name": "りんくうタウン→關西機場",
+              "time": "12:00",
+              "note": "南海電鐵1站到關西機場（約5分鐘），或免費接駁巴士。預留充裕時間辦登機"
+            },
+            {
+              "type": "transport",
+              "id": "flight-home",
+              "name": "HX619 大阪→香港",
+              "time": "17:00",
+              "note": "HX619 17:00起飛→20:20抵港。建議14:00前到機場辦理登機及安檢"
+            }
+          ]
+        }
+      }
+    },
+    "backup": {
+      "name": "備用行程（雨天）",
+      "desc": "下雨或惡劣天氣時的室內優先備用行程",
+      "days": {
+        "day1": {
+          "date": "2026-04-29",
+          "dayLabel": "第一天",
+          "title": "抵達・難波室內活動（雨天版）",
+          "note": "雨天版：主攻室內景點及有蓋商場。蟹道樂晚餐如常。",
+          "items": [
+            {
+              "type": "transport",
+              "id": "airport-namba",
+              "name": "關西機場→難波 南海Rapi:t",
+              "time": "14:30",
+              "note": "機場1F南海電鐵購票，約38分鐘抵達難波"
+            },
+            {
+              "type": "custom",
+              "id": "hotel_cross",
+              "name": "🏨 Cross Hotel 大阪 Check-in",
+              "lat": 34.6673,
+              "lng": 135.4963,
+              "time": "15:00",
+              "note": "已預訂 ✅ 住宿 4/29-5/1（2晚）。心齋橋站步行4分鐘 / 難波站步行8分鐘"
+            },
+            {
+              "type": "attraction",
+              "id": 9,
+              "name": "上方浮世繪館",
+              "time": "15:30",
+              "note": "全室內景點！欣賞江戶浮世繪，可體驗版畫製作"
+            },
+            {
+              "type": "shopping",
+              "id": "sc4",
+              "name": "心齋橋筋・難波有蓋商場",
+              "time": "16:30",
+              "note": "心齋橋筋完全有蓋，雨天逛街最佳，藥妝、時裝均有"
+            },
+            {
+              "type": "food",
+              "id": "f6",
+              "name": "蟹道樂 晚餐",
+              "time": "19:00",
+              "note": "道頓堀地標蟹料理，室內用餐，需提前預約"
+            },
+            {
+              "type": "food",
+              "id": "f2",
+              "name": "大阪燒ぼてぢゅう 宵夜",
+              "time": "21:00",
+              "note": "室內鐵板燒，難波大阪燒名店"
+            }
+          ]
+        },
+        "day2": {
+          "date": "2026-04-30",
+          "dayLabel": "第二天",
+          "title": "大阪城室內博物館・道頓堀有蓋商場（雨天版）",
+          "note": "住宿：Cross Hotel 大阪（第2晚）。雨天版：大阪城天守閣為室內展館，歷史博物館全室內，下午回道頓堀逛有蓋商場。",
+          "items": [
+            {
+              "type": "attraction",
+              "id": 25,
+              "name": "大阪歷史博物館（全室內）",
+              "time": "09:30",
+              "note": "10層樓大阪歷史！雨天首選，高層可欣賞大阪城"
+            },
+            {
+              "type": "attraction",
+              "id": 17,
+              "name": "大阪城天守閣（室內展館）",
+              "time": "11:00",
+              "note": "雨天仍可入場！天守閣8層全室內歷史博物館"
+            },
+            {
+              "type": "food",
+              "id": "f5",
+              "name": "壽司午餐",
+              "time": "13:00",
+              "note": "大阪城附近多間餐廳選擇"
+            },
+            {
+              "type": "attraction",
+              "id": 20,
+              "name": "海洋堂Figure Museum（全室內）",
+              "time": "14:00",
+              "note": "全室內手辦博物館，附贈限定手辦，下雨天超值之選"
+            },
+            {
+              "type": "shopping",
+              "id": "sc1",
+              "name": "心齋橋筋商店街（全有蓋）",
+              "time": "16:00",
+              "note": "心齋橋筋完全有蓋，雨天逛街最佳"
+            },
+            {
+              "type": "shopping",
+              "id": "sc6",
+              "name": "驚安殿堂 道頓堀店",
+              "time": "18:00",
+              "note": "室內購物，24小時營業"
+            },
+            {
+              "type": "food",
+              "id": "f1",
+              "name": "章魚燒晚餐",
+              "time": "19:00",
+              "note": "道頓堀有蓋騎樓下品嚐"
+            }
+          ]
+        },
+        "day3": {
+          "date": "2026-05-01",
+          "dayLabel": "第三天",
+          "title": "新世界・天王寺・四天王寺 室內版（雨天版）",
+          "note": "Cross Hotel退房→轉住OMO7大阪（星野集團）5/1-5/4。雨天版：集中室內或有蓋景點。",
+          "items": [
+            {
+              "type": "custom",
+              "id": "hotel_cross_out",
+              "name": "🏨 Cross Hotel 大阪 Check-out",
+              "lat": 34.6673,
+              "lng": 135.4963,
+              "time": "08:30",
+              "note": "退房寄存行李"
+            },
+            {
+              "type": "attraction",
+              "id": 16,
+              "name": "四天王寺（有蓋迴廊）",
+              "time": "09:00",
+              "note": "寺院中央伽藍有有蓋迴廊，雨天參拜亦不影響體驗"
+            },
+            {
+              "type": "attraction",
+              "id": 10,
+              "name": "通天閣展望台（全室內）",
+              "time": "10:30",
+              "note": "全室內景點，雨天更好！展望台可俯瞰新世界全景"
+            },
+            {
+              "type": "food",
+              "id": "f4",
+              "name": "新世界炸串",
+              "time": "12:00",
+              "note": "新世界本家炸串，店內享用"
+            },
+            {
+              "type": "attraction",
+              "id": 15,
+              "name": "新世界喜劇小劇場",
+              "time": "13:00",
+              "note": "全室內落語相聲，非常適合雨天！"
+            },
+            {
+              "type": "custom",
+              "id": "hotel_omo7_in",
+              "name": "🏨 OMO7大阪 星野集團 Check-in",
+              "lat": 34.6527,
+              "lng": 135.5064,
+              "time": "14:00",
+              "note": "已預訂 ✅ 住宿 5/1-5/4（3晚）。JR新今宮站步行1分鐘"
+            },
+            {
+              "type": "attraction",
+              "id": 13,
+              "name": "天王寺動物園（雨天亦可）",
+              "time": "14:30",
+              "note": "室內館在雨天仍可參觀"
+            },
+            {
+              "type": "shopping",
+              "id": "sc10",
+              "name": "天王寺MIO",
+              "time": "16:30",
+              "note": "天王寺站直達，全室內購物中心"
+            }
+          ]
+        },
+        "day4": {
+          "date": "2026-05-02",
+          "dayLabel": "第四天",
+          "title": "天保山全室內雨天攻略（海遊館・Lego）",
+          "note": "住宿：OMO7大阪 星野集團（第2晚）。雨天版天保山：海遊館及LEGOLAND均為全室內，是雨天的最完美選擇！",
+          "items": [
+            {
+              "type": "attraction",
+              "id": 41,
+              "name": "大阪海遊館（全室內水族館）",
+              "time": "10:00",
+              "note": "雨天最佳之選！全室內水族館，太平洋大魚缸鯨鯊壓場，建議提前購票"
+            },
+            {
+              "type": "attraction",
+              "id": 31,
+              "name": "LEGOLAND Discovery Center（全室內）",
+              "time": "13:00",
+              "note": "雨天室內親子樂園，需預約，海遊館票可享折扣"
+            },
+            {
+              "type": "attraction",
+              "id": 32,
+              "name": "GLION MUSEUM古董車（全室內）",
+              "time": "15:00",
+              "note": "全室內古董名車博物館，使用周遊卡免費，非常適合雨天"
+            },
+            {
+              "type": "food",
+              "id": "f10",
+              "name": "和牛燒肉晚餐",
+              "time": "19:00",
+              "note": "室內用餐，慶祝旅程過半"
+            }
+          ]
+        },
+        "day5": {
+          "date": "2026-05-03",
+          "dayLabel": "第五天",
+          "title": "近江八幡一日遊・La Collina（雨天亦可）",
+          "note": "住宿：OMO7大阪 星野集團（第3晚 / 最後一晚）。即使下雨，La Collina農場有蓋，一日遊如期出發！",
+          "items": [
+            {
+              "type": "custom",
+              "id": "custom_lacollina",
+              "name": "近江八幡La Collina草莓無限食之旅",
+              "lat": 35.1316,
+              "lng": 136.098,
+              "time": "08:00",
+              "note": "雨天亦可出發！La Collina農場有蓋，草莓採摘溫室進行。Klook預約必備！"
+            }
+          ]
+        },
+        "day6": {
+          "date": "2026-05-04",
+          "dayLabel": "第六天",
+          "title": "りんくうOutlet購物・返港（雨天版）",
+          "note": "OMO7大阪退房。雨天版：りんくうPremium Outlets有半蓋設計，雨天仍可購物。之後前往關西機場返港。",
+          "items": [
+            {
+              "type": "custom",
+              "id": "hotel_omo7_out",
+              "name": "🏨 OMO7大阪 星野集團 Check-out",
+              "lat": 34.6527,
+              "lng": 135.5064,
+              "time": "08:00",
+              "note": "退房取行李"
+            },
+            {
+              "type": "transport",
+              "id": "namba-rinku",
+              "name": "新今宮→りんくうタウン 南海電鐵",
+              "time": "08:30",
+              "note": "南海本線空港急行約45分鐘"
+            },
+            {
+              "type": "custom",
+              "id": "rinku_outlet",
+              "name": "🛍️ りんくうPremium Outlets",
+              "lat": 34.4127,
+              "lng": 135.2990,
+              "time": "09:30",
+              "note": "部分有蓋設計，雨天仍可購物。國際品牌3-7折"
+            },
+            {
+              "type": "food",
+              "id": "f13",
+              "name": "551蓬萊豬肉包 帶走",
+              "time": "11:30",
+              "note": "りんくう或關西機場內購買"
+            },
+            {
+              "type": "transport",
+              "id": "rinku-airport",
+              "name": "りんくうタウン→關西機場",
+              "time": "12:00",
+              "note": "南海電鐵1站到關西機場（約5分鐘）"
+            },
+            {
+              "type": "transport",
+              "id": "flight-home",
+              "name": "HX619 大阪→香港",
+              "time": "17:00",
+              "note": "HX619 17:00起飛→20:20抵港。建議14:00前到機場"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "days": {
+    "day1": {
+      "date": "2026-04-29",
+      "dayLabel": "第一天",
+      "title": "抵達・道頓堀・難波美食之夜",
+      "note": "下午抵達關西機場，乘南海Rapi:t到難波。先遊道頓堀水上觀光船感受大阪夜色，晚上享用道地蟹道樂盛宴，飯後乘WONDER CRUISE夜遊。",
+      "items": [
+        {
+          "type": "transport",
+          "id": "airport-namba",
+          "name": "關西機場→難波 南海Rapi:t",
+          "time": "14:30",
+          "note": "機場1F南海電鐵售票購票或出示電子票，約38分鐘抵達難波"
+        },
+        {
+          "type": "custom",
+          "id": "hotel_cross",
+          "name": "🏨 Cross Hotel 大阪 Check-in",
+          "lat": 34.66992763831978,
+          "lng": 135.50072918683398,
+          "time": "15:00",
+          "note": "已預訂 ✅ 住宿 4/29-5/1（2晚）。心齋橋站步行4分鐘 / 難波站步行8分鐘"
+        },
+        {
+          "type": "food",
+          "id": "f6",
+          "name": "蟹道樂 晚餐",
+          "time": "16:30",
+          "note": "道頓堀1-6-18，建議提前預約！電話+81-6-6211-8975。大蟹招牌地標餐廳"
+        },
+        {
+          "type": "attraction",
+          "id": 7,
+          "name": "道頓堀水上觀光船",
+          "time": "19:00",
+          "note": "近距離欣賞格力高跑步人及蟹道樂霓虹燈招牌，下午光線最美"
+        },
+        {
+          "type": "food",
+          "id": "f4",
+          "name": "串カツだるま 宵夜",
+          "time": "21:00",
+          "note": "道頓堀店，炸串必試，記住不可雙蘸醬汁！"
+        },
+        {
+          "type": "attraction",
+          "id": 8,
+          "name": "WONDER CRUISE 夜遊",
+          "time": "21:30",
+          "note": "夜間道頓堀精緻遊船，17:00-21:30，需提前預訂座位（另收費）"
+        }
+      ]
+    },
+    "day2": {
+      "date": "2026-04-30",
+      "dayLabel": "第二天",
+      "title": "大阪城歷史探索・道頓堀夜遊",
+      "note": "住宿：Cross Hotel 大阪（第2晚）。上午遊覽大阪城週邊歷史文化景點，下午轉戰道頓堀享受大阪美食街魅力。",
+      "items": [
+        {
+          "type": "attraction",
+          "id": 17,
+          "name": "大阪城天守閣",
+          "time": "09:00",
+          "note": "大阪最著名地標！8樓展望台俯瞰全景，使用周遊卡免費，建議早到避開人潮"
+        },
+        {
+          "type": "attraction",
+          "id": 18,
+          "name": "大阪城西之丸庭園",
+          "time": "10:30",
+          "note": "春季垂枝櫻花地，300棵以上，使用周遊卡免費"
+        },
+        {
+          "type": "attraction",
+          "id": 21,
+          "name": "大阪城御座船",
+          "time": "11:30",
+          "note": "豐臣秀吉風格御座船遊護城河，感受戰國風情！使用周遊卡免費"
+        },
+        {
+          "type": "attraction",
+          "id": 25,
+          "name": "大阪歷史博物館",
+          "time": "13:00",
+          "note": "10樓展示從古代到近代大阪史，使用周遊卡免費"
+        },
+        {
+          "type": "attraction",
+          "id": 22,
+          "name": "大阪水上巴士 Aqua-Liner",
+          "time": "14:30",
+          "note": "連接大阪城至中之島，沿途欣賞城景，使用周遊卡免費"
+        },
+        {
+          "type": "shopping",
+          "id": "sc1",
+          "name": "心齋橋筋商店街",
+          "time": "16:00",
+          "note": "回程順路逛日本最長有蓋商店街，藥妝、服裝、手信齊全"
+        },
+        {
+          "type": "food",
+          "id": "f1",
+          "name": "章魚燒晚餐",
+          "time": "18:00",
+          "note": "道頓堀必試大阪靈魂美食！推薦赤鬼或道頓堀くくる"
+        },
+        {
+          "type": "shopping",
+          "id": "sc6",
+          "name": "驚安殿堂 道頓堀店",
+          "time": "19:30",
+          "note": "24小時營業！零食、藥妝、電器齊全，退稅方便"
+        },
+        {
+          "type": "attraction",
+          "id": 9,
+          "name": "上方浮世繪館",
+          "time": "20:30",
+          "note": "道頓堀旁的江戶浮世繪展館，可體驗版畫製作"
+        }
+      ]
+    },
+    "day3": {
+      "date": "2026-05-01",
+      "dayLabel": "第三天",
+      "title": "新世界・天王寺・四天王寺 全攻略",
+      "note": "Cross Hotel退房→轉住OMO7大阪（星野集團）5/1-5/4。全日集中遊覽新世界、天王寺及四天王寺地區。OMO7就在新世界腳下，下午可先check-in再繼續遊覽。",
+      "items": [
+        {
+          "type": "custom",
+          "id": "hotel_cross_out",
+          "name": "🏨 Cross Hotel 大阪 Check-out",
+          "lat": 34.6673,
+          "lng": 135.4963,
+          "time": "08:30",
+          "note": "退房寄存行李，乘地鐵前往四天王寺"
+        },
+        {
+          "type": "attraction",
+          "id": 16,
+          "name": "四天王寺",
+          "time": "09:00",
+          "note": "日本最古老寺院，早上參拜最莊嚴，庭園幽靜。中心伽藍+本坊庭園"
+        },
+        {
+          "type": "attraction",
+          "id": 10,
+          "name": "通天閣 一般展望台",
+          "time": "10:30",
+          "note": "大阪象徵！必摸比利肯神像腳底許願，使用周遊卡免費"
+        },
+        {
+          "type": "attraction",
+          "id": 11,
+          "name": "TOWER SLIDER（通天閣）",
+          "time": "11:30",
+          "note": "從高空滑下的超刺激體驗！身高120cm以上才可乘，需另購票"
+        },
+        {
+          "type": "food",
+          "id": "f4",
+          "name": "新世界炸串午餐",
+          "time": "12:00",
+          "note": "在新世界本家吃最道地炸串！多間老字號任選"
+        },
+        {
+          "type": "attraction",
+          "id": 15,
+          "name": "新世界喜劇小劇場（Comedy Yose）",
+          "time": "13:00",
+          "note": "體驗大阪道地落語相聲，即使聽不懂日文也超有趣！"
+        },
+        {
+          "type": "custom",
+          "id": "hotel_omo7_in",
+          "name": "🏨 OMO7大阪 星野集團 Check-in",
+          "lat": 34.6527,
+          "lng": 135.5064,
+          "time": "14:00",
+          "note": "已預訂 ✅ 住宿 5/1-5/4（3晚）。JR新今宮站步行1分鐘，新世界通天閣腳下。先放行李再繼續遊覽"
+        },
+        {
+          "type": "attraction",
+          "id": 13,
+          "name": "天王寺動物園",
+          "time": "14:30",
+          "note": "使用周遊卡免費！可見長頸鹿、河馬等，開放至17:00（16:00最後入場）"
+        },
+        {
+          "type": "attraction",
+          "id": 14,
+          "name": "慶澤園",
+          "time": "16:30",
+          "note": "明治時代傳統日本庭園，天王寺動物園旁，典雅池塘假山"
+        },
+        {
+          "type": "food",
+          "id": "f2",
+          "name": "大阪燒晚餐",
+          "time": "18:00",
+          "note": "新世界周邊大阪燒名店，鐵板燒製大阪靈魂料理"
+        }
+      ]
+    },
+    "day4": {
+      "date": "2026-05-02",
+      "dayLabel": "第四天",
+      "title": "天保山・海遊館 海洋奇觀之日",
+      "note": "住宿：OMO7大阪 星野集團（第2晚）。前往天保山港口區，全日體驗海洋主題。海遊館世界級水族館為當日主角，配合摩天輪、帆船觀光，感受大阪灣的壯麗。",
+      "items": [
+        {
+          "type": "attraction",
+          "id": 41,
+          "name": "大阪海遊館（Kaiyukan水族館）",
+          "time": "10:00",
+          "note": "建議提前購買e-ticket！太平洋大魚缸可見鯨鯊，全程約2-3小時"
+        },
+        {
+          "type": "attraction",
+          "id": 31,
+          "name": "LEGOLAND Discovery Center Osaka",
+          "time": "13:00",
+          "note": "樂高迷必去！需要網上預約，Tempozan Market Place內"
+        },
+        {
+          "type": "attraction",
+          "id": 27,
+          "name": "天保山大摩天輪",
+          "time": "14:30",
+          "note": "曾是世界最大摩天輪！透明車廂俯瞰大阪灣，使用周遊卡免費"
+        },
+        {
+          "type": "attraction",
+          "id": 28,
+          "name": "聖瑪麗亞號白天遊覽",
+          "time": "16:00",
+          "note": "仿哥倫布帆船！遊覽大阪港及海灣，使用周遊卡免費。每整點出發"
+        },
+        {
+          "type": "attraction",
+          "id": 32,
+          "name": "GLION MUSEUM（古董車博物館）",
+          "time": "17:30",
+          "note": "天保山區的精緻古董名車博物館，使用周遊卡免費"
+        },
+        {
+          "type": "food",
+          "id": "f10",
+          "name": "和牛燒肉晚餐",
+          "time": "19:00",
+          "note": "回新世界/難波享用和牛燒肉慶祝旅程過半！"
+        }
+      ]
+    },
+    "day5": {
+      "date": "2026-05-03",
+      "dayLabel": "第五天",
+      "title": "近江八幡一日遊・La Collina草莓之旅",
+      "note": "住宿：OMO7大阪 星野集團（第3晚 / 最後一晚）。Klook一日遊：從大阪出發前往滋賀縣近江八幡，體驗無限量草莓採摘及遊覽童話式La Collina農場建築。全程約11小時，請提前在Klook完成預約！",
+      "items": [
+        {
+          "type": "custom",
+          "id": "custom_lacollina",
+          "name": "近江八幡La Collina草莓無限食之旅",
+          "lat": 35.1316,
+          "lng": 136.098,
+          "time": "08:00",
+          "note": "在難波/梅田集合出發。Klook預約必備！全程約11小時"
+        }
+      ]
+    },
+    "day6": {
+      "date": "2026-05-04",
+      "dayLabel": "第六天",
+      "title": "りんくうOutlet購物・飛返香港",
+      "note": "OMO7大阪退房。前往關西機場旁りんくうPremium Outlets最後血拼，之後步行或接駁巴士到關西機場，乘HX619返港。",
+      "items": [
+        {
+          "type": "custom",
+          "id": "hotel_omo7_out",
+          "name": "🏨 OMO7大阪 星野集團 Check-out",
+          "lat": 34.6527,
+          "lng": 135.5064,
+          "time": "08:00",
+          "note": "退房取行李，乘南海電鐵前往りんくうタウン站（約45分鐘）"
+        },
+        {
+          "type": "transport",
+          "id": "namba-rinku",
+          "name": "新今宮→りんくうタウン 南海電鐵",
+          "time": "08:30",
+          "note": "南海本線空港急行約45分鐘，りんくうタウン站下車步行6分鐘到Outlet"
+        },
+        {
+          "type": "custom",
+          "id": "rinku_outlet",
+          "name": "🛍️ りんくうPremium Outlets",
+          "lat": 34.4127,
+          "lng": 135.2990,
+          "time": "09:30",
+          "note": "關西最大Outlet！約210間店舖，Nike、Adidas、Coach、GAP等國際品牌3-7折。建議11:30前完成購物"
+        },
+        {
+          "type": "food",
+          "id": "f13",
+          "name": "551蓬萊豬肉包 帶走",
+          "time": "11:30",
+          "note": "りんくう或關西機場內購買！現蒸最新鮮，帶走保存約4小時"
+        },
+        {
+          "type": "transport",
+          "id": "rinku-airport",
+          "name": "りんくうタウン→關西機場",
+          "time": "12:00",
+          "note": "南海電鐵1站到關西機場（約5分鐘），或免費接駁巴士。預留充裕時間辦登機"
+        },
+        {
+          "type": "transport",
+          "id": "flight-home",
+          "name": "HX619 大阪→香港",
+          "time": "17:00",
+          "note": "HX619 17:00起飛→20:20抵港。建議14:00前到機場辦理登機及安檢"
+        }
+      ]
+    }
+  }
+}
