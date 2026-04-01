@@ -1,0 +1,122 @@
+[
+  {
+    "id": "r1",
+    "category": "證件・票務",
+    "priority": "high",
+    "title": "護照效期確認",
+    "content": "出發日（4/29）距護照到期需有6個月以上餘額。提前翻查護照，如需續期請盡快辦理。",
+    "done": false
+  },
+  {
+    "id": "r2",
+    "category": "證件・票務",
+    "priority": "high",
+    "title": "電子機票截圖保存",
+    "content": "截圖保存 HX614（出發）及 HX619（回程）登機証。機票號：NE2603042020388495。出發 08:50 HKG → 14:00 KIX；回程 17:00 KIX → 20:20 HKG。",
+    "done": false
+  },
+  {
+    "id": "r3",
+    "category": "證件・票務",
+    "priority": "medium",
+    "title": "大阪周遊卡購買",
+    "content": "建議在關西機場觀光服務中心購買。1日券¥2,800/约HK$148；2日券¥3,600/约HK$190。包含無限次地鐵乘搭 + 40個景點免費入場。",
+    "done": false
+  },
+  {
+    "id": "r4",
+    "category": "證件・票務",
+    "priority": "high",
+    "title": "Klook La Collina行程預訂",
+    "content": "第4天（5/2）近江八幡一日遊必須提前在Klook完成預訂！春季草莓季非常搶手，建議出發前2~3週完成預訂。費用約HK$480-680/人。",
+    "done": false
+  },
+  {
+    "id": "r5",
+    "category": "證件・票務",
+    "priority": "medium",
+    "title": "海遊館 e-Ticket預購",
+    "content": "第5天（5/3）海遊館建議提前在官網購買電子票（https://www.kaiyukan.com/），旺季假日可能需預約入場時間，避免現場排隊。成人¥2,700/约HK$143。",
+    "done": false
+  },
+  {
+    "id": "r6",
+    "category": "餐飲預訂",
+    "priority": "high",
+    "title": "蟹道樂訂座",
+    "content": "道頓堀本店建議提早1週以上訂座！官方電話：+81-6-6211-8975。地址：大阪市中央区道頓堀1-6-18。人均¥5,000-15,000起。",
+    "done": false
+  },
+  {
+    "id": "r7",
+    "category": "現金・金融",
+    "priority": "high",
+    "title": "日圓現金準備",
+    "content": "建議攜帶至少¥80,000-100,000現金。新世界炸串小攤、黑門市場及部分小餐廳只收現金。機場及銀行均可換匯，匯率差異較大，建議在香港出發前先換好。",
+    "done": false
+  },
+  {
+    "id": "r8",
+    "category": "電話・通訊",
+    "priority": "high",
+    "title": "日本SIM卡 / eSIM",
+    "content": "出發前購買日本eSIM或在KIX機場購買日本SIM卡（推薦IIJmio、Ubigi或Airalo eSIM）。確保手機支援eSIM或已解鎖。",
+    "done": false
+  },
+  {
+    "id": "r9",
+    "category": "行李・裝備",
+    "priority": "medium",
+    "title": "行李重量確認",
+    "content": "香港航空（HX）：手提行李限7kg，托運行李23kg/件。出發前稱重行李，特別是回程購物後。超重費用昂貴，建議帶可收折環保袋備用。",
+    "done": false
+  },
+  {
+    "id": "r10",
+    "category": "行李・裝備",
+    "priority": "medium",
+    "title": "天氣裝備準備",
+    "content": "4月下旬至5月大阪氣溫約18-25°C，早晚稍涼。5月有時有陣雨（梅雨前奏），必備：薄外套、摺疊雨傘。舒適步行鞋必備（每天步行量巨大）。",
+    "done": false
+  },
+  {
+    "id": "r11",
+    "category": "保險・安全",
+    "priority": "high",
+    "title": "旅遊保險",
+    "content": "確保旅遊保險已購買，並包含：醫療保障、行程改變賠償、行李遺失賠償。保留保險公司緊急聯絡電話。",
+    "done": false
+  },
+  {
+    "id": "r12",
+    "category": "保險・安全",
+    "priority": "medium",
+    "title": "日本緊急聯絡號碼",
+    "content": "警察：110 | 消防/救護：119 | 旅遊諮詢（英語）：06-6282-5900 | 香港入境事務處緊急求助：+852-1823 | 航空公司緊急：HK Express +852-3902-0888",
+    "done": false
+  },
+  {
+    "id": "r13",
+    "category": "景點・注意",
+    "priority": "medium",
+    "title": "休息日確認",
+    "content": "天王寺動物園：週一休息（5/3 週日 OK）。大阪城西之丸庭園：週一休息。大阪歷史博物館：週二休息。國立國際美術館：週一休息（5/4 週一 注意！）。慶澤園：週一休息。",
+    "done": false
+  },
+  {
+    "id": "r14",
+    "category": "景點・注意",
+    "priority": "low",
+    "title": "HEP FIVE 摩天輪",
+    "content": "HEP FIVE摩天輪目前翻新中，預計2026年4月下旬後重開。第6天行程前請再確認是否已恢復運作。",
+    "done": false
+  },
+  {
+    "id": "r15",
+    "category": "日本禮儀",
+    "priority": "low",
+    "title": "日本基本禮儀",
+    "content": "① 地鐵內靜音手機、勿飲食；② 走路靠左（escalator靠左站）；③ 垃圾帶回酒店丟棄（路上垃圾桶很少）；④ 進和式房間需脫鞋；⑤ 炸串不可雙蘸醬汁！",
+    "done": false
+  }
+]

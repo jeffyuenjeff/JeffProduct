@@ -1,0 +1,128 @@
+{
+  "pins": [
+    {
+      "id": "loc_1774079232305",
+      "category": "restaurant",
+      "name": "蟹道楽",
+      "lat": 34.6687924,
+      "lng": 135.5031613,
+      "price": "",
+      "note": "",
+      "visible": true
+    },
+    {
+      "id": "loc_1774080175334",
+      "category": "attraction",
+      "name": "固力果",
+      "lat": 34.668926,
+      "lng": 135.5010546,
+      "price": "",
+      "note": "",
+      "visible": true
+    },
+    {
+      "id": "loc_1774080298737",
+      "category": "transport",
+      "name": "難波站",
+      "lat": 34.6671691,
+      "lng": 135.4977727,
+      "price": "",
+      "note": "",
+      "visible": true
+    },
+    {
+      "id": "loc_1774080553564",
+      "category": "hotel",
+      "name": "CROSS",
+      "lat": 34.6697053,
+      "lng": 135.5008186,
+      "price": "1600",
+      "note": "",
+      "visible": true,
+      "link": "https://hk.trip.com/hotels/detail/?cityEnName=Osaka&cityId=219&hotelId=688204&checkIn=2026-04-29&checkOut=2026-05-01&adult=2&children=1&crn=1&ages=2&curr=HKD&barcurr=HKD&hoteluniquekey=H4sIAAAAAAAA_-NqY-FilWBSYmSS-sPMcfTNijY2IUYjg5uCFo9LHNe5P6wSaZjo4Floy3V9McNUhwCeQgYw-GA_g_FMg9YKRsaNjCIgZSw5DjsYmU4w_uBewHTn9DXtUyxsHJ-OMUqwXGL5yhRdrZSdWqlkZaKjVJJZkpOqZKX0bE7v0-6ZLzbtVtJRSkktTgYKAVmJufmleSVAtqGRuZ6RJVCkJLHCM0XJylxHKTkxJ7k0J7EkNaSyAGiCmY5SZrFzSVFmQVBqbmZJSSpQVVpiTnEqSDwotRgokwwWVPIDGlMEFcjMz4NoN0ARC0vMKU2FOAFooVsq1A7jWh1Mlz9dNO9pw57nK1qJc7kJtV1uSIzLDWtjH7EwRcd-YmH4xcLCoSzB0sTK0MXKMImVjWPjSk4Jll2sfIEhwYauRrqGuk5AbCilaGhgYGBkampkrmuQaGmRZGqSrGtiaWRhYKRrYmBuaG5ppLFiw9SGi8ZGsqcYpQzNTQwMgYpNDCwtLPSSTMySEg0jnXLy8oI8GIPYjCyNTd1comy4mL0CIgW3_nq1ykF3mb0Us4e3i2LWwe59TSZv7LVAcoYwucDPTG8WB4cfsI-EySexVmXoenhnfBYpYGxgZOpi5BZg9GCMYKwA8hhXMfJwsQLda2AowCTFyLSBkXEH438YYHzFCLIJAMV0txPbAgAA&masterhotelid_tracelogid=100025527-0a98b54c-492802-4071792&detailFilters=17%7C1%7E17%7E1*31%7C688204%7E31%7E688204*80%7C2%7C0%7E80%7E2*29%7C1%7E29%7E1%7C2*29%7C2%7C2%7E29%7E2%7C2&display=incavg&subStamp=546&isCT=true&isFlexible=F&locale=zh-HK"
+    },
+    {
+      "id": "loc_1774087000362",
+      "category": "attraction",
+      "name": "法善寺橫丁",
+      "lat": 34.66813392942556,
+      "lng": 135.50247832886413,
+      "price": "",
+      "note": "",
+      "visible": true
+    },
+    {
+      "id": "loc_1774088421982",
+      "category": "transport",
+      "name": "動物園前",
+      "lat": 34.64907675105816,
+      "lng": 135.5034960783992,
+      "price": "",
+      "note": "",
+      "visible": true
+    },
+    {
+      "id": "loc_1774089697649",
+      "category": "hotel",
+      "name": "近鐵FOURZ",
+      "lat": 34.66801627523569,
+      "lng": 135.49932163044974,
+      "price": "850",
+      "note": "",
+      "visible": true,
+      "link": "https://hk.trip.com/hotels/detail/?cityEnName=Osaka&cityId=219&hotelId=88588064&checkIn=2026-04-29&checkOut=2026-05-01&adult=2&children=1&crn=1&ages=2&curr=HKD&barcurr=HKD&fgt=1&mincurr=HKD&minprice=1070.04&hoteluniquekey=H4sIAAAAAAAA_-Py4WKSYBJi4mCUcuKY8vvdRLYZjAv-zdNawci4g5HpIuM694dVIml9Dg8ZY_oPfdXYMcFhAQvTKhYejlv8gvKtrwN33Et0WMh6fXGBLZd3mYMUj2-qc15GiklVcFSlqwKLxseXP8-yeTAGsZkDgbNrlAwXs1dApODWX69WOegus5di9vB2Ucw62L2vyeSNfRJrap6uh3fGOZEuRiYPxlWM7FzMBkaGAkyfGPmQzY03nMTEaAgAtqzfaroAAAA&masterhotelid_tracelogid=100051355-0a9a3564-492802-58923-metaRoom&detailFilters=17%7C1%7E17%7E1*80%7C2%7C0%7E80%7E2*29%7C1%7E29%7E1%7C2&hotelType=meta&display=incavg&subStamp=1720&isCT=true&isFlexible=F&roomkey=1723145733__0_0_021_2_&roomToken=YGVPRM-Z-1&msr=%5B%7B%22roomId%22%3A1723145733%2C%22ratePlanId%22%3A%22%22%2C%22shadowId%22%3A0%2C%22rateID%22%3A%22021%22%2C%22adult%22%3A2%2C%22childAgeList%22%3A%5B%5D%2C%22xPkgToken%22%3A%22%22%7D%5D&trip_sub1=23_03_2026_1_mapresults_88588064_HK_desktop_selected_21339891274_9159953429_1_0-LANG_HK_EN_Q_T-landing&hasAidInUrl=true&mproom=1648082324&locale=zh-HK"
+    },
+    {
+      "id": "loc_1774090461118",
+      "category": "shopping",
+      "name": "心齋橋筋商店街",
+      "lat": 34.67100875571542,
+      "lng": 135.50143986928597,
+      "price": "",
+      "note": "",
+      "link": "https://www.shinsaibashi.or.jp/map/?lang=zh-CN",
+      "visible": true
+    },
+    {
+      "id": "loc_1774105830492",
+      "category": "hotel",
+      "name": "相鐵FRESA INN",
+      "lat": 34.664966034789984,
+      "lng": 135.49931710651435,
+      "price": "780",
+      "note": "",
+      "link": "https://hk.trip.com/hotels/detail/?cityEnName=Osaka&cityId=219&hotelId=35536156&checkIn=2026-04-29&checkOut=2026-05-01&adult=2&children=0&crn=1&ages=&curr=HKD&barcurr=HKD&fgt=1&mincurr=HKD&minprice=1648.28&hoteluniquekey=H4sIAAAAAAAA_-O6xMTFJMEkdZqJY8-DC6fZhBgNLH4LOoqsc39Y5dDk4LlDrvV1oMAUhwCeQgYQ6GhxaGR8EwgUZm5wmME459cPgRWMjBsZbbmuLy6wjXXYwch0gvE26wKm1iuPLU6xsHI8TZdgucSymzG6Wik7tVLJykRHqSSzJCdVyUrp6aJ5Txv2PF_RqqSjlJJanAwUArISc_NL80qAbENjIz0LU6BISWKFZwpYZ3JiTnJpTmJJakhlAdAEMx2lzGLnkqLMgqDU3MySklSgqrTEnOJUkHhQajFQJhksqOQHNKYIKpCZnwfRbogiFpaYU5oKcQLQQrdUqB2GtbGPWJiiYz-xMPxiYeNYt4hJgqWJlaGLlWESKxvH3a8cEiy7WLmCfQ28onx0o3QNL7Ce45BSMDQwMDAyNTUy1zVItEw0MzSw1DWxNLIwMNe1MLI0NLLUmPPwWPtFYyPZU4xShuYmBoZAtSYGlhYWekkmZkmJhpFOOXl5QR5MQWwuToaOpkZRNlzMXgGRglt_vVrloLvMXorZw9tFMetg974mkzf2WiA5Q5hc4GemN4uDww_YR8Lkk1irMnQ9vDM-ixQwNjAydTFyCzB6MEYwVgB5jKsY2bmYDYwMBZg2MDLuYPwPA4yvGEGWAAD9r98NIQIAAA&masterhotelid_tracelogid=100025527-0a9a6109-492807-829129&detailFilters=17%7C1%7E17%7E1*80%7C2%7C0%7E80%7E2*29%7C1%7E29%7E1%7C2&hotelType=normal&display=incavg&subStamp=663&isCT=true&isFlexible=F&locale=zh-HK",
+      "visible": true
+    },
+    {
+      "id": "loc_1774107948438",
+      "category": "hotel",
+      "name": "難波船舶旅館",
+      "lat": 34.66883929185937,
+      "lng": 135.49955047558478,
+      "price": "719",
+      "note": "",
+      "link": "https://www.agoda.com/zh-hk/vessel-inn-namba-h15190059/hotel/osaka-jp.html?countryId=3&finalPriceView=1&isShowMobileAppPrice=false&cid=1833981&numberOfBedrooms=&familyMode=false&adults=2&children=0&rooms=1&maxRooms=0&checkIn=2026-04-29&isCalendarCallout=false&childAges=&numberOfGuest=0&missingChildAges=false&travellerType=1&showReviewSubmissionEntry=false&currencyCode=HKD&isFreeOccSearch=false&tspTypes=1%2C8&los=2&searchrequestid=7791702e-4672-4c04-a2bc-f647e98a84cb&ds=yg%2BUjz46WukGtxdV",
+      "visible": true
+    },
+    {
+      "id": "loc_1774110167791",
+      "category": "hotel",
+      "name": "大阪道頓堀日和麗酒店福萊克斯",
+      "lat": 34.66928633001705,
+      "lng": 135.4987931081981,
+      "price": "750",
+      "note": "",
+      "link": "https://www.agoda.com/zh-hk/joytel-hotel-namba-dotonbori/hotel/osaka-jp.html?countryId=3&finalPriceView=1&isShowMobileAppPrice=false&cid=1917614&numberOfBedrooms=&familyMode=false&adults=2&children=0&rooms=1&maxRooms=0&checkIn=2026-04-29&isCalendarCallout=false&childAges=&numberOfGuest=0&missingChildAges=false&travellerType=1&showReviewSubmissionEntry=false&currencyCode=HKD&isFreeOccSearch=false&los=2&searchrequestid=6824ca79-62bd-4217-80ce-fa2eb969ab66",
+      "visible": true
+    }
+  ],
+  "catVisibility": {
+    "restaurant": true,
+    "transport": true
+  },
+  "dayOverlayState": {},
+  "trainOverlayState": {
+    "0": false
+  }
+}
