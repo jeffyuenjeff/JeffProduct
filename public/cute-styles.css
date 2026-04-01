@@ -902,21 +902,46 @@ body.cute-theme .card {
 
 /* ======= RESPONSIVE ADJUSTMENTS ======= */
 @media (max-width: 768px) {
+  /* ── Shrink header + nav for mobile ── */
+  body.cute-theme {
+    --hdr-h: 56px;
+    --nav-h: 44px;
+  }
+  body.cute-theme .app-header {
+    height: var(--hdr-h);
+    background-position: center 35%;
+  }
+  body.cute-theme .header-inner {
+    height: var(--hdr-h);
+    padding: 0 12px;
+  }
+  body.cute-theme .tab-nav {
+    height: var(--nav-h);
+    padding: 0 8px;
+  }
+  /* ── Safe-area for notched phones ── */
+  body.cute-theme .app-main {
+    bottom: env(safe-area-inset-bottom, 0px);
+  }
   body.cute-theme .cute-trip-summary {
-    padding: 6px 10px;
-    gap: 8px;
+    padding: 4px 10px;
+    gap: 6px;
     flex-wrap: wrap;
   }
   body.cute-theme .cts-item {
     flex: 1 1 45%;
-    min-width: 90px;
+    min-width: 80px;
   }
   body.cute-theme .cts-icon {
-    width: 26px; height: 26px; font-size: 11px;
+    width: 22px; height: 22px; font-size: 10px;
   }
-  body.cute-theme .brand-title { font-size: 16px; }
+  body.cute-theme .cts-text .cts-label { font-size: 9px; }
+  body.cute-theme .cts-text .cts-value { font-size: 11px; }
+  body.cute-theme .brand-title { font-size: 15px; }
+  body.cute-theme .brand-sub { display: none; }
   body.cute-theme .tab-btn span { display: none; }
-  body.cute-theme .tab-btn { padding: 10px 12px; }
+  body.cute-theme .tab-btn { padding: 8px 10px; }
+  body.cute-theme .tab-btn i { font-size: 15px; }
 
   /* ── Cute planner: vertical sidebar → compact horizontal strip ── */
   body.cute-theme .planner-layout {
@@ -928,19 +953,19 @@ body.cute-theme .card {
     min-width: 100% !important;
     max-width: 100% !important;
     height: auto !important;
-    max-height: none !important;
+    max-height: 50px !important;
     flex-direction: row;
     flex-shrink: 0;
     border-right: none;
     border-bottom: 1px solid var(--border);
-    overflow: visible;
+    overflow: hidden;
     background: var(--surface) !important;
     position: relative !important;
   }
   body.cute-theme .planner-sidebar .day-tabs {
     flex-direction: row !important;
-    padding: 6px 8px !important;
-    gap: 5px !important;
+    padding: 5px 8px !important;
+    gap: 4px !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
     flex-wrap: nowrap !important;
@@ -954,23 +979,23 @@ body.cute-theme .card {
     flex-direction: row !important;
     width: auto !important;
     min-width: auto !important;
-    padding: 7px 14px !important;
-    gap: 5px !important;
-    border-radius: 20px !important;
+    padding: 5px 12px !important;
+    gap: 4px !important;
+    border-radius: 18px !important;
     border-width: 2px !important;
     flex-shrink: 0;
     align-items: center !important;
     justify-content: center !important;
   }
   body.cute-theme .day-tab .dt-num {
-    font-size: 15px !important;
+    font-size: 13px !important;
     line-height: 1 !important;
   }
   body.cute-theme .day-tab .dt-label {
     display: none !important;
   }
   body.cute-theme .day-tab .dt-date {
-    font-size: 11px !important;
+    font-size: 10px !important;
     font-weight: 600 !important;
     color: var(--text2) !important;
   }
@@ -979,13 +1004,14 @@ body.cute-theme .card {
   }
   /* Summary tab compact */
   body.cute-theme .day-tab.cute-summary-tab .dt-num {
-    font-size: 14px !important;
+    font-size: 12px !important;
   }
 
   /* ── Core area takes all remaining space ── */
   body.cute-theme .cute-core-area {
-    flex: 1 !important;
+    flex: 1 1 0% !important;
     min-height: 0 !important;
+    max-height: none !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch;
   }
@@ -1069,18 +1095,46 @@ body.cute-theme .card {
 }
 
 @media (max-width: 480px) {
+  body.cute-theme {
+    --hdr-h: 48px;
+    --nav-h: 40px;
+  }
+  body.cute-theme .app-header { height: var(--hdr-h); }
+  body.cute-theme .header-inner { height: var(--hdr-h); padding: 0 8px; }
+  body.cute-theme .brand-icon { font-size: 20px; }
+  body.cute-theme .brand-title { font-size: 13px; }
+  body.cute-theme .tab-nav { height: var(--nav-h); }
+  body.cute-theme .tab-btn { padding: 6px 8px; }
+  body.cute-theme .tab-btn i { font-size: 14px; }
   body.cute-theme .cts-item { flex: 1 1 100%; }
   body.cute-theme .cute-trip-summary { display: none !important; }
+  body.cute-theme .planner-sidebar { max-height: 44px !important; }
+  body.cute-theme .planner-sidebar .day-tabs { padding: 4px 6px !important; gap: 3px !important; }
+  body.cute-theme .day-tab { padding: 4px 8px !important; border-radius: 14px !important; }
+  body.cute-theme .day-tab .dt-num { font-size: 12px !important; }
+  body.cute-theme .day-tab .dt-date { display: none !important; }
   body.cute-theme .cute-tl-header {
-    flex-direction: column; align-items: flex-start; gap: 6px; padding: 8px 12px;
+    flex-direction: row; align-items: center; gap: 8px; padding: 6px 10px;
   }
-  body.cute-theme .cute-tl-title { font-size: 15px; }
+  body.cute-theme .cute-tl-day-badge { width: 30px; height: 30px; font-size: 14px; }
+  body.cute-theme .cute-tl-title { font-size: 14px; }
+  body.cute-theme .cute-tl-date { font-size: 10px; }
   body.cute-theme .cute-tl-card-name { font-size: 13px; }
+  body.cute-theme .cute-tl-card-note { font-size: 11px; }
   body.cute-theme .cute-summary-hero img { object-fit: cover; }
   body.cute-theme .cute-summary-grid { grid-template-columns: 1fr !important; }
-  body.cute-theme .day-tab { padding: 6px 10px !important; }
-  body.cute-theme .day-tab .dt-num { font-size: 13px !important; }
-  body.cute-theme .day-tab .dt-date { font-size: 10px !important; }
+}
+
+/* ── Portrait-specific: maximize content area ── */
+@media (max-width: 768px) and (orientation: portrait) {
+  body.cute-theme .planner-sidebar { max-height: 46px !important; }
+  body.cute-theme .cute-tl-items { padding: 8px 10px 80px; }
+  body.cute-theme .cute-tl-item { padding: 3px 0; }
+  body.cute-theme .cute-map-fab {
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    right: 12px;
+    width: 44px; height: 44px; font-size: 16px;
+  }
 }
 
 /* ======= HIDE DEFAULT ELEMENTS IN CUTE MODE ======= */

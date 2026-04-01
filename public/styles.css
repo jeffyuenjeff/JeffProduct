@@ -915,6 +915,8 @@ html, body {
   .tab-btn { padding: 8px 12px; font-size: 12px; }
   .tab-btn span { display: none; }
   .tab-btn i { font-size: 16px; }
+  /* Safe-area for notched phones */
+  .app-main { bottom: env(safe-area-inset-bottom, 0px); }
 }
 
 @media (max-width: 480px) {
