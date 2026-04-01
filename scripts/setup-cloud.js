@@ -1,26 +1,24 @@
 #!/usr/bin/env node
 /**
  * setup-cloud.js
- * Creates a secret GitHub Gist with the current plan, reminders, and locpins data,
- * then outputs the Gist ID to configure in app.js.
+ * Creates 3 JSONBin.io bins (plan, reminders, locpins) from your local data,
+ * then outputs the bin IDs to configure in app.js.
  *
  * Usage:
- *   node scripts/setup-cloud.js <GITHUB_PERSONAL_ACCESS_TOKEN>
+ *   node scripts/setup-cloud.js <JSONBIN_ACCESS_KEY>
  *
- * The token needs only the "gist" scope.
- * Generate one at: https://github.com/settings/tokens/new?scopes=gist
+ * Get your free access key at: https://jsonbin.io/ (sign up → Settings → API Keys)
  */
 
-const fs   = require('fs');
-const path = require('path');
+const fs    = require('fs');
+const path  = require('path');
 const https = require('https');
 
 const DATA_DIR = path.resolve(__dirname, '..', 'public', 'data');
 
 function readJSON(file) {
   const p = path.join(DATA_DIR, file);
-  if (fs.existsSync(p)) return fs.readFileSync(p, 'utf8');
-  return '{}';
+  return fs.existsSync(p) ? fs.readFileSync(p, 'utf8') : '{}';
 }
 
 function httpsRequest(options, body) {
@@ -39,62 +37,66 @@ function httpsRequest(options, body) {
   });
 }
 
+async function createBin(accessKey, name, content) {
+  const result = await httpsRequest({
+    hostname: 'api.jsonbin.io',
+    path: '/v3/b',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Access-Key': accessKey,
+      'X-Bin-Name': `osaka-2026-${name}`,
+      'X-Bin-Private': 'false'
+    }
+  }, content);
+
+  if (result.status === 200) {
+    return result.body.metadata.id;
+  }
+  throw new Error(`Failed to create bin "${name}": ${result.status} ${JSON.stringify(result.body)}`);
+}
+
 async function main() {
-  const token = process.argv[2];
-  if (!token) {
-    console.error('❌ Usage: node scripts/setup-cloud.js <GITHUB_TOKEN>');
-    console.error('   Generate a token at: https://github.com/settings/tokens/new?scopes=gist');
+  const accessKey = process.argv[2];
+  if (!accessKey) {
+    console.error('❌ Usage: node scripts/setup-cloud.js <JSONBIN_ACCESS_KEY>');
+    console.error('   Get your key at: https://jsonbin.io/ → Sign up → Settings → API Keys');
     process.exit(1);
   }
 
   console.log('📦 Reading local data files...');
-  const planData      = readJSON('plan.json');
-  const remindersData = readJSON('reminders.json');
-  const locpinsData   = readJSON('locpins.json');
+  const files = {
+    plan:      readJSON('plan.json'),
+    reminders: readJSON('reminders.json'),
+    locpins:   readJSON('locpins.json')
+  };
 
-  console.log('☁️  Creating secret GitHub Gist...');
-  const gistPayload = JSON.stringify({
-    description: '大阪旅遊規劃 2026 - Cloud Data Store',
-    public: false,
-    files: {
-      'plan.json':      { content: planData },
-      'reminders.json': { content: remindersData },
-      'locpins.json':   { content: locpinsData }
-    }
-  });
-
-  const result = await httpsRequest({
-    hostname: 'api.github.com',
-    path: '/gists',
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'User-Agent': 'osaka-trip-2026',
-      'Accept': 'application/vnd.github+json'
-    }
-  }, gistPayload);
-
-  if (result.status !== 201) {
-    console.error('❌ Failed to create gist:', result.status, result.body?.message || result.body);
-    process.exit(1);
+  console.log('☁️  Creating JSONBin.io bins...\n');
+  const bins = {};
+  for (const [name, content] of Object.entries(files)) {
+    process.stdout.write(`   Creating ${name}...`);
+    bins[name] = await createBin(accessKey, name, content);
+    console.log(` ✅  ${bins[name]}`);
   }
 
-  const gistId = result.body.id;
-  const gistUrl = result.body.html_url;
-
-  console.log('\n✅ Gist created successfully!\n');
-  console.log(`   Gist ID  : ${gistId}`);
-  console.log(`   Gist URL : ${gistUrl}`);
-  console.log('\n📝 Now update public/app.js — find the CLOUD config block and set:\n');
-  console.log(`   const CLOUD = {`);
-  console.log(`     enabled: true,`);
-  console.log(`     gistId: '${gistId}',`);
-  console.log(`     ...`);
-  console.log(`   };\n`);
-  console.log('🔑 Then open your deployed page with ?setup=1 to enter your token in the browser.');
-  console.log('   Example: https://yourname.github.io/Jsproject/?setup=1');
-  console.log('\n🏗  Finally, rebuild: npm run build:static\n');
+  console.log('\n✅ All bins created!\n');
+  console.log('📝 Update the CLOUD config in public/app.js:\n');
+  console.log('   const CLOUD = {');
+  console.log('     enabled: true,');
+  console.log('     bins: {');
+  console.log(`       plan:      '${bins.plan}',`);
+  console.log(`       reminders: '${bins.reminders}',`);
+  console.log(`       locpins:   '${bins.locpins}'`);
+  console.log('     },');
+  console.log('     ...');
+  console.log('   };\n');
+  console.log('🔑 To enable editing, open your page with your access key in the URL:');
+  console.log(`   https://yourname.github.io/repo/?key=${accessKey}\n`);
+  console.log('   The key is saved in localStorage — you only need to do this once per browser.\n');
+  console.log('📥 To pull cloud data back to local JSON files:');
+  console.log(`   curl -s "https://api.jsonbin.io/v3/b/${bins.plan}/latest" -H "X-Access-Key: ${accessKey}" | node -e "process.stdin.on('data',d=>{const j=JSON.parse(d);process.stdout.write(JSON.stringify(j.record,null,2))})" > public/data/plan.json`);
+  console.log('');
+  console.log('🏗  Then rebuild: npm run build:static\n');
 }
 
 main().catch(err => {

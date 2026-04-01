@@ -46,57 +46,70 @@ const ITEM_ICONS = {
   custom:     '<i class="fa fa-location-pin"></i>'
 };
 
-// ─────────────────── CLOUD SYNC (GitHub Gist) ───────────────────
-// After running `node scripts/setup-cloud.js`, fill in gistId below.
-// Admin token is stored in your browser via ?setup=1 parameter.
+// ─────────────────── CLOUD SYNC (JSONBin.io) ───────────────────
+// Free JSON storage for static pages. Multiple users see the same data.
+// Setup: 1) Create free account at jsonbin.io  2) Create 3 bins  3) Fill IDs below
+// Admin: visit your page with ?key=YOUR_JSONBIN_ACCESS_KEY to enable editing.
+// Others: can read all data without any key.
 const CLOUD = {
-  enabled: false,          // Set true after setup
-  gistId: '',              // Secret Gist ID (from setup-cloud.js)
-  get token() { return localStorage.getItem('osaka_cloud_token') || ''; },
-  set token(v) { v ? localStorage.setItem('osaka_cloud_token', v) : localStorage.removeItem('osaka_cloud_token'); },
-  get canWrite() { return this.enabled && !!this.token; },
-  files: { plan: 'plan.json', reminders: 'reminders.json', locpins: 'locpins.json' },
-  _cache: null, _cacheTime: 0
+  enabled: true,
+  bins: {
+    plan:      '69cd2d2d856a682189ed43b2',
+    reminders: '69cd2d2e36566621a86cd18e',
+    locpins:   '69cd2d2e36566621a86cd197'
+  },
+  get accessKey() { return localStorage.getItem('osaka_cloud_key') || ''; },
+  set accessKey(v) { v ? localStorage.setItem('osaka_cloud_key', v) : localStorage.removeItem('osaka_cloud_key'); },
+  get canWrite() { return this.enabled && !!this.accessKey; },
+  _cache: {}, _cacheTime: {}
 };
 
-async function cloudLoadAll() {
-  if (!CLOUD.enabled || !CLOUD.gistId) return null;
-  if (CLOUD._cache && Date.now() - CLOUD._cacheTime < 30000) return CLOUD._cache;
-  try {
-    const hdrs = { 'Accept': 'application/json' };
-    if (CLOUD.token) hdrs['Authorization'] = `Bearer ${CLOUD.token}`;
-    const res = await fetch(`https://api.github.com/gists/${CLOUD.gistId}`, { headers: hdrs });
-    if (res.ok) { CLOUD._cache = await res.json(); CLOUD._cacheTime = Date.now(); return CLOUD._cache; }
-  } catch (e) { console.warn('[Cloud] Load failed:', e.message); }
-  return null;
-}
-
 async function cloudGet(type) {
-  const gist = await cloudLoadAll();
-  if (!gist || !gist.files) return null;
-  const f = gist.files[CLOUD.files[type]];
-  if (f && f.content) { try { return JSON.parse(f.content); } catch { return null; } }
+  if (!CLOUD.enabled || !CLOUD.bins[type]) return null;
+  // Cache for 20s to avoid repeated calls
+  if (CLOUD._cache[type] && Date.now() - (CLOUD._cacheTime[type] || 0) < 20000) return CLOUD._cache[type];
+  try {
+    const hdrs = { 'Content-Type': 'application/json' };
+    if (CLOUD.accessKey) hdrs['X-Access-Key'] = CLOUD.accessKey;
+    else hdrs['X-Bin-Meta'] = 'false'; // Public read — skip metadata
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${CLOUD.bins[type]}/latest`, { headers: hdrs });
+    if (res.ok) {
+      const json = await res.json();
+      const data = CLOUD.accessKey ? json.record : json; // With key: { record, metadata }, without: raw record
+      CLOUD._cache[type] = data;
+      CLOUD._cacheTime[type] = Date.now();
+      return data;
+    }
+  } catch (e) { console.warn('[Cloud] Load failed:', type, e.message); }
   return null;
 }
 
 async function cloudPut(type, data) {
-  if (!CLOUD.canWrite) return false;
+  if (!CLOUD.canWrite || !CLOUD.bins[type]) return false;
   try {
-    const res = await fetch(`https://api.github.com/gists/${CLOUD.gistId}`, {
-      method: 'PATCH',
-      headers: { 'Authorization': `Bearer ${CLOUD.token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ files: { [CLOUD.files[type]]: { content: JSON.stringify(data, null, 2) } } })
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${CLOUD.bins[type]}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Access-Key': CLOUD.accessKey
+      },
+      body: JSON.stringify(data)
     });
-    if (res.ok) { CLOUD._cache = null; return true; }
-  } catch (e) { console.warn('[Cloud] Save failed:', e.message); }
+    if (res.ok) { CLOUD._cache[type] = null; return true; }
+  } catch (e) { console.warn('[Cloud] Save failed:', type, e.message); }
   return false;
 }
 
 function initCloudSetup() {
   const params = new URLSearchParams(location.search);
-  if (params.get('setup') === '1') {
-    const token = prompt('Enter your GitHub Personal Access Token (with gist scope):');
-    if (token) { CLOUD.token = token; showToast('✅ Token 已儲存！可編輯及雲端同步', 'success'); }
+  const key = params.get('key');
+  if (key) {
+    CLOUD.accessKey = key;
+    // Clean URL
+    const url = new URL(location.href);
+    url.searchParams.delete('key');
+    history.replaceState({}, '', url.toString());
+    showToast('🔑 Access key saved — cloud editing enabled!', 'success');
   }
 }
 
@@ -106,7 +119,7 @@ function updateCloudIndicator() {
   if (!CLOUD.enabled) { el.style.display = 'none'; return; }
   el.style.display = 'flex';
   if (CLOUD.canWrite) {
-    el.innerHTML = '<i class="fa fa-cloud"></i> 雲端同步';
+    el.innerHTML = '<i class="fa fa-cloud"></i> 雲端已連接';
     el.className = 'cloud-status cloud-write';
   } else {
     el.innerHTML = '<i class="fa fa-cloud"></i> 唯讀';

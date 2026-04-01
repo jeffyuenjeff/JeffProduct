@@ -9,6 +9,8 @@
     "dev":   "lsof -ti:3000 | xargs kill -9 2>/dev/null; node server.js",
     "build": "pkg . --out-dir dist && mkdir -p dist/data && cp public/data/plan.json public/data/reminders.json public/data/locpins.json dist/data/",
     "build:static": "node scripts/build-static.js",
+    "cloud:setup":  "node scripts/setup-cloud.js",
+    "cloud:pull":   "node scripts/pull-cloud.js",
     "build:arm64": "pkg . --out-dir dist --target node20-macos-arm64 && mkdir -p dist/data && cp public/data/plan.json public/data/reminders.json public/data/locpins.json dist/data/",
     "build:x64":   "pkg . --out-dir dist --target node20-macos-x64   && mkdir -p dist/data && cp public/data/plan.json public/data/reminders.json public/data/locpins.json dist/data/"
   },

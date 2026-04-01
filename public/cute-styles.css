@@ -903,110 +903,184 @@ body.cute-theme .card {
 /* ======= RESPONSIVE ADJUSTMENTS ======= */
 @media (max-width: 768px) {
   body.cute-theme .cute-trip-summary {
-    padding: 8px 12px;
-    gap: 12px;
+    padding: 6px 10px;
+    gap: 8px;
     flex-wrap: wrap;
   }
-  
   body.cute-theme .cts-item {
     flex: 1 1 45%;
-    min-width: 100px;
+    min-width: 90px;
   }
-  
   body.cute-theme .cts-icon {
-    width: 28px;
-    height: 28px;
-    font-size: 12px;
+    width: 26px; height: 26px; font-size: 11px;
   }
-  
-  body.cute-theme .brand-title {
-    font-size: 18px;
-  }
-  
-  body.cute-theme .tab-btn span {
-    display: none;
-  }
-  
-  body.cute-theme .tab-btn {
-    padding: 12px 14px;
-  }
+  body.cute-theme .brand-title { font-size: 16px; }
+  body.cute-theme .tab-btn span { display: none; }
+  body.cute-theme .tab-btn { padding: 10px 12px; }
 
-  /* Cute planner: vertical sidebar → horizontal strip at top */
+  /* ── Cute planner: vertical sidebar → compact horizontal strip ── */
   body.cute-theme .planner-layout {
     flex-direction: column;
+    overflow: hidden;
   }
   body.cute-theme .planner-sidebar {
     width: 100% !important;
     min-width: 100% !important;
     max-width: 100% !important;
-    height: auto;
+    height: auto !important;
+    max-height: none !important;
     flex-direction: row;
+    flex-shrink: 0;
     border-right: none;
-    border-bottom: 2px solid var(--border);
-    overflow-x: auto;
-    overflow-y: hidden;
+    border-bottom: 1px solid var(--border);
+    overflow: visible;
+    background: var(--surface) !important;
+    position: relative !important;
   }
   body.cute-theme .planner-sidebar .day-tabs {
     flex-direction: row !important;
     padding: 6px 8px !important;
-    gap: 4px !important;
+    gap: 5px !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
+  body.cute-theme .planner-sidebar .day-tabs::-webkit-scrollbar { display: none; }
+
+  /* Day tab pills: compact single-line */
   body.cute-theme .day-tab {
     flex-direction: row !important;
     width: auto !important;
     min-width: auto !important;
-    padding: 6px 12px !important;
-    gap: 4px !important;
-    border-radius: 10px !important;
+    padding: 7px 14px !important;
+    gap: 5px !important;
+    border-radius: 20px !important;
+    border-width: 2px !important;
+    flex-shrink: 0;
+    align-items: center !important;
+    justify-content: center !important;
   }
-  body.cute-theme .day-tab .dt-num { font-size: 14px !important; }
-  body.cute-theme .day-tab .dt-label { font-size: 7px !important; }
-  body.cute-theme .day-tab .dt-date { font-size: 7px !important; }
+  body.cute-theme .day-tab .dt-num {
+    font-size: 15px !important;
+    line-height: 1 !important;
+  }
+  body.cute-theme .day-tab .dt-label {
+    display: none !important;
+  }
+  body.cute-theme .day-tab .dt-date {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    color: var(--text2) !important;
+  }
+  body.cute-theme .day-tab.active .dt-date {
+    color: var(--text) !important;
+  }
+  /* Summary tab compact */
+  body.cute-theme .day-tab.cute-summary-tab .dt-num {
+    font-size: 14px !important;
+  }
+
+  /* ── Core area takes all remaining space ── */
   body.cute-theme .cute-core-area {
-    min-height: 0;
-    flex: 1;
+    flex: 1 !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
   }
-  /* Timeline padding on mobile */
-  body.cute-theme .cute-tl-header { padding: 12px 14px 10px; }
-  body.cute-theme .cute-tl-items { padding: 14px 14px 24px; }
-  body.cute-theme .cute-tl-items::before { left: 36px; }
-  body.cute-theme .cute-tl-dot { width: 36px; height: 36px; font-size: 13px; }
-  body.cute-theme .cute-tl-item { gap: 10px; }
-  body.cute-theme .cute-tl-day-badge { width: 40px; height: 40px; font-size: 18px; }
-  body.cute-theme .cute-tl-title { font-size: 18px; }
-  body.cute-theme .cute-tl-card-name { font-size: 14px; }
-  body.cute-theme .cute-tl-card { padding: 10px 12px; border-radius: 12px; }
-  body.cute-theme .cute-tl-card::before { left: -8px; top: 12px; border-top-width: 6px; border-bottom-width: 6px; border-right-width: 8px; }
-  body.cute-theme .cute-tl-card::after { left: -5px; top: 12px; border-top-width: 6px; border-bottom-width: 6px; border-right-width: 8px; }
-  /* Make action buttons always visible on touch */
-  body.cute-theme .cute-tl-card-actions { opacity: 1; }
-  /* Map slideout full-width on mobile */
-  body.cute-theme .cute-map-slideout { width: 100%; max-width: 100%; }
-  /* FAB position safe area */
-  body.cute-theme .cute-map-fab {
-    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-    right: 16px;
-    width: 48px; height: 48px; font-size: 18px;
+
+  /* ── Timeline header: compact single-row ── */
+  body.cute-theme .cute-tl-header {
+    padding: 10px 14px 8px;
+    gap: 8px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
   }
-  /* Summary grid */
-  body.cute-theme .cute-summary-grid { grid-template-columns: 1fr !important; gap: 8px; }
-  body.cute-theme .cute-summary-card { padding: 12px; }
-  /* Plan toggle in header */
+  body.cute-theme .cute-tl-header-left { gap: 10px; }
+  body.cute-theme .cute-tl-day-badge {
+    width: 36px; height: 36px; font-size: 16px; border-width: 2px;
+  }
+  body.cute-theme .cute-tl-title { font-size: 16px; }
+  body.cute-theme .cute-tl-date { font-size: 11px; }
+  body.cute-theme .cute-tl-note { font-size: 11px; }
   body.cute-theme .cute-tl-plan-toggle { display: none; }
   body.cute-theme .cute-tl-actions { gap: 4px; }
+
+  /* ── Timeline items: tighter spacing ── */
+  body.cute-theme .cute-tl-items {
+    padding: 10px 12px 80px;
+  }
+  body.cute-theme .cute-tl-items::before { left: 30px; width: 2px; }
+  body.cute-theme .cute-tl-item { gap: 10px; padding: 5px 0; }
+  body.cute-theme .cute-tl-dot {
+    width: 32px; height: 32px; font-size: 12px; border-width: 2px;
+  }
+  body.cute-theme .cute-tl-card {
+    padding: 10px 12px;
+    border-radius: 12px;
+    border-width: 2px;
+  }
+  body.cute-theme .cute-tl-card::before {
+    left: -8px; top: 10px;
+    border-top-width: 6px; border-bottom-width: 6px; border-right-width: 8px;
+  }
+  body.cute-theme .cute-tl-card::after {
+    left: -6px; top: 10px;
+    border-top-width: 6px; border-bottom-width: 6px; border-right-width: 8px;
+  }
+  body.cute-theme .cute-tl-card-name { font-size: 14px; }
+  body.cute-theme .cute-tl-card-note { font-size: 12px; }
+  body.cute-theme .cute-tl-card-time { font-size: 12px; }
+  /* Touch: always show action buttons */
+  body.cute-theme .cute-tl-card-actions { opacity: 1; }
+  body.cute-theme .cute-tl-add {
+    padding: 10px; font-size: 12px; border-width: 2px;
+  }
+
+  /* ── Map slideout full-width ── */
+  body.cute-theme .cute-map-slideout {
+    width: 100%; max-width: 100%; border-left-width: 2px;
+  }
+  body.cute-theme .cute-map-fab {
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    right: 14px;
+    width: 46px; height: 46px; font-size: 17px; border-width: 2px;
+  }
+
+  /* ── Summary grid ── */
+  body.cute-theme .cute-summary-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px;
+    padding: 0 4px;
+  }
+  body.cute-theme .cute-summary-card {
+    padding: 10px;
+    border-radius: 12px;
+    border-width: 2px;
+  }
+  body.cute-theme .cute-summary-card-icon {
+    width: 36px; height: 36px; font-size: 15px; border-width: 2px;
+  }
+  body.cute-theme .cute-summary-card-label { font-size: 10px; }
+  body.cute-theme .cute-summary-card-value { font-size: 13px; }
+  body.cute-theme .cute-summary-info { padding: 12px; }
 }
 
 @media (max-width: 480px) {
   body.cute-theme .cts-item { flex: 1 1 100%; }
+  body.cute-theme .cute-trip-summary { display: none !important; }
   body.cute-theme .cute-tl-header {
-    flex-direction: column; align-items: flex-start; gap: 8px; padding: 10px 12px;
+    flex-direction: column; align-items: flex-start; gap: 6px; padding: 8px 12px;
   }
-  body.cute-theme .cute-tl-title { font-size: 16px; }
+  body.cute-theme .cute-tl-title { font-size: 15px; }
   body.cute-theme .cute-tl-card-name { font-size: 13px; }
   body.cute-theme .cute-summary-hero img { object-fit: cover; }
+  body.cute-theme .cute-summary-grid { grid-template-columns: 1fr !important; }
+  body.cute-theme .day-tab { padding: 6px 10px !important; }
+  body.cute-theme .day-tab .dt-num { font-size: 13px !important; }
+  body.cute-theme .day-tab .dt-date { font-size: 10px !important; }
 }
 
 /* ======= HIDE DEFAULT ELEMENTS IN CUTE MODE ======= */
