@@ -397,8 +397,15 @@ function removeCuteItem(dayKey, idx) {
 // ─────────────────── PLAN LOAD/SAVE ───────────────────
 async function loadPlan() {
   const _planSaved = localStorage.getItem('osaka_plan_2026');
-  if (_planSaved) { try { plan = JSON.parse(_planSaved); } catch { plan = { days: {} }; } }
-  else { plan = { days: {} }; }
+  if (_planSaved) {
+    try { plan = JSON.parse(_planSaved); } catch { plan = { days: {} }; }
+  } else {
+    try {
+      const res = await fetch('data/plan.json');
+      if (res.ok) plan = await res.json();
+      else plan = { days: {} };
+    } catch { plan = { days: {} }; }
+  }
   // Migrate old format (plan.days) to new plans structure
   if (!plan.plans) {
     plan.plans = {
