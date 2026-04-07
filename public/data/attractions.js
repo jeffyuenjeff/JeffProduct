@@ -421,7 +421,7 @@ const ATTRACTIONS = [
   {
     id: 41, region: '天保山・南港海灣', name: '大阪海遊館（Kaiyukan 水族館）',
     url: 'https://www.kaiyukan.com/',
-    img: 'https://www.kaiyukan.com/assets/img/ogp.jpg',
+    img: 'https://www.kaiyukan.com/seascape_namima/img/kv_pc.jpg',
     access: 'Osaka Metro 大阪港(C11) 步行5分鐘',
     hours: '10:00～20:00（最終入場19:00）※時間因日期而異，建議官網確認', holiday: '不定期（年中無休為原則）',
     priceJPY: 2700, priceHKD: 143,
