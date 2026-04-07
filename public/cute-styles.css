@@ -1775,6 +1775,121 @@ body.cute-theme .cute-map-fab {
 }
 
 /* ======================================================================
+   ATTRACTION DETAIL POPUP
+   ====================================================================== */
+.attr-detail-popup {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,.45);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .25s ease;
+  padding: 16px;
+}
+.attr-detail-popup.show { opacity: 1; }
+.attr-detail-panel {
+  background: var(--surface, #fff);
+  border-radius: 18px;
+  max-width: 420px; width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 12px 40px rgba(0,0,0,.25);
+  position: relative;
+  transform: translateY(24px) scale(.96);
+  transition: transform .25s ease;
+}
+.attr-detail-popup.show .attr-detail-panel { transform: translateY(0) scale(1); }
+.attr-detail-panel-compact { max-width: 340px; }
+.attr-detail-close {
+  position: absolute; top: 10px; right: 10px; z-index: 2;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(0,0,0,.5); color: #fff; border: none;
+  font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.attr-detail-img-wrap {
+  position: relative; border-radius: 18px 18px 0 0; overflow: hidden;
+}
+.attr-detail-img-wrap img {
+  width: 100%; height: 200px; object-fit: cover; display: block;
+}
+.attr-detail-badge {
+  position: absolute; top: 10px; left: 10px;
+  background: linear-gradient(135deg, #f72585, #ff6b6b);
+  color: #fff; padding: 3px 10px; border-radius: 12px;
+  font-size: 12px; font-weight: 700;
+}
+.attr-detail-number {
+  position: absolute; bottom: 10px; right: 10px;
+  background: rgba(0,0,0,.55); color: #fff;
+  padding: 2px 8px; border-radius: 8px;
+  font-size: 11px; font-weight: 700;
+}
+.attr-detail-body { padding: 16px; }
+.attr-detail-region {
+  font-size: 12px; color: var(--text3, #888);
+  display: flex; align-items: center; gap: 4px; margin-bottom: 4px;
+}
+.attr-detail-name {
+  font-size: 18px; font-weight: 800; color: var(--text, #222);
+  margin-bottom: 8px; line-height: 1.3;
+}
+.attr-detail-desc {
+  font-size: 13px; color: var(--text2, #555);
+  line-height: 1.6; margin-bottom: 12px;
+}
+.attr-detail-info { margin-bottom: 12px; }
+.attr-detail-row {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 12px; color: var(--text2, #555);
+  margin-bottom: 6px; line-height: 1.5;
+}
+.attr-detail-row i { width: 14px; text-align: center; flex-shrink: 0; margin-top: 2px; color: var(--primary, #6c63ff); }
+.attr-detail-price {
+  display: flex; gap: 10px; margin-bottom: 10px;
+}
+.attr-detail-price .price-hkd {
+  font-size: 16px; font-weight: 800; color: var(--success, #2ec4b6);
+}
+.attr-detail-price .price-jpy {
+  font-size: 13px; color: var(--text3, #888);
+}
+.attr-detail-tags {
+  display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 14px;
+}
+.attr-detail-actions {
+  display: flex; gap: 10px; align-items: center;
+}
+.attr-detail-link {
+  font-size: 12px; color: var(--info, #4361ee); text-decoration: none;
+  display: flex; align-items: center; gap: 4px;
+}
+.attr-detail-add {
+  margin-left: auto;
+  padding: 8px 16px; border-radius: 10px;
+  background: var(--primary, #6c63ff); color: #fff;
+  border: none; font-size: 13px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; gap: 5px;
+}
+
+/* ── Highlight flash animation for plan item ── */
+@keyframes highlightFlash {
+  0%, 100% { background: transparent; }
+  25% { background: rgba(247, 37, 133, .18); }
+  50% { background: rgba(247, 37, 133, .08); }
+  75% { background: rgba(247, 37, 133, .18); }
+}
+.cute-tl-item.highlight-flash .cute-tl-card,
+.plan-item.highlight-flash {
+  animation: highlightFlash .5s ease 4;
+  border-color: #f72585 !important;
+}
+
+/* ── Clickable plan item name ── */
+.cute-tl-card-name { cursor: pointer; }
+.cute-tl-card-name:hover { color: var(--primary, #6c63ff); text-decoration: underline; }
+.pi-body { cursor: pointer; }
+.pi-body:hover .pi-name { color: var(--primary, #6c63ff); text-decoration: underline; }
+
+/* ======================================================================
    RESPONSIVE — placed AFTER all desktop styles so media queries win
    ====================================================================== */
 @media (max-width: 768px) {
@@ -1994,6 +2109,16 @@ body.cute-theme .cute-map-fab {
   body.cute-theme .cute-summary-card-label { font-size: 10px; }
   body.cute-theme .cute-summary-card-value { font-size: 12px; }
   body.cute-theme .cute-summary-info { padding: 10px; }
+
+  /* ── Detail popup mobile tweaks ── */
+  .attr-detail-popup { padding: 8px; align-items: flex-end; }
+  .attr-detail-panel {
+    max-width: 100%; max-height: 80vh;
+    border-radius: 18px 18px 0 0;
+  }
+  .attr-detail-img-wrap img { height: 160px; }
+  .attr-detail-name { font-size: 16px; }
+  .attr-detail-desc { font-size: 12px; }
 }
 
 @media (max-width: 480px) {

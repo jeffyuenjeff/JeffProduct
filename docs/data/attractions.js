@@ -166,7 +166,7 @@ const ATTRACTIONS = [
   {
     id: 17, region: '大阪城週邊', name: '大阪城天守閣',
     url: 'https://www.osakacastle.net/hantai/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_17.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_18.jpg',
     access: 'Osaka Metro 谷町四丁目(T23,C18)、森之宮(C19,N20)',
     hours: '9:00～18:00（最後入場17:30）', holiday: '12月28日～1月1日',
     priceJPY: 1200, priceHKD: 64,
@@ -176,7 +176,7 @@ const ATTRACTIONS = [
   {
     id: 18, region: '大阪城週邊', name: '大阪城西之丸庭園',
     url: 'https://www.osakacastlepark.jp/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_18.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_19.jpg',
     access: 'Osaka Metro 谷町四丁目(T23,C18)、天滿橋(T22)',
     hours: '3月～10月：9:00～17:00，11月～2月：9:00～16:30', holiday: '週一',
     priceJPY: 200, priceHKD: 11,
@@ -186,7 +186,7 @@ const ATTRACTIONS = [
   {
     id: 19, region: '大阪城週邊', name: '重要文化遺產 大阪城櫓 YAGURA特別公開',
     url: 'https://www.osakacastlepark.jp/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_19.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_20.jpg',
     access: 'Osaka Metro 谷町四丁目(T23,C18)、天滿橋(T22)',
     hours: '10:00～16:30', holiday: '期間限定開放',
     priceJPY: 800, priceHKD: 42,
@@ -196,7 +196,7 @@ const ATTRACTIONS = [
   {
     id: 20, region: '大阪城週邊', name: 'KAIYODO FIGURE MUSEUM MIRAIZA OSAKA-JO',
     url: 'https://www.ryuyukan.net/home',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_20.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_21.jpg',
     access: 'Osaka Metro 谷町四丁目(T23,C18)、大阪商務園區(N21)',
     hours: '9:30～17:30（最後入場17:00）', holiday: '不定期',
     priceJPY: 1000, priceHKD: 53,
@@ -206,7 +206,7 @@ const ATTRACTIONS = [
   {
     id: 21, region: '大阪城週邊', name: '大阪城御座船',
     url: 'https://www.banpr.co.jp/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_21.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_22.jpg',
     access: 'Osaka Metro 谷町四丁目(T23,C18)、大阪商務園區(N21)',
     hours: '10:00～16:30（末班發船）', holiday: '年末年始',
     priceJPY: 1800, priceHKD: 95,
@@ -216,7 +216,7 @@ const ATTRACTIONS = [
   {
     id: 22, region: '大阪城週邊', name: '大阪水上巴士 Aqua-Liner',
     url: 'https://suijo-bus.osaka/language/aqualiner/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_22.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_23.jpg',
     access: 'Osaka Metro 大阪商務園區(N21)、淀屋橋(M17)',
     hours: '大阪城港10:00～16:00，淀屋橋港10:20～16:20', holiday: '不定期',
     priceJPY: 2000, priceHKD: 106,
@@ -226,7 +226,7 @@ const ATTRACTIONS = [
   {
     id: 23, region: '大阪城週邊', name: 'YORIMICHI Sunset Cruise',
     url: 'https://suijo-bus.osaka/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_23.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_24.jpg',
     access: 'Osaka Metro・京阪 天滿橋(T22)',
     hours: '①17:40出發 ②18:10出發', holiday: '週五、週六限定（9-10月）',
     priceJPY: 1600, priceHKD: 85,
@@ -236,7 +236,7 @@ const ATTRACTIONS = [
   {
     id: 24, region: '大阪城週邊', name: '大川櫻花遊覽船',
     url: 'http://osakacitycruise.info/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_24.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_25.jpg',
     access: 'Osaka Metro・京阪 天滿橋(T22)',
     hours: '10:00～18:00（每隔10～30分鐘出航）', holiday: '3月22日～4月13日期間限定',
     priceJPY: 1500, priceHKD: 80,
@@ -246,7 +246,7 @@ const ATTRACTIONS = [
   {
     id: 25, region: '大阪城週邊', name: '大阪歷史博物館',
     url: 'https://www.osakamushis.jp/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_25.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_26.jpg',
     access: 'Osaka Metro 谷町四丁目(T23,C18)',
     hours: '9:30～17:00（最後入館16:30）', holiday: '週二',
     priceJPY: 600, priceHKD: 32,
@@ -256,7 +256,7 @@ const ATTRACTIONS = [
   {
     id: 26, region: '大阪城週邊', name: '大阪和平館',
     url: 'http://www.peace-osaka.or.jp/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_26.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_27.jpg',
     access: 'Osaka Metro 森之宮(C19,N20)、谷町四丁目(T23,C18)',
     hours: '9:30～17:00', holiday: '週一',
     priceJPY: 250, priceHKD: 13,
@@ -267,7 +267,7 @@ const ATTRACTIONS = [
   {
     id: 27, region: '天保山・南港海灣', name: '天保山大摩天輪',
     url: 'http://tempozan-kanransya.com/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_27.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_28.jpg',
     access: 'Osaka Metro 大阪港(C11)',
     hours: '平日10:00～21:00，週六日及假日10:00～22:00', holiday: '不定期',
     priceJPY: 900, priceHKD: 48,
@@ -277,7 +277,7 @@ const ATTRACTIONS = [
   {
     id: 28, region: '天保山・南港海灣', name: '帆船型觀光船 聖瑪麗亞號 白天遊覽',
     url: 'https://suijo-bus.osaka/language/santamaria/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_28.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_29.jpg',
     access: 'Osaka Metro 大阪港(C11)',
     hours: '11:00～16:00（每整點出發）', holiday: '不定期',
     priceJPY: 1800, priceHKD: 95,
@@ -287,7 +287,7 @@ const ATTRACTIONS = [
   {
     id: 29, region: '天保山・南港海灣', name: '帆船型觀光船 聖瑪麗亞號 黃昏遊覽',
     url: 'https://suijo-bus.osaka/language/santamaria/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_29.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_30.jpg',
     access: 'Osaka Metro 大阪港(C11)',
     hours: '依季節不同：16:30～19:00', holiday: '週六日限定',
     priceJPY: 2300, priceHKD: 122,
@@ -297,7 +297,7 @@ const ATTRACTIONS = [
   {
     id: 30, region: '天保山・南港海灣', name: '船長線（Captain Line）',
     url: 'http://www.mmjp.or.jp/Capt-Line/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_30.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_31.jpg',
     access: 'Osaka Metro 大阪港(C11) / USJ 環球影城港灣',
     hours: '9:45～18:00', holiday: '不定期',
     priceJPY: 1700, priceHKD: 90,
@@ -307,7 +307,7 @@ const ATTRACTIONS = [
   {
     id: 31, region: '天保山・南港海灣', name: 'LEGOLAND® Discovery Center Osaka',
     url: 'https://osaka.legolanddiscoverycenter.jp/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_31.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_32.jpg',
     access: 'Osaka Metro 大阪港(C11)',
     hours: '平日10:00～18:00，週六日10:00～19:00（需預約）', holiday: '不定期',
     priceJPY: 3300, priceHKD: 175,
@@ -317,7 +317,7 @@ const ATTRACTIONS = [
   {
     id: 32, region: '天保山・南港海灣', name: 'GLION MUSEUM',
     url: 'https://glion-museum.jp/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_32.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_33.jpg',
     access: 'Osaka Metro 大阪港(C11)',
     hours: '11:00～17:00', holiday: '週一',
     priceJPY: 1300, priceHKD: 69,
@@ -327,7 +327,7 @@ const ATTRACTIONS = [
   {
     id: 33, region: '天保山・南港海灣', name: '咲洲宇宙塔展望台',
     url: 'https://sakishima-observatory.com/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_33.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_34.jpg',
     access: 'Osaka Metro 貿易中心前(P10)',
     hours: '11:00～22:00（最後入場21:30）', holiday: '週一',
     priceJPY: 1200, priceHKD: 64,
@@ -338,7 +338,7 @@ const ATTRACTIONS = [
   {
     id: 34, region: '其他地區', name: '鮮花競放館',
     url: 'https://www.sakuyakonohana.jp/chinese/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_34.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_35.jpg',
     access: 'Osaka Metro 鶴見綠地(N26)',
     hours: '10:00～17:00（最後入館16:30）', holiday: '週一',
     priceJPY: 500, priceHKD: 27,
@@ -348,7 +348,7 @@ const ATTRACTIONS = [
   {
     id: 35, region: '其他地區', name: '大阪市立自然史博物館',
     url: 'https://omnh.jp/language/zh-tw/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_35.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_36.jpg',
     access: 'Osaka Metro 長居(M26)',
     hours: '3月～10月：9:30～17:00，11月～2月：9:30～16:30', holiday: '週一',
     priceJPY: 300, priceHKD: 16,
@@ -358,7 +358,7 @@ const ATTRACTIONS = [
   {
     id: 36, region: '其他地區', name: '大阪市立長居植物園',
     url: 'https://botanical-garden.nagai-park.jp/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_36.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_37.jpg',
     access: 'Osaka Metro 長居(M26)',
     hours: '3月～10月：9:30～17:00，11月～2月：9:30～16:30', holiday: '週一',
     priceJPY: 300, priceHKD: 16,
@@ -368,7 +368,7 @@ const ATTRACTIONS = [
   {
     id: 37, region: '其他地區', name: '堺利晶之杜',
     url: 'http://www.sakai-rishonomori.com/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_37.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_38.jpg',
     access: '南海「堺」',
     hours: '9:00～18:00（茶之湯體驗10:00～17:00）', holiday: '每月第3個週二',
     priceJPY: 300, priceHKD: 16,
@@ -378,7 +378,7 @@ const ATTRACTIONS = [
   {
     id: 38, region: '其他地區', name: '堺市博物館',
     url: 'http://www.city.sakai.lg.jp/kanko/hakubutsukan/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_38.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_39.jpg',
     access: '南海「堺東」',
     hours: '9:30～17:15（最後入館16:30）', holiday: '翻新工程中，至2026年3月31日',
     priceJPY: 200, priceHKD: 11,
@@ -389,7 +389,7 @@ const ATTRACTIONS = [
   {
     id: 39, region: '單軌電車區域', name: '萬博紀念公園',
     url: 'https://www.expo70-park.jp/languages/english/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_39.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_40.jpg',
     access: '大阪單軌電車 萬博紀念公園站',
     hours: '9:30～17:00（最後入館16:30）', holiday: '週三',
     priceJPY: 260, priceHKD: 14,
@@ -399,18 +399,29 @@ const ATTRACTIONS = [
   {
     id: 40, region: '單軌電車區域', name: 'OSAKA WHEEL',
     url: 'https://osaka-wheel.com/',
-    img: 'https://osaka-amazing-pass.com/resource/img/free_40.jpg',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_41.jpg',
     access: '大阪單軌電車 萬博紀念公園站',
     hours: '平日11:00～20:00，週六日及假日11:00～21:00', holiday: '維護期',
     priceJPY: 1000, priceHKD: 53,
     desc: '萬博紀念公園旁的現代摩天輪，坐擁360度全景，伴著太陽之塔的雄姿俯瞰大阪。',
     lat: 34.8094, lng: 135.5394, tag: ['遊樂', '景觀', '現代']
   },
+  // ===== 南地區 新世界・天王寺（遺漏補回） =====
+  {
+    id: 42, region: '南地區・新世界天王寺', name: '大阪市立美術館',
+    url: 'https://www.osaka-art-museum.jp/zh-tw/',
+    img: 'https://osaka-amazing-pass.com/resource/img/free_17.jpg',
+    access: 'Osaka Metro 動物園前(M22,K19)、天王寺(M23,T27)、惠美須町(K18)',
+    hours: '9:30～17:00（最後入館16:30）', holiday: '週一',
+    priceJPY: 500, priceHKD: 27,
+    desc: '位於天王寺公園內的大阪市立美術館，收藏日本、中國繪畫與雕刻等東洋美術精品，免費入場限常設展。',
+    lat: 34.6488, lng: 135.5080, tag: ['藝術', '博物館', '文化']
+  },
   // ===== 天保山・特別推薦（非周遊卡免費） =====
   {
     id: 41, region: '天保山・南港海灣', name: '大阪海遊館（Kaiyukan 水族館）',
     url: 'https://www.kaiyukan.com/',
-    img: 'https://images.unsplash.com/photo-1497206365907-f5e630693df0?w=800',
+    img: 'https://www.kaiyukan.com/assets/img/ogp.jpg',
     access: 'Osaka Metro 大阪港(C11) 步行5分鐘',
     hours: '10:00～20:00（最終入場19:00）※時間因日期而異，建議官網確認', holiday: '不定期（年中無休為原則）',
     priceJPY: 2700, priceHKD: 143,

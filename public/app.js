@@ -467,7 +467,7 @@ function renderCuteTimelineItem(item, dayKey, idx) {
           ${item.time ? `<div class="cute-tl-card-time">⏰ ${item.time}</div>` : ''}
           ${hasCoords ? `<div class="cute-tl-card-loc" onclick="openCuteMapForItem(${JSON.stringify(item).replace(/"/g, '&quot;')})"><i class="fa fa-location-dot"></i> 查看位置</div>` : ''}
         </div>
-        <div class="cute-tl-card-name">${item.name}</div>
+        <div class="cute-tl-card-name" onclick="showPlanItemDetail('${dayKey}',${idx})">${item.name}</div>
         ${item.note ? `<div class="cute-tl-card-note">${item.note}</div>` : ''}
       </div>
     </div>`;
@@ -879,7 +879,7 @@ function renderPlanItem(item, dayKey, idx) {
          ondragover="dragOver(event)" ondrop="drop(event,'${dayKey}',${idx})"
          ondragend="dragEnd(event)">
       <div class="pi-icon ${item.type}">${typeIcon}</div>
-      <div class="pi-body">
+      <div class="pi-body" onclick="showPlanItemDetail('${dayKey}',${idx})">
         <div class="pi-name">${item.name}</div>
         <div class="pi-time">${item.time || ''}</div>
         <div class="pi-note">${item.note || ''}</div>
@@ -1627,20 +1627,181 @@ function addAttrToDay(e, id) {
 }
 
 function showAttractionDetail(id) {
-  // Scroll to map view of this attraction
   const a = ATTRACTIONS.find(x => x.id === id);
-  if (!a || !map) return;
-  // Switch to planner tab
-  const plannerBtn = document.querySelector('.tab-btn[data-tab="planner"]');
-  if (plannerBtn) plannerBtn.click();
-  setTimeout(() => {
-    map.setView([a.lat, a.lng], 16);
-    const marker = L.marker([a.lat, a.lng], { icon: createNumberedIcon('★', '#f72585') })
-      .addTo(map)
-      .bindPopup(`<div class="popup-title">${a.name}</div><div class="popup-sub">HK$${a.priceHKD} · ¥${a.priceJPY}</div><a href="${a.url}" target="_blank" style="color:#3a86ff;font-size:11px">官方網站 →</a>`)
-      .openPopup();
-    setTimeout(() => map.removeLayer(marker), 10000);
-  }, 100);
+  if (!a) return;
+
+  // Check if this attraction is in any day plan
+  let foundDayKey = null, foundIdx = -1;
+  if (plan.days) {
+    for (const [dk, dayData] of Object.entries(plan.days)) {
+      const idx = (dayData.items || []).findIndex(x => String(x.id) === String(id) && x.type === 'attraction');
+      if (idx !== -1) { foundDayKey = dk; foundIdx = idx; break; }
+    }
+  }
+
+  if (foundDayKey) {
+    // Switch to planner tab and highlight the item
+    const plannerBtn = document.querySelector('.tab-btn[data-tab="planner"]');
+    if (plannerBtn) plannerBtn.click();
+    setTimeout(() => {
+      switchDay(foundDayKey);
+      setTimeout(() => {
+        // Highlight the item in the timeline
+        const items = document.querySelectorAll('.cute-tl-item, .plan-item');
+        if (items[foundIdx]) {
+          items[foundIdx].classList.add('highlight-flash');
+          items[foundIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(() => items[foundIdx].classList.remove('highlight-flash'), 2000);
+        }
+        if (map) {
+          map.setView([a.lat, a.lng], 16);
+          const marker = L.marker([a.lat, a.lng], { icon: createNumberedIcon('★', '#f72585') })
+            .addTo(map).bindPopup(`<div class="popup-title">${a.name}</div>`).openPopup();
+          setTimeout(() => map.removeLayer(marker), 8000);
+        }
+      }, 200);
+    }, 100);
+    showToast(`📍 已定位到第${foundDayKey.replace('day','')}天行程`, 'success');
+  } else {
+    // Not in any day plan — show detail popup
+    showAttractionPopup(a);
+  }
+}
+
+function showAttractionPopup(a) {
+  const existing = document.getElementById('attrDetailPopup');
+  if (existing) existing.remove();
+
+  const popup = document.createElement('div');
+  popup.className = 'attr-detail-popup';
+  popup.id = 'attrDetailPopup';
+  popup.onclick = e => { if (e.target === popup) closeAttrDetailPopup(); };
+  popup.innerHTML = `
+    <div class="attr-detail-panel">
+      <button class="attr-detail-close" onclick="closeAttrDetailPopup()"><i class="fa fa-xmark"></i></button>
+      <div class="attr-detail-img-wrap">
+        <img src="${a.img}" alt="${a.name}" onerror="this.src='https://placehold.co/600x300/1a1a2e/555?text=No+Image'" />
+        ${a.tag.includes('必去') ? '<div class="attr-detail-badge">⭐ 必去</div>' : ''}
+        <div class="attr-detail-number">#${a.id}</div>
+      </div>
+      <div class="attr-detail-body">
+        <div class="attr-detail-region"><i class="fa fa-location-dot"></i> ${a.region}</div>
+        <div class="attr-detail-name">${a.name}</div>
+        <div class="attr-detail-desc">${a.desc}</div>
+        <div class="attr-detail-info">
+          <div class="attr-detail-row"><i class="fa fa-clock"></i> <span>${a.hours}</span></div>
+          <div class="attr-detail-row"><i class="fa fa-calendar-xmark"></i> <span>休：${a.holiday}</span></div>
+          <div class="attr-detail-row"><i class="fa fa-train-subway"></i> <span>${a.access}</span></div>
+        </div>
+        <div class="attr-detail-price">
+          <span class="price-hkd">HK$${a.priceHKD}</span>
+          <span class="price-jpy">¥${a.priceJPY.toLocaleString()}</span>
+        </div>
+        <div class="attr-detail-tags">${a.tag.map(t => `<span class="card-tag">${t}</span>`).join('')}</div>
+        <div class="attr-detail-actions">
+          <a href="${a.url}" target="_blank" rel="noopener" class="attr-detail-link">
+            <i class="fa fa-external-link"></i> 官方網站
+          </a>
+          <button class="attr-detail-add" onclick="closeAttrDetailPopup(); addAttrToDay(event, ${a.id})">
+            <i class="fa fa-plus"></i> 加入行程
+          </button>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(popup);
+  requestAnimationFrame(() => popup.classList.add('show'));
+}
+
+function closeAttrDetailPopup() {
+  const popup = document.getElementById('attrDetailPopup');
+  if (popup) { popup.classList.remove('show'); setTimeout(() => popup.remove(), 250); }
+}
+
+// Show full attraction detail when tapping a plan item in day timeline
+function showPlanItemDetail(dayKey, idx) {
+  const item = plan.days?.[dayKey]?.items?.[idx];
+  if (!item) return;
+
+  // Try to find matching attraction data
+  let a = null;
+  if (item.type === 'attraction' && item.id) {
+    a = ATTRACTIONS.find(x => x.id === Number(item.id) || x.id === item.id);
+  }
+  // Try to find matching food data
+  let f = null;
+  if (item.type === 'food' && item.id && typeof FOOD !== 'undefined') {
+    f = FOOD.find(x => x.id === item.id);
+  }
+
+  if (a) {
+    showAttractionPopup(a);
+  } else if (f) {
+    showFoodPopup(f);
+  } else {
+    // Generic item — show simple info
+    showGenericItemPopup(item);
+  }
+}
+
+function showFoodPopup(f) {
+  const existing = document.getElementById('attrDetailPopup');
+  if (existing) existing.remove();
+
+  const popup = document.createElement('div');
+  popup.className = 'attr-detail-popup';
+  popup.id = 'attrDetailPopup';
+  popup.onclick = e => { if (e.target === popup) closeAttrDetailPopup(); };
+  popup.innerHTML = `
+    <div class="attr-detail-panel">
+      <button class="attr-detail-close" onclick="closeAttrDetailPopup()"><i class="fa fa-xmark"></i></button>
+      <div class="attr-detail-img-wrap">
+        <img src="${f.img}" alt="${f.name}" onerror="this.src='https://placehold.co/600x300/1a1a2e/555?text=No+Image'" />
+        ${f.tags?.includes('必吃') ? '<div class="attr-detail-badge">🔥 必吃</div>' : ''}
+      </div>
+      <div class="attr-detail-body">
+        <div class="attr-detail-region"><i class="fa fa-location-dot"></i> ${f.area || ''}</div>
+        <div class="attr-detail-name">${f.name}</div>
+        <div class="attr-detail-desc">${f.desc || ''}</div>
+        <div class="attr-detail-info">
+          <div class="attr-detail-row"><i class="fa fa-store"></i> <span>${f.shopName || ''}</span></div>
+          <div class="attr-detail-row"><i class="fa fa-utensils"></i> <span>${f.type || ''}</span></div>
+        </div>
+        <div class="attr-detail-price">
+          <span class="price-hkd">HK$${f.priceHKD || '?'}</span>
+          <span class="price-jpy">¥${f.priceJPY || '?'}</span>
+        </div>
+        <div class="attr-detail-tags">${(f.tags || []).map(t => `<span class="card-tag">${t}</span>`).join('')}</div>
+        <div class="attr-detail-actions">
+          <a href="https://www.google.com/maps/search/${encodeURIComponent((f.shopName||'')+ ' ' +(f.area||'')+' 大阪')}" target="_blank" class="attr-detail-link">
+            <i class="fa fa-map-location-dot"></i> 在地圖查看
+          </a>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(popup);
+  requestAnimationFrame(() => popup.classList.add('show'));
+}
+
+function showGenericItemPopup(item) {
+  const existing = document.getElementById('attrDetailPopup');
+  if (existing) existing.remove();
+
+  const popup = document.createElement('div');
+  popup.className = 'attr-detail-popup';
+  popup.id = 'attrDetailPopup';
+  popup.onclick = e => { if (e.target === popup) closeAttrDetailPopup(); };
+  popup.innerHTML = `
+    <div class="attr-detail-panel attr-detail-panel-compact">
+      <button class="attr-detail-close" onclick="closeAttrDetailPopup()"><i class="fa fa-xmark"></i></button>
+      <div class="attr-detail-body">
+        <div class="attr-detail-name">${item.name || '未命名'}</div>
+        ${item.time ? `<div class="attr-detail-row"><i class="fa fa-clock"></i> <span>${item.time}</span></div>` : ''}
+        ${item.note ? `<div class="attr-detail-desc">${item.note}</div>` : ''}
+        <div class="attr-detail-tags"><span class="card-tag">${item.type || '自訂'}</span></div>
+      </div>
+    </div>`;
+  document.body.appendChild(popup);
+  requestAnimationFrame(() => popup.classList.add('show'));
 }
 
 // ─────────────────── FOOD ───────────────────
@@ -3423,6 +3584,8 @@ window.filterBuyItems = filterBuyItems;
 window.addAttrToDay = addAttrToDay;
 window.addFoodToDay = addFoodToDay;
 window.showAttractionDetail = showAttractionDetail;
+window.closeAttrDetailPopup = closeAttrDetailPopup;
+window.showPlanItemDetail = showPlanItemDetail;
 window.dragStart = dragStart;
 window.dragOver = dragOver;
 window.dragEnd = dragEnd;

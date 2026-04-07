@@ -1497,3 +1497,7 @@ html, body {
   display: flex; align-items: center; gap: 6px;
 }
 .edit-item-save:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(232,93,4,0.4); }
+
+/* ── Clickable plan item body ── */
+.plan-item .pi-body { cursor: pointer; }
+.plan-item .pi-body:hover .pi-name { color: var(--primary); text-decoration: underline; }
