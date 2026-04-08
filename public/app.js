@@ -58,9 +58,10 @@ const CLOUD = {
     reminders: '69cd2d2e36566621a86cd18e',
     locpins:   '69cd2d2e36566621a86cd197'
   },
+  get isLocal() { return location.hostname === 'localhost' || location.hostname === '127.0.0.1'; },
   get accessKey() { return localStorage.getItem('osaka_cloud_key') || ''; },
   set accessKey(v) { v ? localStorage.setItem('osaka_cloud_key', v) : localStorage.removeItem('osaka_cloud_key'); },
-  get canWrite() { return this.enabled && !!this.accessKey; },
+  get canWrite() { return this.isLocal || (this.enabled && !!this.accessKey); },
   _cache: {}, _cacheTime: {}
 };
 
@@ -85,7 +86,7 @@ async function cloudGet(type) {
 }
 
 async function cloudPut(type, data) {
-  if (!CLOUD.canWrite || !CLOUD.bins[type]) return false;
+  if (!CLOUD.enabled || !CLOUD.accessKey || !CLOUD.bins[type]) return false;
   try {
     const res = await fetch(`https://api.jsonbin.io/v3/b/${CLOUD.bins[type]}`, {
       method: 'PUT',
@@ -116,13 +117,19 @@ function initCloudSetup() {
 function updateCloudIndicator() {
   const el = document.getElementById('cloudStatus');
   if (!el) return;
+  if (CLOUD.isLocal) {
+    el.style.display = 'flex';
+    el.innerHTML = '<i class="fa fa-laptop-code"></i> 本機編輯模式';
+    el.className = 'cloud-status cloud-write';
+    return;
+  }
   if (!CLOUD.enabled) { el.style.display = 'none'; return; }
   el.style.display = 'flex';
   if (CLOUD.canWrite) {
     el.innerHTML = '<i class="fa fa-cloud"></i> 雲端已連接';
     el.className = 'cloud-status cloud-write';
   } else {
-    el.innerHTML = '<i class="fa fa-cloud"></i> 唯讀';
+    el.innerHTML = '<i class="fa fa-cloud"></i> 唯讀（需密鑰編輯）';
     el.className = 'cloud-status cloud-read';
   }
 }

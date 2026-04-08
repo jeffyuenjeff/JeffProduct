@@ -11,7 +11,7 @@ const FOOD = [
     priceHKD: '32～48',
     rating: 5,
     desc: '大阪章魚燒發源地！1933年創業的章魚燒元祖，外皮酥脆、內餡柔軟，每粒包含大塊章魚，是大阪必吃小食。',
-    img: 'https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=800',
+    img: 'https://images.unsplash.com/photo-1569740392698-59e8ce4f47cc?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8VGFrb3lha2l8ZW58MHx8MHx8fDA%3D',
     tags: ['必吃', '街食', '大阪名物'],
     lat: 34.6170, lng: 135.4926
   },
@@ -27,7 +27,7 @@ const FOOD = [
     priceHKD: '64～106',
     rating: 5,
     desc: '大阪靈魂料理大阪燒！ぼてぢゅう創業於1946年，鐵板煎製的大阪燒配料豐富，加上柴魚片、海苔和醬料，是道地大阪風味。',
-    img: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=800',
+    img: 'https://images.unsplash.com/photo-1648221825803-4e02a95bf062?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTYzfHxqYXBhbiUyMGZvb2R8ZW58MHx8MHx8fDA%3D',
     tags: ['必吃', '大阪名物', '正餐'],
     lat: 34.6686, lng: 135.5016
   },
@@ -43,7 +43,7 @@ const FOOD = [
     priceHKD: '27～159',
     rating: 5,
     desc: '有「大阪廚房」之稱的黑門市場，新鮮海鮮、和牛、蟹腳、海膽、活龍蝦等應有盡有，可即買即食，是大阪最受遊客歡迎的美食天堂。',
-    img: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=800',
+    img: 'https://images.unsplash.com/photo-1706441740242-e695b1834454?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nzh8fGphcGFuJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D',
     tags: ['必去', '市場', '海鮮', '和牛'],
     lat: 34.6641, lng: 135.5073
   },
@@ -59,7 +59,7 @@ const FOOD = [
     priceHKD: '5.3～10.6/串',
     rating: 5,
     desc: '大阪新世界發源的炸串文化！各種食材裹粉油炸，蘸特製醬汁食用，規矩是不可雙蘸（禁止二次蘸醬），新世界及道頓堀均有分店。',
-    img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800',
+    img: 'https://plus.unsplash.com/premium_photo-1667443306658-4664947ffa46?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzJ8fGphcGFuJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D',
     tags: ['必吃', '新世界', '道頓堀', '大阪名物'],
     lat: 34.6688, lng: 135.5007
   },
@@ -75,7 +75,7 @@ const FOOD = [
     priceHKD: '8～27/皿',
     rating: 4,
     desc: '大阪迴轉壽司性價比極高，新鮮食材每皿HK$8起，鮪魚腩、炙烤三文魚、北海道海膽等頂級食材應有盡有。',
-    img: 'https://images.unsplash.com/photo-1617196034183-421b4040ed20?w=800',
+    img: 'https://plus.unsplash.com/premium_photo-1723874570807-570c56b41e4e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8amFwYW4lMjBmb29kfGVufDB8fDB8fHww',
     tags: ['壽司', '性價比', '必吃'],
     lat: 34.7024, lng: 135.4960
   },
@@ -107,7 +107,7 @@ const FOOD = [
     priceHKD: '106～265',
     rating: 4,
     desc: '以新鮮蔬菜、海鮮炸製的輕盈天婦羅定食，配上精心調製的天婦羅汁，定食套餐包含蝦、魚等當季食材。',
-    img: 'https://images.unsplash.com/photo-1510130387422-82bed34b37e9?w=800',
+    img: 'https://images.unsplash.com/photo-1676037150357-4417246cd4ce?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzg2fHxqYXBhbiUyMGZvb2R8ZW58MHx8MHx8fDA%3D',
     tags: ['正餐', '天婦羅', '傳統日式'],
     lat: 34.6720, lng: 135.5013
   },
@@ -123,7 +123,7 @@ const FOOD = [
     priceHKD: '80～133',
     rating: 5,
     desc: '近年大阪最熱爆的炸牛排！外皮酥脆、內裡粉嫩玫瑰色的炸牛排，配自製醬料和烏賊墨汁麻婆豆腐，排隊名店。',
-    img: 'https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=800',
+    img: 'https://images.unsplash.com/photo-1751175745458-11a9e296bcae?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fCVFNyU4MiVCOCVFNyU4OSU5QiVFNiU4RSU5MnxlbnwwfHwwfHx8MA%3D%3D',
     tags: ['必吃', '牛肉', '話題', '網紅'],
     lat: 34.6677, lng: 135.5014
   },
@@ -139,7 +139,7 @@ const FOOD = [
     priceHKD: '42～64',
     rating: 4,
     desc: '大阪風味醬油拉麵名店，招牌「大阪ブラック」使用濃縮醬油湯頭，麵條爽滑，是大阪拉麵的代表作。',
-    img: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800',
+    img: 'https://plus.unsplash.com/premium_photo-1694383409238-1b470d28d02d?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTAyfHxqYXBhbiUyMGZvb2R8ZW58MHx8MHx8fDA%3D',
     tags: ['拉麵', '大阪風味', '熱門'],
     lat: 34.6685, lng: 135.5018
   },
@@ -155,7 +155,7 @@ const FOOD = [
     priceHKD: '159～424',
     rating: 5,
     desc: '鶴橋是大阪最大的韓國城，燒肉店林立，和牛燒肉品質極佳，肉質幼嫩，附有大量醬漬小菜，是大阪人最愛的燒肉聖地。',
-    img: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800',
+    img: 'https://images.unsplash.com/photo-1764994880917-b46601e402ab?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8JUU1JTkyJThDJUU3JTg5JTlCJUU3JTg3JTkyJUU4JTgyJTg5fGVufDB8fDB8fHww',
     tags: ['和牛', '燒肉', '韓國城', '必去'],
     lat: 34.6630, lng: 135.5310
   },
@@ -171,7 +171,7 @@ const FOOD = [
     priceHKD: '37～80',
     rating: 4,
     desc: '創業1946年的大阪老字號烏冬名店，使用昆布和鰹魚熬製的清甜湯底，配以手打烏冬麵條，是大阪傳統口味的最佳代表。',
-    img: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800',
+    img: 'https://images.unsplash.com/photo-1700323467210-9f9019cdbfd4?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjA4fHxqYXBhbiUyMGZvb2R8ZW58MHx8MHx8fDA%3D',
     tags: ['烏冬', '傳統', '老字號'],
     lat: 34.6682, lng: 135.5020
   },
@@ -187,7 +187,7 @@ const FOOD = [
     priceHKD: '27～42',
     rating: 4,
     desc: '來自兵庫縣明石的蛋香章魚燒變奏，用雞蛋蒸製而成，比章魚燒更鬆軟，蘸高湯食用，口感獨特。',
-    img: 'https://images.unsplash.com/photo-1550367083-9fa5411cb303?w=800',
+    img: 'https://images.unsplash.com/photo-1734018959117-958913c85661?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGphcGFuJTIwZWdnJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D',
     tags: ['小食', '大阪特色', '必試'],
     lat: 34.6672, lng: 135.5012
   },
@@ -219,7 +219,7 @@ const FOOD = [
     priceHKD: '424～1060',
     rating: 5,
     desc: '頂級松葉蟹（ズワイガニ）料理，提供蟹刺身、蟹味噌、蟹腳燒烤、蟹火鍋等全蟹宴席，是大阪冬春季最奢華的美食體驗。',
-    img: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=800',
+    img: 'https://plus.unsplash.com/premium_photo-1668143363099-1d9e04d4a3f7?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTIzfHxqYXBhbiUyMGZvb2R8ZW58MHx8MHx8fDA%3D',
     tags: ['高級', '海鮮', '蟹', '特別日子'],
     lat: 34.6549, lng: 135.4405
   },
@@ -235,7 +235,7 @@ const FOOD = [
     priceHKD: '265～636',
     rating: 5,
     desc: '大阪風壽喜燒與東京風不同，先以牛脂爆炒和牛，再加入醬汁，肉質逼出鮮甜，配以京豆腐、烤麩、長蔥等食材，蘸生雞蛋食用。',
-    img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800',
+    img: 'https://plus.unsplash.com/premium_photo-1661412657617-d6eab13c563e?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8JUU1JTkyJThDJUU3JTg5JTlCJUU3JTg3JTkyJUU4JTgyJTg5fGVufDB8fDB8fHww',
     tags: ['和牛', '壽喜燒', '高級', '梅田'],
     lat: 34.7030, lng: 135.4965
   }
