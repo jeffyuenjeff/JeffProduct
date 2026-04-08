@@ -1498,6 +1498,17 @@ html, body {
 }
 .edit-item-save:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(232,93,4,0.4); }
 
+.edit-item-loc-section {
+  margin-bottom: 14px; padding: 10px 12px;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--surface);
+}
+.edit-item-loc-section[open] { background: rgba(67,97,238,0.04); border-color: var(--info); }
+.edit-item-loc-section summary::-webkit-details-marker { display: none; }
+.edit-item-loc-section summary::marker { content: ''; }
+.edit-item-loc-section summary::before { content: '▸ '; font-size: 10px; }
+.edit-item-loc-section[open] summary::before { content: '▾ '; }
+
 /* ── Clickable plan item body ── */
 .plan-item .pi-body { cursor: pointer; }
 .plan-item .pi-body:hover .pi-name { color: var(--primary); text-decoration: underline; }

@@ -685,6 +685,10 @@ function renderDayMarkersOnMap(dayKey) {
 }
 
 function getItemCoords(item) {
+  // Item-level override always wins (user-edited location)
+  if (item.lat && item.lng) {
+    return { lat: parseFloat(item.lat), lng: parseFloat(item.lng) };
+  }
   if (item.type === 'attraction') {
     const a = ATTRACTIONS.find(x => x.id === item.id);
     if (a) return { lat: a.lat, lng: a.lng };
@@ -694,12 +698,8 @@ function getItemCoords(item) {
     if (f) return { lat: f.lat, lng: f.lng };
   }
   if (item.type === 'transport') {
-    // 難波駅 coordinates (御堂筋線なんば)
     if (item.id === 'airport-namba' || item.id === 'namba-airport')
       return { lat: 34.667158505175045, lng: 135.50034473595477 };
-  }
-  if ((item.type === 'custom' || item.type === 'tour') && item.lat && item.lng) {
-    return { lat: parseFloat(item.lat), lng: parseFloat(item.lng) };
   }
   return null;
 }
@@ -959,26 +959,30 @@ function editPlanItem(dayKey, idx) {
           <label>備註</label>
           <textarea id="editItemNote" rows="3" placeholder="輸入備註信息...">${item.note || ''}</textarea>
         </div>
-        ${(item.type === 'custom' || item.type === 'tour') ? `
-        <div class="edit-item-row">
-          <div class="edit-item-field">
-            <label>緯度 (lat)</label>
-            <input type="text" id="editItemLat" value="${item.lat || ''}" />
+        <details class="edit-item-loc-section" ${(item.type === 'custom' || item.type === 'tour') ? 'open' : ''}>
+          <summary style="cursor:pointer;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px;display:flex;align-items:center;gap:5px">
+            <i class="fa fa-location-dot" style="color:var(--info)"></i> 編輯位置座標
+            ${(() => { const c = getItemCoords(item); return c ? `<span style="font-weight:400;color:var(--text3);font-size:11px;margin-left:auto">${c.lat.toFixed(4)}, ${c.lng.toFixed(4)}</span>` : '<span style="font-weight:400;color:var(--danger);font-size:11px;margin-left:auto">尚無座標</span>'; })()}
+          </summary>
+          <div class="edit-item-row">
+            <div class="edit-item-field">
+              <label>緯度 (lat)</label>
+              <input type="text" id="editItemLat" value="${item.lat || (() => { const c = getItemCoords(item); return c ? c.lat : ''; })()}" />
+            </div>
+            <div class="edit-item-field">
+              <label>經度 (lng)</label>
+              <input type="text" id="editItemLng" value="${item.lng || (() => { const c = getItemCoords(item); return c ? c.lng : ''; })()}" />
+            </div>
           </div>
           <div class="edit-item-field">
-            <label>經度 (lng)</label>
-            <input type="text" id="editItemLng" value="${item.lng || ''}" />
+            <label>🔍 重新定位（輸入地址或地點名）</label>
+            <div style="display:flex;gap:6px">
+              <input type="text" id="editItemGeoSearch" placeholder="例: 蟹道樂 道頓堀 大阪" style="flex:1" />
+              <button onclick="geocodeEditItem()" style="padding:7px 14px;border-radius:8px;background:var(--info);border:none;color:white;font-size:12px;cursor:pointer">搜尋</button>
+            </div>
+            <div id="editItemGeoResult" style="font-size:11px;color:var(--text3);margin-top:4px"></div>
           </div>
-        </div>
-        <div class="edit-item-field">
-          <label>🔍 重新定位（輸入地址或地點名）</label>
-          <div style="display:flex;gap:6px">
-            <input type="text" id="editItemGeoSearch" placeholder="例: 道頓堀 大阪" style="flex:1" />
-            <button onclick="geocodeEditItem()" style="padding:7px 14px;border-radius:8px;background:var(--info);border:none;color:white;font-size:12px;cursor:pointer">搜尋</button>
-          </div>
-          <div id="editItemGeoResult" style="font-size:11px;color:var(--text3);margin-top:4px"></div>
-        </div>
-        ` : ''}
+        </details>
         <div class="edit-item-actions">
           <button class="edit-item-cancel" onclick="closeEditItemModal()">取消</button>
           <button class="edit-item-save" onclick="saveEditItem('${dayKey}', ${idx})">
@@ -1104,12 +1108,16 @@ function saveEditItem(dayKey, idx) {
   item.time = time || '';
   item.note = note || '';
   
-  // For custom items, allow lat/lng editing
-  if (item.type === 'custom' || item.type === 'tour') {
-    const lat = document.getElementById('editItemLat')?.value?.trim();
-    const lng = document.getElementById('editItemLng')?.value?.trim();
-    if (lat) item.lat = parseFloat(lat);
-    if (lng) item.lng = parseFloat(lng);
+  // Save lat/lng for all item types (allows location override)
+  const lat = document.getElementById('editItemLat')?.value?.trim();
+  const lng = document.getElementById('editItemLng')?.value?.trim();
+  if (lat && lng && !isNaN(parseFloat(lat)) && !isNaN(parseFloat(lng))) {
+    item.lat = parseFloat(lat);
+    item.lng = parseFloat(lng);
+  } else if (!lat && !lng) {
+    // Clear override if both fields emptied
+    delete item.lat;
+    delete item.lng;
   }
   
   closeEditItemModal();
