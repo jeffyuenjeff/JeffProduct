@@ -1441,8 +1441,8 @@ html, body {
   background: var(--surface2); border-radius: var(--radius);
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow);
-  width: 100%; max-width: 420px;
-  overflow: hidden;
+  width: 100%; max-width: 520px;
+  max-height: 90vh; overflow-y: auto;
 }
 
 .edit-item-header {
@@ -1508,6 +1508,42 @@ html, body {
 .edit-item-loc-section summary::marker { content: ''; }
 .edit-item-loc-section summary::before { content: '▸ '; font-size: 10px; }
 .edit-item-loc-section[open] summary::before { content: '▾ '; }
+
+/* ── Extra note textarea ── */
+.extra-note-textarea {
+  font-family: 'Noto Sans TC', 'Inter', sans-serif;
+  line-height: 1.7; white-space: pre-wrap;
+}
+
+/* ── Extra note display in popup ── */
+.extra-note-display { margin-top: 8px; }
+.extra-note-label {
+  font-size: 12px; font-weight: 700; color: var(--primary);
+  margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+}
+.extra-note-content {
+  font-size: 13px; color: var(--text2); line-height: 1.7;
+  background: var(--surface, #f5f5f5); border-radius: 10px;
+  padding: 12px 14px; max-height: 50vh; overflow-y: auto;
+}
+.extra-note-content p { margin: 0 0 6px; }
+.extra-note-content ul.extra-note-list {
+  margin: 4px 0 8px 0; padding-left: 18px; list-style: disc;
+}
+.extra-note-content ul.extra-note-list li { margin-bottom: 4px; }
+.extra-note-content a { color: var(--info); word-break: break-all; }
+
+/* ── Card edit button ── */
+.card-edit-btn {
+  position: absolute; top: 8px; right: 8px; z-index: 2;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(0,0,0,.5); color: #fff; border: none;
+  font-size: 12px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .2s;
+}
+.card:hover .card-edit-btn, .card-edit-btn:focus { opacity: 1; }
+@media (hover: none) { .card-edit-btn { opacity: .7; } }
 
 /* ── Clickable plan item body ── */
 .plan-item .pi-body { cursor: pointer; }

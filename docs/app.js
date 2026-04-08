@@ -155,6 +155,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderDayTabs();
   renderDayContent(currentDay);
   renderAttractions(ATTRACTIONS);
+  loadCustomFoods();
   renderFood(FOOD);
   renderTransport();
   renderShopping();
@@ -942,8 +943,15 @@ function editPlanItem(dayKey, idx) {
           </div>
         </div>
         <div class="edit-item-field">
-          <label>備註</label>
-          <textarea id="editItemNote" rows="3" placeholder="輸入備註信息...">${item.note || ''}</textarea>
+          <label>備註（顯示在卡片上）</label>
+          <textarea id="editItemNote" rows="2" placeholder="簡短備註，例：預約號碼、注意事項...">${item.note || ''}</textarea>
+        </div>
+        <div class="edit-item-field">
+          <label>📋 詳細備忘（步驟、連結、詳情）</label>
+          <textarea id="extraEditItemNote" rows="6" placeholder="支援逐點列出和連結，例：
+• 官網預約: https://example.com
+• 提早30分鐘到場
+• 帶護照" class="extra-note-textarea">${(item.extraNote || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
         </div>
         <details class="edit-item-loc-section" ${(item.type === 'custom' || item.type === 'tour') ? 'open' : ''}>
           <summary style="cursor:pointer;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px;display:flex;align-items:center;gap:5px">
@@ -1090,9 +1098,12 @@ function saveEditItem(dayKey, idx) {
   const time = document.getElementById('editItemTime')?.value?.trim();
   const note = document.getElementById('editItemNote')?.value?.trim();
   
+  const extraNote = document.getElementById('extraEditItemNote')?.value?.trim();
+  
   if (name) item.name = name;
   item.time = time || '';
   item.note = note || '';
+  item.extraNote = extraNote || '';
   
   // Save lat/lng for all item types (allows location override)
   const lat = document.getElementById('editItemLat')?.value?.trim();
@@ -1711,10 +1722,41 @@ function closeAttrDetailPopup() {
   if (popup) { popup.classList.remove('show'); setTimeout(() => popup.remove(), 250); }
 }
 
+// Format extraNote text: convert URLs to links and bullet points
+function formatExtraNote(text) {
+  if (!text) return '';
+  // Escape HTML
+  let s = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  // Convert URLs to clickable links
+  s = s.replace(/(https?:\/\/[^\s)]+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:var(--info);word-break:break-all">$1</a>');
+  // Convert lines starting with • or - or * or number. to list items
+  const lines = s.split('\n');
+  let html = '';
+  let inList = false;
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (/^[•\-\*]\s/.test(trimmed) || /^\d+[.)、]\s/.test(trimmed)) {
+      if (!inList) { html += '<ul class="extra-note-list">'; inList = true; }
+      html += `<li>${trimmed.replace(/^[•\-\*]\s*/, '').replace(/^\d+[.)、]\s*/, '')}</li>`;
+    } else {
+      if (inList) { html += '</ul>'; inList = false; }
+      if (trimmed) html += `<p>${trimmed}</p>`;
+    }
+  }
+  if (inList) html += '</ul>';
+  return html;
+}
+
 // Show full attraction detail when tapping a plan item in day timeline
 function showPlanItemDetail(dayKey, idx) {
   const item = plan.days?.[dayKey]?.items?.[idx];
   if (!item) return;
+
+  // If the item has extraNote, show it in a dedicated panel
+  if (item.extraNote) {
+    showExtraNotePopup(item);
+    return;
+  }
 
   // Try to find matching attraction data
   let a = null;
@@ -1732,9 +1774,34 @@ function showPlanItemDetail(dayKey, idx) {
   } else if (f) {
     showFoodPopup(f);
   } else {
-    // Generic item — show simple info
     showGenericItemPopup(item);
   }
+}
+
+function showExtraNotePopup(item) {
+  const existing = document.getElementById('attrDetailPopup');
+  if (existing) existing.remove();
+
+  const popup = document.createElement('div');
+  popup.className = 'attr-detail-popup';
+  popup.id = 'attrDetailPopup';
+  popup.onclick = e => { if (e.target === popup) closeAttrDetailPopup(); };
+  popup.innerHTML = `
+    <div class="attr-detail-panel">
+      <button class="attr-detail-close" onclick="closeAttrDetailPopup()"><i class="fa fa-xmark"></i></button>
+      <div class="attr-detail-body">
+        <div class="attr-detail-name">${item.name || '未命名'}</div>
+        ${item.time ? `<div class="attr-detail-row" style="margin-bottom:8px"><i class="fa fa-clock"></i> <span>${item.time}</span></div>` : ''}
+        ${item.note ? `<div class="attr-detail-desc" style="margin-bottom:12px;padding:8px 10px;background:var(--surface,#f5f5f5);border-radius:8px;font-size:12px">${item.note}</div>` : ''}
+        <div class="extra-note-display">
+          <div class="extra-note-label"><i class="fa fa-clipboard-list"></i> 詳細備忘</div>
+          <div class="extra-note-content">${formatExtraNote(item.extraNote)}</div>
+        </div>
+        <div class="attr-detail-tags" style="margin-top:12px"><span class="card-tag">${item.type || '自訂'}</span></div>
+      </div>
+    </div>`;
+  document.body.appendChild(popup);
+  requestAnimationFrame(() => popup.classList.add('show'));
 }
 
 function showFoodPopup(f) {
@@ -1807,6 +1874,9 @@ function renderFood(list) {
       <div class="card-img-wrapper">
         <img src="${f.img}" alt="${f.name}" loading="lazy" onerror="this.src='https://placehold.co/400x200/1a1a2e/555?text=No+Image'"/>
         ${f.tags.includes('必吃') ? '<div class="card-badge">🔥 必吃</div>' : ''}
+        <button class="card-edit-btn" onclick="editFoodItem('${f.id}')" title="編輯">
+          <i class="fa fa-pen"></i>
+        </button>
       </div>
       <div class="card-body">
         <div class="card-region"><i class="fa fa-location-dot"></i> ${f.area}</div>
@@ -1829,11 +1899,12 @@ function renderFood(list) {
             <i class="fa fa-plus"></i> 加入
           </button>
         </div>
-        <div style="margin-top:10px">
+        <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
           <a href="https://www.google.com/maps/search/${encodeURIComponent(f.shopName+' '+f.area+' 大阪')}"
              target="_blank" style="font-size:11px;color:var(--success);text-decoration:none;display:flex;align-items:center;gap:5px">
             <i class="fa fa-map-location-dot"></i> 在地圖查看
           </a>
+          ${f._custom ? `<button onclick="deleteFoodItem('${f.id}')" style="margin-left:auto;font-size:10px;color:var(--danger);background:none;border:1px solid var(--danger);border-radius:6px;padding:2px 8px;cursor:pointer"><i class="fa fa-trash"></i> 刪除</button>` : ''}
         </div>
       </div>
     </div>`).join('');
@@ -1870,6 +1941,247 @@ function addFoodToDay(e, id) {
     if (currentTheme === 'cute') { renderCuteTimeline(dayKey); renderCuteSummaryGrid(); }
     showToast(`✅ ${f.name} 已加入第${day}天！`, 'success');
   });
+}
+
+// ─────────────── FOOD EDIT / ADD NEW ───────────────
+function editFoodItem(id) {
+  const f = FOOD.find(x => x.id === id);
+  if (!f) return;
+  openFoodEditModal(f, false);
+}
+
+function openAddFood() {
+  const newFood = {
+    id: 'f_custom_' + Date.now(),
+    name: '', type: '正餐', shopName: '', area: '難波・道頓堀',
+    address: '', priceJPY: '', priceHKD: '', rating: 3,
+    desc: '', img: '', tags: [], lat: '', lng: '', _custom: true
+  };
+  openFoodEditModal(newFood, true);
+}
+
+function openFoodEditModal(f, isNew) {
+  const existing = document.getElementById('foodEditModal');
+  if (existing) existing.remove();
+
+  const escAttr = s => (s || '').replace(/"/g, '&quot;');
+  const tagOptions = ['必吃','大阪名物','街食','海鮮','高級','正餐','甜點','拉麵','居酒屋','和牛','市場','咖啡'];
+
+  const modal = document.createElement('div');
+  modal.className = 'edit-item-modal';
+  modal.id = 'foodEditModal';
+  modal.innerHTML = `
+    <div class="edit-item-panel">
+      <div class="edit-item-header">
+        <span>${isNew ? '➕ 新增美食' : '✏️ 編輯美食'}</span>
+        <button onclick="closeFoodEditModal()"><i class="fa fa-xmark"></i></button>
+      </div>
+      <div class="edit-item-body">
+        <div class="edit-item-row">
+          <div class="edit-item-field" style="flex:2">
+            <label>名稱 *</label>
+            <input type="text" id="foodEditName" value="${escAttr(f.name)}" placeholder="例: 蟹道樂 晚餐" />
+          </div>
+          <div class="edit-item-field" style="flex:1">
+            <label>類型</label>
+            <select id="foodEditType" style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13px">
+              ${['小食・街食','正餐','市場・海鮮','甜點・飲品','拉麵','居酒屋','咖啡','其他'].map(t =>
+                `<option value="${t}" ${f.type === t ? 'selected' : ''}>${t}</option>`
+              ).join('')}
+            </select>
+          </div>
+        </div>
+        <div class="edit-item-row">
+          <div class="edit-item-field">
+            <label>店名</label>
+            <input type="text" id="foodEditShop" value="${escAttr(f.shopName)}" placeholder="例: かに道楽 道頓堀本店" />
+          </div>
+          <div class="edit-item-field">
+            <label>地區</label>
+            <input type="text" id="foodEditArea" value="${escAttr(f.area)}" placeholder="例: 難波・道頓堀" />
+          </div>
+        </div>
+        <div class="edit-item-field">
+          <label>地址</label>
+          <input type="text" id="foodEditAddr" value="${escAttr(f.address)}" placeholder="日文地址" />
+        </div>
+        <div class="edit-item-field">
+          <label>描述</label>
+          <textarea id="foodEditDesc" rows="3" placeholder="美食介紹...">${f.desc || ''}</textarea>
+        </div>
+        <div class="edit-item-field">
+          <label>圖片網址</label>
+          <div style="display:flex;gap:6px;align-items:center">
+            <input type="text" id="foodEditImg" value="${escAttr(f.img)}" placeholder="https://..." style="flex:1" />
+            <img id="foodEditImgPreview" src="${f.img || ''}" style="width:48px;height:48px;border-radius:8px;object-fit:cover;border:1px solid var(--border)" onerror="this.style.display='none'" onload="this.style.display='block'" />
+          </div>
+          <div style="font-size:10px;color:var(--text3);margin-top:3px">貼上 Unsplash / Google 圖片的直接連結</div>
+        </div>
+        <div class="edit-item-row">
+          <div class="edit-item-field">
+            <label>價格 (¥)</label>
+            <input type="text" id="foodEditPriceJPY" value="${escAttr(String(f.priceJPY||''))}" placeholder="例: 1200～2000" />
+          </div>
+          <div class="edit-item-field">
+            <label>價格 (HK$)</label>
+            <input type="text" id="foodEditPriceHKD" value="${escAttr(String(f.priceHKD||''))}" placeholder="例: 64～106" />
+          </div>
+          <div class="edit-item-field">
+            <label>評分 (1-5)</label>
+            <select id="foodEditRating" style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13px">
+              ${[5,4,3,2,1].map(n => `<option value="${n}" ${f.rating==n?'selected':''}>${'⭐'.repeat(n)}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+        <div class="edit-item-field">
+          <label>標籤（可多選）</label>
+          <div style="display:flex;flex-wrap:wrap;gap:4px" id="foodEditTags">
+            ${tagOptions.map(t => `<button type="button" onclick="this.classList.toggle('active')" class="fc${(f.tags||[]).includes(t)?' active':''}" style="font-size:11px;padding:4px 10px">${t}</button>`).join('')}
+          </div>
+        </div>
+        <details class="edit-item-loc-section">
+          <summary style="cursor:pointer;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px;display:flex;align-items:center;gap:5px">
+            <i class="fa fa-location-dot" style="color:var(--info)"></i> 位置座標
+            ${f.lat && f.lng ? `<span style="font-weight:400;color:var(--text3);font-size:11px;margin-left:auto">${Number(f.lat).toFixed(4)}, ${Number(f.lng).toFixed(4)}</span>` : '<span style="font-weight:400;color:var(--danger);font-size:11px;margin-left:auto">尚無座標</span>'}
+          </summary>
+          <div class="edit-item-row">
+            <div class="edit-item-field">
+              <label>緯度 (lat)</label>
+              <input type="text" id="foodEditLat" value="${f.lat || ''}" />
+            </div>
+            <div class="edit-item-field">
+              <label>經度 (lng)</label>
+              <input type="text" id="foodEditLng" value="${f.lng || ''}" />
+            </div>
+          </div>
+          <div class="edit-item-field">
+            <label>🔍 搜尋地點</label>
+            <div style="display:flex;gap:6px">
+              <input type="text" id="foodEditGeoSearch" placeholder="例: 蟹道樂 道頓堀 大阪" style="flex:1" />
+              <button onclick="geocodeFoodEdit()" style="padding:7px 14px;border-radius:8px;background:var(--info);border:none;color:white;font-size:12px;cursor:pointer">搜尋</button>
+            </div>
+            <div id="foodEditGeoResult" style="font-size:11px;color:var(--text3);margin-top:4px"></div>
+          </div>
+        </details>
+        <div class="edit-item-actions">
+          <button class="edit-item-cancel" onclick="closeFoodEditModal()">取消</button>
+          ${!isNew ? '' : `<button class="edit-item-cancel" style="color:var(--danger);border-color:var(--danger)" onclick="closeFoodEditModal()">放棄</button>`}
+          <button class="edit-item-save" onclick="saveFoodEdit('${f.id}', ${isNew})">
+            <i class="fa fa-save"></i> ${isNew ? '新增' : '儲存'}
+          </button>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  // Live preview for image URL
+  const imgInput = document.getElementById('foodEditImg');
+  if (imgInput) imgInput.addEventListener('input', () => {
+    const prev = document.getElementById('foodEditImgPreview');
+    if (prev) prev.src = imgInput.value;
+  });
+}
+
+function closeFoodEditModal() {
+  const m = document.getElementById('foodEditModal');
+  if (m) m.remove();
+}
+
+async function geocodeFoodEdit() {
+  const q = document.getElementById('foodEditGeoSearch')?.value?.trim();
+  const resultEl = document.getElementById('foodEditGeoResult');
+  if (!q || !resultEl) return;
+  resultEl.textContent = '搜尋中...';
+  try {
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1`);
+    const data = await res.json();
+    if (data.length > 0) {
+      document.getElementById('foodEditLat').value = data[0].lat;
+      document.getElementById('foodEditLng').value = data[0].lon;
+      resultEl.textContent = `✅ ${data[0].display_name.slice(0, 60)}`;
+    } else { resultEl.textContent = '找不到結果'; }
+  } catch { resultEl.textContent = '搜尋失敗'; }
+}
+
+function saveFoodEdit(id, isNew) {
+  const name = document.getElementById('foodEditName')?.value?.trim();
+  if (!name) { showToast('⚠️ 請輸入名稱', ''); return; }
+
+  const data = {
+    id: id,
+    name: name,
+    type: document.getElementById('foodEditType')?.value || '正餐',
+    shopName: document.getElementById('foodEditShop')?.value?.trim() || name,
+    area: document.getElementById('foodEditArea')?.value?.trim() || '',
+    address: document.getElementById('foodEditAddr')?.value?.trim() || '',
+    desc: document.getElementById('foodEditDesc')?.value?.trim() || '',
+    img: document.getElementById('foodEditImg')?.value?.trim() || '',
+    priceJPY: document.getElementById('foodEditPriceJPY')?.value?.trim() || '',
+    priceHKD: document.getElementById('foodEditPriceHKD')?.value?.trim() || '',
+    rating: parseInt(document.getElementById('foodEditRating')?.value) || 3,
+    tags: [...document.querySelectorAll('#foodEditTags .fc.active')].map(b => b.textContent),
+    lat: parseFloat(document.getElementById('foodEditLat')?.value) || null,
+    lng: parseFloat(document.getElementById('foodEditLng')?.value) || null,
+    _custom: isNew ? true : (FOOD.find(x => x.id === id)?._custom || false)
+  };
+
+
+  if (isNew) {
+    FOOD.push(data);
+    // Save custom foods to localStorage
+    saveCustomFoods();
+    showToast(`✅ ${name} 已新增！`, 'success');
+  } else {
+    const idx = FOOD.findIndex(x => x.id === id);
+    if (idx !== -1) {
+      // Preserve _custom flag
+      data._custom = FOOD[idx]._custom || false;
+      FOOD[idx] = data;
+      saveCustomFoods();
+      showToast(`✅ ${name} 已更新！`, 'success');
+    }
+  }
+
+  closeFoodEditModal();
+  renderFood(FOOD);
+}
+
+function deleteFoodItem(id) {
+  if (!confirm('確定要刪除此美食項目嗎？')) return;
+  const idx = FOOD.findIndex(x => x.id === id);
+  if (idx !== -1) {
+    FOOD.splice(idx, 1);
+    saveCustomFoods();
+    renderFood(FOOD);
+    showToast('🗑 已刪除', '');
+  }
+}
+
+function saveCustomFoods() {
+  // Save all custom and modified foods to localStorage
+  const customFoods = FOOD.filter(f => f._custom);
+  const modifiedFoods = {};
+  FOOD.forEach(f => { if (!f._custom) modifiedFoods[f.id] = f; });
+  localStorage.setItem('osaka_custom_foods', JSON.stringify(customFoods));
+  localStorage.setItem('osaka_modified_foods', JSON.stringify(modifiedFoods));
+}
+
+function loadCustomFoods() {
+  // Load custom foods
+  try {
+    const custom = JSON.parse(localStorage.getItem('osaka_custom_foods') || '[]');
+    custom.forEach(f => {
+      f._custom = true;
+      if (!FOOD.find(x => x.id === f.id)) FOOD.push(f);
+    });
+  } catch {}
+  // Load modified foods (overwrite originals)
+  try {
+    const mods = JSON.parse(localStorage.getItem('osaka_modified_foods') || '{}');
+    Object.entries(mods).forEach(([id, data]) => {
+      const idx = FOOD.findIndex(x => x.id === id);
+      if (idx !== -1) FOOD[idx] = data;
+    });
+  } catch {}
 }
 
 // ─────────────────── TRANSPORT ───────────────────
@@ -3547,6 +3859,12 @@ window.filterFood = filterFood;
 window.filterBuyItems = filterBuyItems;
 window.addAttrToDay = addAttrToDay;
 window.addFoodToDay = addFoodToDay;
+window.editFoodItem = editFoodItem;
+window.openAddFood = openAddFood;
+window.closeFoodEditModal = closeFoodEditModal;
+window.saveFoodEdit = saveFoodEdit;
+window.deleteFoodItem = deleteFoodItem;
+window.geocodeFoodEdit = geocodeFoodEdit;
 window.showAttractionDetail = showAttractionDetail;
 window.closeAttrDetailPopup = closeAttrDetailPopup;
 window.showPlanItemDetail = showPlanItemDetail;
