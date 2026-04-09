@@ -468,7 +468,8 @@ function renderCuteTimeline(dayKey) {
 function renderCuteTimelineItem(item, dayKey, idx) {
   const typeIcon = ITEM_ICONS[item.type] || '<i class="fa fa-circle"></i>';
   const hasCoords = !!getItemCoords(item);
-  const mapIcon = item.googleMapUrl ? `<a href="${item.googleMapUrl}" target="_blank" rel="noopener" class="cute-tl-map-link" onclick="event.stopPropagation()" title="Google Maps"><i class="fa fa-map-location-dot"></i></a>` : '';
+  const gMapUrl = item.googleMapUrl || extractGoogleMapUrl(item.extraNote) || '';
+  const mapIcon = gMapUrl ? `<a href="${gMapUrl}" target="_blank" rel="noopener" class="cute-tl-map-link" onclick="event.stopPropagation()" title="Google Maps"><i class="fa fa-map-location-dot"></i></a>` : '';
   
   return `
     <div class="cute-tl-item" draggable="true"
@@ -891,7 +892,8 @@ function getDayOfWeek(dateStr) {
 
 function renderPlanItem(item, dayKey, idx) {
   const typeIcon = ITEM_ICONS[item.type] || '<i class="fa fa-circle"></i>';
-  const mapIcon = item.googleMapUrl ? `<a href="${item.googleMapUrl}" target="_blank" rel="noopener" class="pi-map-link" onclick="event.stopPropagation()" title="Google Maps"><i class="fa fa-map-location-dot"></i></a>` : '';
+  const gMapUrl = item.googleMapUrl || extractGoogleMapUrl(item.extraNote) || '';
+  const mapIcon = gMapUrl ? `<a href="${gMapUrl}" target="_blank" rel="noopener" class="pi-map-link" onclick="event.stopPropagation()" title="Google Maps"><i class="fa fa-map-location-dot"></i></a>` : '';
   return `
     <div class="plan-item" draggable="true"
          ondragstart="dragStart(event,'${dayKey}',${idx})"
@@ -1807,24 +1809,39 @@ function closeAttrDetailPopup() {
 }
 
 // Format extraNote text: convert URLs to links and bullet points
+// Extract Google Maps URLs from text
+function extractGoogleMapUrl(text) {
+  if (!text) return null;
+  const m = text.match(/(https?:\/\/(?:www\.)?google\.com\/maps[^\s)]*)/i)
+         || text.match(/(https?:\/\/maps\.google\.com[^\s)]*)/i)
+         || text.match(/(https?:\/\/goo\.gl\/maps[^\s)]*)/i);
+  return m ? m[1] : null;
+}
+
 function formatExtraNote(text) {
   if (!text) return '';
-  // Escape HTML
-  let s = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  // Convert URLs to clickable links
-  s = s.replace(/(https?:\/\/[^\s)]+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:var(--info);word-break:break-all">$1</a>');
-  // Convert lines starting with • or - or * or number. to list items
-  const lines = s.split('\n');
+  // Process line by line: strip bullet prefix FIRST, then linkify
+  const rawLines = text.split('\n');
   let html = '';
   let inList = false;
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (/^[•\-\*]\s/.test(trimmed) || /^\d+[.)、]\s/.test(trimmed)) {
+  for (const line of rawLines) {
+    let trimmed = line.trim();
+    if (!trimmed) continue;
+    const isBullet = /^[•\-\*]\s/.test(trimmed) || /^\d+[.)、]\s/.test(trimmed);
+    if (isBullet) {
+      // Strip bullet prefix to get clean content
+      trimmed = trimmed.replace(/^[•\-\*]\s*/, '').replace(/^\d+[.)、]\s*/, '');
+    }
+    // Escape HTML
+    let safe = trimmed.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    // Convert URLs to clickable links (only match absolute URLs)
+    safe = safe.replace(/(https?:\/\/[^\s)]+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:var(--info);word-break:break-all">$1</a>');
+    if (isBullet) {
       if (!inList) { html += '<ul class="extra-note-list">'; inList = true; }
-      html += `<li>${trimmed.replace(/^[•\-\*]\s*/, '').replace(/^\d+[.)、]\s*/, '')}</li>`;
+      html += `<li>${safe}</li>`;
     } else {
       if (inList) { html += '</ul>'; inList = false; }
-      if (trimmed) html += `<p>${trimmed}</p>`;
+      html += `<p>${safe}</p>`;
     }
   }
   if (inList) html += '</ul>';
@@ -1866,6 +1883,9 @@ function showExtraNotePopup(item) {
   const existing = document.getElementById('attrDetailPopup');
   if (existing) existing.remove();
 
+  // Auto-detect Google Maps URL from extraNote or googleMapUrl field
+  const gMapUrl = item.googleMapUrl || extractGoogleMapUrl(item.extraNote) || '';
+
   const popup = document.createElement('div');
   popup.className = 'attr-detail-popup';
   popup.id = 'attrDetailPopup';
@@ -1877,11 +1897,11 @@ function showExtraNotePopup(item) {
         <div class="attr-detail-name">${item.name || '未命名'}</div>
         ${item.time ? `<div class="attr-detail-row" style="margin-bottom:8px"><i class="fa fa-clock"></i> <span>${item.time}</span></div>` : ''}
         ${item.note ? `<div class="attr-detail-desc" style="margin-bottom:12px;padding:8px 10px;background:var(--surface,#f5f5f5);border-radius:8px;font-size:12px">${item.note}</div>` : ''}
+        ${gMapUrl ? `<div class="attr-detail-actions" style="margin-bottom:10px"><a href="${gMapUrl}" target="_blank" rel="noopener" class="attr-detail-link" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:rgba(66,133,244,0.08);border:1px solid rgba(66,133,244,0.25);font-size:12px;font-weight:600;text-decoration:none"><i class="fa fa-map-location-dot" style="color:#4285F4"></i> 在 Google Maps 查看</a></div>` : ''}
         ${item.extraNote ? `<div class="extra-note-display">
           <div class="extra-note-label"><i class="fa fa-clipboard-list"></i> 詳細備忘</div>
           <div class="extra-note-content">${formatExtraNote(item.extraNote)}</div>
         </div>` : ''}
-        ${item.googleMapUrl ? `<div class="attr-detail-actions" style="margin-top:12px"><a href="${item.googleMapUrl}" target="_blank" rel="noopener" class="attr-detail-link"><i class="fa fa-map-location-dot" style="color:#4285F4"></i> 在 Google Maps 查看</a></div>` : ''}
         <div class="attr-detail-tags" style="margin-top:12px"><span class="card-tag">${ITEM_TYPE_LABELS[item.type] || item.type || '自訂'}</span></div>
       </div>
     </div>`;
@@ -1932,6 +1952,8 @@ function showGenericItemPopup(item) {
   const existing = document.getElementById('attrDetailPopup');
   if (existing) existing.remove();
 
+  const gMapUrl = item.googleMapUrl || '';
+
   const popup = document.createElement('div');
   popup.className = 'attr-detail-popup';
   popup.id = 'attrDetailPopup';
@@ -1943,7 +1965,7 @@ function showGenericItemPopup(item) {
         <div class="attr-detail-name">${item.name || '未命名'}</div>
         ${item.time ? `<div class="attr-detail-row"><i class="fa fa-clock"></i> <span>${item.time}</span></div>` : ''}
         ${item.note ? `<div class="attr-detail-desc">${item.note}</div>` : ''}
-        ${item.googleMapUrl ? `<div class="attr-detail-actions" style="margin-top:8px"><a href="${item.googleMapUrl}" target="_blank" rel="noopener" class="attr-detail-link"><i class="fa fa-map-location-dot" style="color:#4285F4"></i> 在 Google Maps 查看</a></div>` : ''}
+        ${gMapUrl ? `<div class="attr-detail-actions" style="margin-top:8px"><a href="${gMapUrl}" target="_blank" rel="noopener" class="attr-detail-link" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:rgba(66,133,244,0.08);border:1px solid rgba(66,133,244,0.25);font-size:12px;font-weight:600;text-decoration:none"><i class="fa fa-map-location-dot" style="color:#4285F4"></i> 在 Google Maps 查看</a></div>` : ''}
         <div class="attr-detail-tags"><span class="card-tag">${ITEM_TYPE_LABELS[item.type] || item.type || '自訂'}</span></div>
       </div>
     </div>`;
