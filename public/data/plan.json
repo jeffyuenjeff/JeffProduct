@@ -1,7 +1,7 @@
 {
   "version": "2.0",
   "activePlan": "core",
-  "lastSaved": "2026-04-09T14:59:39.203Z",
+  "lastSaved": "2026-04-09T15:08:23.036Z",
   "tripInfo": {
     "ticketNo": "NE2603042020388495",
     "departure": "2026-04-29",
@@ -33,7 +33,7 @@
               "name": "🏨 Cross Hotel 大阪 Check-in",
               "lat": 34.66992763831978,
               "lng": 135.50072918683398,
-              "time": "15:00",
+              "time": "15:30",
               "note": "已預訂 ✅ 住宿 4/29-5/1（2晚）。心齋橋站步行4分鐘 / 難波站步行8分鐘",
               "extraNote": "",
               "googleMapUrl": ""
@@ -837,7 +837,7 @@
           "name": "🏨 Cross Hotel 大阪 Check-in",
           "lat": 34.66992763831978,
           "lng": 135.50072918683398,
-          "time": "15:00",
+          "time": "15:30",
           "note": "已預訂 ✅ 住宿 4/29-5/1（2晚）。心齋橋站步行4分鐘 / 難波站步行8分鐘",
           "extraNote": "",
           "googleMapUrl": ""
