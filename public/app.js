@@ -34,7 +34,7 @@ const DAY_COLORS = {
 
 const DAY_ICONS = {
   day1: '✈️', day2: '🏯', day3: '🏙️',
-  day4: '⛩️', day5: '🍓', day6: '🚢'
+  day4: '⛩️', day5: '🦌', day6: '🚢'
 };
 
 const ITEM_ICONS = {
@@ -43,6 +43,7 @@ const ITEM_ICONS = {
   shopping:   '<i class="fa fa-bag-shopping"></i>',
   transport:  '<i class="fa fa-train-subway"></i>',
   tour:       '<i class="fa fa-map-location-dot"></i>',
+  hotel:      '<i class="fa fa-hotel"></i>',
   custom:     '<i class="fa fa-location-pin"></i>'
 };
 
@@ -52,7 +53,8 @@ const ITEM_TYPE_LABELS = {
   food: '美食',
   shopping: '購物',
   transport: '交通',
-  tour: '導覽'
+  tour: '導覽',
+  hotel: '酒店'
 };
 
 // ─────────────────── CLOUD SYNC (JSONBin.io) ───────────────────
@@ -174,6 +176,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   loadCustomFoods();
   renderFood(FOOD);
   renderTransport();
+  loadHotelEdits();
+  loadShoppingEdits();
   renderShopping();
   renderTour();
   renderHotels();
@@ -2383,6 +2387,10 @@ function renderShoppingMalls(list) {
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
           <div style="width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,var(--info),#1e5ac4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white">${i+1}</div>
           <div class="mall-name">${m.name}</div>
+          <div style="margin-left:auto;display:flex;gap:4px">
+            <button onclick="editShoppingMall('${m.id}')" class="hca-btn hca-edit" title="編輯" style="padding:4px 8px;font-size:11px"><i class="fa fa-pen"></i></button>
+            <button onclick="deleteShoppingMall('${m.id}')" class="hca-btn hca-del" title="刪除" style="padding:4px 8px;font-size:11px"><i class="fa fa-trash"></i></button>
+          </div>
         </div>
         <div class="mall-type">${m.type}</div>
         <div class="mall-desc">${m.desc}</div>
@@ -2409,6 +2417,10 @@ function renderMustBuy(list) {
           <div class="buy-price">HK$${b.priceHKD}</div>
           <div class="buy-hint">📍 ${b.shopHint}</div>
         </div>
+        <div style="display:flex;gap:4px">
+          <button onclick="editMustBuyItem('${b.id}')" class="hca-btn hca-edit" title="編輯" style="padding:4px 8px;font-size:11px"><i class="fa fa-pen"></i></button>
+          <button onclick="deleteMustBuyItem('${b.id}')" class="hca-btn hca-del" title="刪除" style="padding:4px 8px;font-size:11px"><i class="fa fa-trash"></i></button>
+        </div>
       </div>
     </div>`).join('');
 }
@@ -2418,6 +2430,284 @@ function filterBuyItems(cat, btn) {
   btn.classList.add('active');
   const filtered = cat === 'all' ? MUST_BUY : MUST_BUY.filter(x => x.category === cat);
   renderMustBuy(filtered);
+}
+
+// ─────────────── SHOPPING MALL EDIT / ADD ───────────────
+function editShoppingMall(id) {
+  const m = SHOPPING_CENTERS.find(x => x.id === id);
+  if (!m) return;
+  openShoppingMallEditModal(m, false);
+}
+
+function openAddShoppingMall() {
+  const newMall = {
+    id: 'sc_custom_' + Date.now(), name: '', area: '', type: '購物商場',
+    desc: '', img: '', hours: '', access: '', lat: null, lng: null, highlights: []
+  };
+  openShoppingMallEditModal(newMall, true);
+}
+
+function openShoppingMallEditModal(m, isNew) {
+  const existing = document.getElementById('shoppingMallEditModal');
+  if (existing) existing.remove();
+  const escAttr = s => (s || '').replace(/"/g, '&quot;');
+  const typeOptions = ['商店街','購物商場','百貨公司','折扣百貨','潮流街區','電子商圈','複合設施','其他'];
+
+  const modal = document.createElement('div');
+  modal.className = 'edit-item-modal';
+  modal.id = 'shoppingMallEditModal';
+  modal.innerHTML = `
+    <div class="edit-item-panel">
+      <div class="edit-item-header">
+        <span>${isNew ? '➕ 新增購物中心' : '✏️ 編輯購物中心'}</span>
+        <button onclick="closeShoppingMallEditModal()"><i class="fa fa-xmark"></i></button>
+      </div>
+      <div class="edit-item-body">
+        <div class="edit-item-row">
+          <div class="edit-item-field" style="flex:2">
+            <label>名稱 *</label>
+            <input type="text" id="mallEditName" value="${escAttr(m.name)}" placeholder="例: 心齋橋筋商店街" />
+          </div>
+          <div class="edit-item-field" style="flex:1">
+            <label>地區</label>
+            <input type="text" id="mallEditArea" value="${escAttr(m.area)}" placeholder="例: 心齋橋" />
+          </div>
+        </div>
+        <div class="edit-item-field">
+          <label>類型</label>
+          <select id="mallEditType" style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13px">
+            ${typeOptions.map(t => `<option value="${t}" ${m.type === t ? 'selected' : ''}>${t}</option>`).join('')}
+          </select>
+        </div>
+        <div class="edit-item-field">
+          <label>描述</label>
+          <textarea id="mallEditDesc" rows="3" placeholder="購物中心介紹...">${m.desc || ''}</textarea>
+        </div>
+        <div class="edit-item-field">
+          <label>圖片網址</label>
+          <div style="display:flex;gap:6px;align-items:center">
+            <input type="text" id="mallEditImg" value="${escAttr(m.img)}" placeholder="https://..." style="flex:1" />
+            <img id="mallEditImgPreview" src="${m.img || ''}" style="width:48px;height:48px;border-radius:8px;object-fit:cover;border:1px solid var(--border)" onerror="this.style.display='none'" onload="this.style.display='block'" />
+          </div>
+        </div>
+        <div class="edit-item-row">
+          <div class="edit-item-field">
+            <label>營業時間</label>
+            <input type="text" id="mallEditHours" value="${escAttr(m.hours)}" placeholder="例: 11:00～21:00" />
+          </div>
+          <div class="edit-item-field">
+            <label>交通</label>
+            <input type="text" id="mallEditAccess" value="${escAttr(m.access)}" placeholder="例: Metro 心齋橋站" />
+          </div>
+        </div>
+        <div class="edit-item-field">
+          <label>特色亮點（逗號分隔）</label>
+          <input type="text" id="mallEditHighlights" value="${escAttr((m.highlights||[]).join('、'))}" placeholder="例: 藥粧、化妝品、時裝、伴手禮" />
+        </div>
+        <details class="edit-item-loc-section">
+          <summary style="cursor:pointer;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px;display:flex;align-items:center;gap:5px">
+            <i class="fa fa-location-dot" style="color:var(--info)"></i> 位置座標
+            ${m.lat && m.lng ? `<span style="font-weight:400;color:var(--text3);font-size:11px;margin-left:auto">${Number(m.lat).toFixed(4)}, ${Number(m.lng).toFixed(4)}</span>` : '<span style="font-weight:400;color:var(--danger);font-size:11px;margin-left:auto">尚無座標</span>'}
+          </summary>
+          <div class="edit-item-row">
+            <div class="edit-item-field">
+              <label>緯度 (lat)</label>
+              <input type="text" id="mallEditLat" value="${m.lat || ''}" />
+            </div>
+            <div class="edit-item-field">
+              <label>經度 (lng)</label>
+              <input type="text" id="mallEditLng" value="${m.lng || ''}" />
+            </div>
+          </div>
+        </details>
+        <div class="edit-item-actions">
+          <button class="edit-item-cancel" onclick="closeShoppingMallEditModal()">取消</button>
+          <button class="edit-item-save" onclick="saveShoppingMallEdit('${m.id}', ${isNew})">
+            <i class="fa fa-save"></i> ${isNew ? '新增' : '儲存'}
+          </button>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  const imgInput = document.getElementById('mallEditImg');
+  if (imgInput) imgInput.addEventListener('input', () => {
+    const prev = document.getElementById('mallEditImgPreview');
+    if (prev) prev.src = imgInput.value;
+  });
+}
+
+function closeShoppingMallEditModal() {
+  const m = document.getElementById('shoppingMallEditModal');
+  if (m) m.remove();
+}
+
+function saveShoppingMallEdit(id, isNew) {
+  const name = document.getElementById('mallEditName')?.value?.trim();
+  if (!name) { showToast('⚠️ 請輸入名稱', ''); return; }
+  const hlText = document.getElementById('mallEditHighlights')?.value?.trim() || '';
+  const highlights = hlText ? hlText.split(/[,，、]/).map(s => s.trim()).filter(Boolean) : [];
+
+  const data = {
+    id, name,
+    area: document.getElementById('mallEditArea')?.value?.trim() || '',
+    type: document.getElementById('mallEditType')?.value || '購物商場',
+    desc: document.getElementById('mallEditDesc')?.value?.trim() || '',
+    img: document.getElementById('mallEditImg')?.value?.trim() || '',
+    hours: document.getElementById('mallEditHours')?.value?.trim() || '',
+    access: document.getElementById('mallEditAccess')?.value?.trim() || '',
+    lat: parseFloat(document.getElementById('mallEditLat')?.value) || null,
+    lng: parseFloat(document.getElementById('mallEditLng')?.value) || null,
+    highlights
+  };
+
+  if (isNew) {
+    SHOPPING_CENTERS.push(data);
+  } else {
+    const idx = SHOPPING_CENTERS.findIndex(x => x.id === id);
+    if (idx !== -1) SHOPPING_CENTERS[idx] = data;
+  }
+  saveShoppingEdits();
+  closeShoppingMallEditModal();
+  renderShoppingMalls(SHOPPING_CENTERS);
+  showToast(`✅ ${name} 已${isNew ? '新增' : '更新'}！`, 'success');
+}
+
+function deleteShoppingMall(id) {
+  if (!confirm('確定要刪除此購物中心嗎？')) return;
+  const idx = SHOPPING_CENTERS.findIndex(x => x.id === id);
+  if (idx !== -1) SHOPPING_CENTERS.splice(idx, 1);
+  saveShoppingEdits();
+  renderShoppingMalls(SHOPPING_CENTERS);
+  showToast('🗑 已刪除', '');
+}
+
+// ─────────────── MUST BUY EDIT / ADD ───────────────
+function editMustBuyItem(id) {
+  const b = MUST_BUY.find(x => x.id === id);
+  if (!b) return;
+  openMustBuyEditModal(b, false);
+}
+
+function openAddMustBuy() {
+  const newItem = {
+    id: 'b_custom_' + Date.now(), category: '食品・零食',
+    name: '', shopHint: '', priceHKD: '', desc: ''
+  };
+  openMustBuyEditModal(newItem, true);
+}
+
+function openMustBuyEditModal(b, isNew) {
+  const existing = document.getElementById('mustBuyEditModal');
+  if (existing) existing.remove();
+  const escAttr = s => (s || '').replace(/"/g, '&quot;');
+  const catOptions = ['食品・零食','藥粧・美容','家品・生活','時裝・配飾','電子・特色','特色紀念品','甜點・飲品','地道食材','限定版'];
+
+  const modal = document.createElement('div');
+  modal.className = 'edit-item-modal';
+  modal.id = 'mustBuyEditModal';
+  modal.innerHTML = `
+    <div class="edit-item-panel">
+      <div class="edit-item-header">
+        <span>${isNew ? '➕ 新增必買' : '✏️ 編輯必買'}</span>
+        <button onclick="closeMustBuyEditModal()"><i class="fa fa-xmark"></i></button>
+      </div>
+      <div class="edit-item-body">
+        <div class="edit-item-row">
+          <div class="edit-item-field" style="flex:2">
+            <label>名稱 *</label>
+            <input type="text" id="buyEditName" value="${escAttr(b.name)}" placeholder="例: 551蓬萊豬肉包" />
+          </div>
+          <div class="edit-item-field" style="flex:1">
+            <label>分類</label>
+            <select id="buyEditCategory" style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13px">
+              ${catOptions.map(c => `<option value="${c}" ${b.category === c ? 'selected' : ''}>${c}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+        <div class="edit-item-field">
+          <label>描述</label>
+          <textarea id="buyEditDesc" rows="2" placeholder="商品介紹...">${b.desc || ''}</textarea>
+        </div>
+        <div class="edit-item-row">
+          <div class="edit-item-field">
+            <label>價格 (HK$)</label>
+            <input type="text" id="buyEditPrice" value="${escAttr(String(b.priceHKD||''))}" placeholder="例: 12～29/個" />
+          </div>
+          <div class="edit-item-field">
+            <label>購買提示</label>
+            <input type="text" id="buyEditShopHint" value="${escAttr(b.shopHint)}" placeholder="例: 551蓬萊" />
+          </div>
+        </div>
+        <div class="edit-item-actions">
+          <button class="edit-item-cancel" onclick="closeMustBuyEditModal()">取消</button>
+          <button class="edit-item-save" onclick="saveMustBuyEdit('${b.id}', ${isNew})">
+            <i class="fa fa-save"></i> ${isNew ? '新增' : '儲存'}
+          </button>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+function closeMustBuyEditModal() {
+  const m = document.getElementById('mustBuyEditModal');
+  if (m) m.remove();
+}
+
+function saveMustBuyEdit(id, isNew) {
+  const name = document.getElementById('buyEditName')?.value?.trim();
+  if (!name) { showToast('⚠️ 請輸入名稱', ''); return; }
+
+  const data = {
+    id, name,
+    category: document.getElementById('buyEditCategory')?.value || '食品・零食',
+    desc: document.getElementById('buyEditDesc')?.value?.trim() || '',
+    priceHKD: document.getElementById('buyEditPrice')?.value?.trim() || '',
+    shopHint: document.getElementById('buyEditShopHint')?.value?.trim() || ''
+  };
+
+  if (isNew) {
+    MUST_BUY.push(data);
+  } else {
+    const idx = MUST_BUY.findIndex(x => x.id === id);
+    if (idx !== -1) MUST_BUY[idx] = data;
+  }
+  saveShoppingEdits();
+  closeMustBuyEditModal();
+  renderMustBuy(MUST_BUY);
+  showToast(`✅ ${name} 已${isNew ? '新增' : '更新'}！`, 'success');
+}
+
+function deleteMustBuyItem(id) {
+  if (!confirm('確定要刪除此必買商品嗎？')) return;
+  const idx = MUST_BUY.findIndex(x => x.id === id);
+  if (idx !== -1) MUST_BUY.splice(idx, 1);
+  saveShoppingEdits();
+  renderMustBuy(MUST_BUY);
+  showToast('🗑 已刪除', '');
+}
+
+// ─── Shopping persistence ───
+function saveShoppingEdits() {
+  localStorage.setItem('osaka_shopping_centers', JSON.stringify(SHOPPING_CENTERS));
+  localStorage.setItem('osaka_must_buy', JSON.stringify(MUST_BUY));
+}
+
+function loadShoppingEdits() {
+  try {
+    const malls = JSON.parse(localStorage.getItem('osaka_shopping_centers'));
+    if (malls && Array.isArray(malls) && malls.length > 0) {
+      SHOPPING_CENTERS.length = 0;
+      malls.forEach(m => SHOPPING_CENTERS.push(m));
+    }
+  } catch {}
+  try {
+    const buys = JSON.parse(localStorage.getItem('osaka_must_buy'));
+    if (buys && Array.isArray(buys) && buys.length > 0) {
+      MUST_BUY.length = 0;
+      buys.forEach(b => MUST_BUY.push(b));
+    }
+  } catch {}
 }
 
 // ─────────────────── TOUR ───────────────────
@@ -2836,7 +3126,8 @@ function buildHotelCard(h) {
           <i class="fa fa-calendar-plus"></i> 加入行程
         </button>
         ${h.url ? `<a class="hca-btn hca-web" href="${h.url}" target="_blank" rel="noopener"><i class="fa fa-arrow-up-right-from-square"></i> 官網</a>` : ''}
-        ${h.custom ? `<button class="hca-btn hca-del" onclick="removeCustomHotel('${h.id}')" title="移除"><i class="fa fa-trash"></i></button>` : ''}
+        <button class="hca-btn hca-edit" onclick="editHotelItem('${h.id}')" title="編輯"><i class="fa fa-pen"></i></button>
+        <button class="hca-btn hca-del" onclick="deleteHotelItem('${h.id}')" title="移除"><i class="fa fa-trash"></i></button>
       </div>
     </div>`;
   return card;
@@ -3052,6 +3343,295 @@ function removeCustomHotel(id) {
   renderHotels();
   renderHotelMarkers();
   showToast('已移除自訂酒店', 'success');
+}
+
+// ─────────────── HOTEL EDIT / DELETE ───────────────
+function editHotelItem(id) {
+  const h = [...HOTELS, ...CUSTOM_HOTELS].find(x => x.id === id);
+  if (!h) return;
+  openHotelEditModal(h, false);
+}
+
+function openAddHotelFull() {
+  const newHotel = {
+    id: 'custom_h_' + Date.now(), custom: true,
+    area: '難波・道頓堀', name: '', nameCht: '', nameEn: '',
+    stars: 3, priceHKD: 0, priceJPY: 0,
+    lat: null, lng: null, access: '', address: '',
+    img: '', rating: 0, review: 0,
+    tags: [], amenities: [], desc: '', recommend: '', url: ''
+  };
+  openHotelEditModal(newHotel, true);
+}
+
+function openHotelEditModal(h, isNew) {
+  const existing = document.getElementById('hotelEditModal');
+  if (existing) existing.remove();
+
+  const escAttr = s => (s || '').replace(/"/g, '&quot;');
+  const areaOptions = ['難波・道頓堀', '梅田・北區', '其他地區'];
+  const tagOptions = ['溫泉','親子','高級','設計','商務','地鐵直達','新開業','大浴場'];
+  const amenityOptions = ['免費WiFi','早餐','溫泉','健身房','洗衣','行李寄存','接送','停車場'];
+
+  const modal = document.createElement('div');
+  modal.className = 'edit-item-modal';
+  modal.id = 'hotelEditModal';
+  modal.innerHTML = `
+    <div class="edit-item-panel">
+      <div class="edit-item-header">
+        <span>${isNew ? '➕ 新增酒店' : '✏️ 編輯酒店'}</span>
+        <button onclick="closeHotelEditModal()"><i class="fa fa-xmark"></i></button>
+      </div>
+      <div class="edit-item-body">
+        <div class="edit-item-row">
+          <div class="edit-item-field" style="flex:2">
+            <label>中文名稱 *</label>
+            <input type="text" id="hotelEditNameCht" value="${escAttr(h.nameCht || h.name)}" placeholder="例: 大阪難波光芒酒店" />
+          </div>
+          <div class="edit-item-field" style="flex:2">
+            <label>英文名稱</label>
+            <input type="text" id="hotelEditNameEn" value="${escAttr(h.nameEn || '')}" placeholder="例: Candeo Hotels Osaka Namba" />
+          </div>
+        </div>
+        <div class="edit-item-row">
+          <div class="edit-item-field">
+            <label>地區</label>
+            <select id="hotelEditArea" style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13px">
+              ${areaOptions.map(a => `<option value="${a}" ${h.area === a ? 'selected' : ''}>${a}</option>`).join('')}
+            </select>
+          </div>
+          <div class="edit-item-field">
+            <label>星級 (1-5)</label>
+            <select id="hotelEditStars" style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13px">
+              ${[5,4,3,2,1,0].map(n => `<option value="${n}" ${h.stars==n?'selected':''}>${n ? '★'.repeat(n) : '未評級'}</option>`).join('')}
+            </select>
+          </div>
+          <div class="edit-item-field">
+            <label>評分</label>
+            <input type="number" id="hotelEditRating" value="${h.rating || ''}" step="0.1" min="0" max="10" placeholder="8.5" />
+          </div>
+          <div class="edit-item-field">
+            <label>評論數</label>
+            <input type="number" id="hotelEditReview" value="${h.review || ''}" min="0" placeholder="1234" />
+          </div>
+        </div>
+        <div class="edit-item-row">
+          <div class="edit-item-field">
+            <label>價格 (HK$/晚)</label>
+            <input type="number" id="hotelEditPriceHKD" value="${h.priceHKD || ''}" min="0" placeholder="800" />
+          </div>
+          <div class="edit-item-field">
+            <label>價格 (¥/晚)</label>
+            <input type="number" id="hotelEditPriceJPY" value="${h.priceJPY || ''}" min="0" placeholder="15000" />
+          </div>
+        </div>
+        <div class="edit-item-field">
+          <label>交通</label>
+          <input type="text" id="hotelEditAccess" value="${escAttr(h.access)}" placeholder="例: Metro 難波站步行3分鐘" />
+        </div>
+        <div class="edit-item-field">
+          <label>地址</label>
+          <input type="text" id="hotelEditAddress" value="${escAttr(h.address)}" placeholder="日文地址" />
+        </div>
+        <div class="edit-item-field">
+          <label>圖片網址</label>
+          <div style="display:flex;gap:6px;align-items:center">
+            <input type="text" id="hotelEditImg" value="${escAttr(h.img)}" placeholder="https://..." style="flex:1" />
+            <img id="hotelEditImgPreview" src="${h.img || ''}" style="width:48px;height:48px;border-radius:8px;object-fit:cover;border:1px solid var(--border)" onerror="this.style.display='none'" onload="this.style.display='block'" />
+          </div>
+        </div>
+        <div class="edit-item-field">
+          <label>推薦原因 / 描述</label>
+          <textarea id="hotelEditDesc" rows="3" placeholder="酒店介紹...">${h.recommend || h.desc || ''}</textarea>
+        </div>
+        <div class="edit-item-field">
+          <label>官方網址</label>
+          <input type="text" id="hotelEditUrl" value="${escAttr(h.url)}" placeholder="https://..." />
+        </div>
+        <div class="edit-item-field">
+          <label>標籤（可多選）</label>
+          <div style="display:flex;flex-wrap:wrap;gap:4px" id="hotelEditTags">
+            ${tagOptions.map(t => `<button type="button" onclick="this.classList.toggle('active')" class="fc${(h.tags||[]).includes(t)?' active':''}" style="font-size:11px;padding:4px 10px">${t}</button>`).join('')}
+          </div>
+        </div>
+        <div class="edit-item-field">
+          <label>設施（可多選）</label>
+          <div style="display:flex;flex-wrap:wrap;gap:4px" id="hotelEditAmenities">
+            ${amenityOptions.map(a => `<button type="button" onclick="this.classList.toggle('active')" class="fc${(h.amenities||[]).includes(a)?' active':''}" style="font-size:11px;padding:4px 10px">${a}</button>`).join('')}
+          </div>
+        </div>
+        <details class="edit-item-loc-section">
+          <summary style="cursor:pointer;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px;display:flex;align-items:center;gap:5px">
+            <i class="fa fa-location-dot" style="color:var(--info)"></i> 位置座標
+            ${h.lat && h.lng ? `<span style="font-weight:400;color:var(--text3);font-size:11px;margin-left:auto">${Number(h.lat).toFixed(4)}, ${Number(h.lng).toFixed(4)}</span>` : '<span style="font-weight:400;color:var(--danger);font-size:11px;margin-left:auto">尚無座標</span>'}
+          </summary>
+          <div class="edit-item-row">
+            <div class="edit-item-field">
+              <label>緯度 (lat)</label>
+              <input type="text" id="hotelEditLat" value="${h.lat || ''}" />
+            </div>
+            <div class="edit-item-field">
+              <label>經度 (lng)</label>
+              <input type="text" id="hotelEditLng" value="${h.lng || ''}" />
+            </div>
+          </div>
+          <div class="edit-item-field">
+            <label>🔍 搜尋地點</label>
+            <div style="display:flex;gap:6px">
+              <input type="text" id="hotelEditGeoSearch" placeholder="例: 大阪難波光芒酒店" style="flex:1" />
+              <button onclick="geocodeHotelEdit()" style="padding:7px 14px;border-radius:8px;background:var(--info);border:none;color:white;font-size:12px;cursor:pointer">搜尋</button>
+            </div>
+            <div id="hotelEditGeoResult" style="font-size:11px;color:var(--text3);margin-top:4px"></div>
+          </div>
+        </details>
+        <div class="edit-item-actions">
+          <button class="edit-item-cancel" onclick="closeHotelEditModal()">取消</button>
+          <button class="edit-item-save" onclick="saveHotelEdit('${h.id}', ${isNew})">
+            <i class="fa fa-save"></i> ${isNew ? '新增' : '儲存'}
+          </button>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  const imgInput = document.getElementById('hotelEditImg');
+  if (imgInput) imgInput.addEventListener('input', () => {
+    const prev = document.getElementById('hotelEditImgPreview');
+    if (prev) prev.src = imgInput.value;
+  });
+}
+
+function closeHotelEditModal() {
+  const m = document.getElementById('hotelEditModal');
+  if (m) m.remove();
+}
+
+async function geocodeHotelEdit() {
+  const q = document.getElementById('hotelEditGeoSearch')?.value?.trim();
+  const resultEl = document.getElementById('hotelEditGeoResult');
+  if (!q || !resultEl) return;
+  resultEl.textContent = '搜尋中...';
+  try {
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q + ' Osaka Japan')}&format=json&limit=1`);
+    const data = await res.json();
+    if (data.length > 0) {
+      document.getElementById('hotelEditLat').value = data[0].lat;
+      document.getElementById('hotelEditLng').value = data[0].lon;
+      resultEl.textContent = `✅ ${data[0].display_name.slice(0, 60)}`;
+    } else { resultEl.textContent = '找不到結果'; }
+  } catch { resultEl.textContent = '搜尋失敗'; }
+}
+
+function saveHotelEdit(id, isNew) {
+  const nameCht = document.getElementById('hotelEditNameCht')?.value?.trim();
+  if (!nameCht) { showToast('⚠️ 請輸入名稱', ''); return; }
+
+  const data = {
+    id: id,
+    area: document.getElementById('hotelEditArea')?.value || '難波・道頓堀',
+    name: nameCht,
+    nameCht: nameCht,
+    nameEn: document.getElementById('hotelEditNameEn')?.value?.trim() || '',
+    stars: parseInt(document.getElementById('hotelEditStars')?.value) || 0,
+    priceHKD: parseInt(document.getElementById('hotelEditPriceHKD')?.value) || 0,
+    priceJPY: parseInt(document.getElementById('hotelEditPriceJPY')?.value) || 0,
+    lat: parseFloat(document.getElementById('hotelEditLat')?.value) || null,
+    lng: parseFloat(document.getElementById('hotelEditLng')?.value) || null,
+    access: document.getElementById('hotelEditAccess')?.value?.trim() || '',
+    address: document.getElementById('hotelEditAddress')?.value?.trim() || '',
+    img: document.getElementById('hotelEditImg')?.value?.trim() || '',
+    rating: parseFloat(document.getElementById('hotelEditRating')?.value) || 0,
+    review: parseInt(document.getElementById('hotelEditReview')?.value) || 0,
+    tags: [...document.querySelectorAll('#hotelEditTags .fc.active')].map(b => b.textContent),
+    amenities: [...document.querySelectorAll('#hotelEditAmenities .fc.active')].map(b => b.textContent),
+    desc: document.getElementById('hotelEditDesc')?.value?.trim() || '',
+    recommend: document.getElementById('hotelEditDesc')?.value?.trim() || '',
+    url: document.getElementById('hotelEditUrl')?.value?.trim() || ''
+  };
+
+  if (isNew) {
+    data.custom = true;
+    CUSTOM_HOTELS.push(data);
+    saveHotelEdits();
+    showToast(`✅ ${nameCht} 已新增！`, 'success');
+  } else {
+    // Check if it's a custom hotel
+    const cidx = CUSTOM_HOTELS.findIndex(x => x.id === id);
+    if (cidx !== -1) {
+      data.custom = true;
+      CUSTOM_HOTELS[cidx] = data;
+    } else {
+      const idx = HOTELS.findIndex(x => x.id === id);
+      if (idx !== -1) HOTELS[idx] = data;
+    }
+    saveHotelEdits();
+    showToast(`✅ ${nameCht} 已更新！`, 'success');
+  }
+
+  closeHotelEditModal();
+  renderHotels();
+  renderHotelMarkers();
+}
+
+function deleteHotelItem(id) {
+  if (!confirm('確定要刪除此酒店嗎？')) return;
+  // Check custom first
+  const cidx = CUSTOM_HOTELS.findIndex(h => h.id === id);
+  if (cidx !== -1) {
+    CUSTOM_HOTELS.splice(cidx, 1);
+  } else {
+    const idx = HOTELS.findIndex(h => h.id === id);
+    if (idx !== -1) HOTELS.splice(idx, 1);
+  }
+  saveHotelEdits();
+  renderHotels();
+  renderHotelMarkers();
+  showToast('🗑 已刪除', '');
+}
+
+function saveHotelEdits() {
+  // Save custom hotels
+  localStorage.setItem('osaka_custom_hotels', JSON.stringify(CUSTOM_HOTELS));
+  // Save modified built-in hotels
+  const modifiedHotels = {};
+  HOTELS.forEach(h => { modifiedHotels[h.id] = h; });
+  localStorage.setItem('osaka_modified_hotels', JSON.stringify(modifiedHotels));
+  // Save deleted hotel IDs
+  localStorage.setItem('osaka_hotels_snapshot', JSON.stringify(HOTELS.map(h => h.id)));
+}
+
+function loadHotelEdits() {
+  // Load custom hotels
+  try {
+    const custom = JSON.parse(localStorage.getItem('osaka_custom_hotels') || '[]');
+    custom.forEach(h => {
+      h.custom = true;
+      if (!CUSTOM_HOTELS.find(x => x.id === h.id)) CUSTOM_HOTELS.push(h);
+    });
+  } catch {}
+  // Load modified hotels (overwrite originals)
+  try {
+    const mods = JSON.parse(localStorage.getItem('osaka_modified_hotels') || '{}');
+    Object.entries(mods).forEach(([id, data]) => {
+      const idx = HOTELS.findIndex(x => x.id === id);
+      if (idx !== -1) HOTELS[idx] = data;
+    });
+  } catch {}
+  // Handle deleted built-in hotels
+  try {
+    const snapshot = JSON.parse(localStorage.getItem('osaka_hotels_snapshot') || 'null');
+    if (snapshot && Array.isArray(snapshot)) {
+      // Remove hotels that were deleted (in snapshot but not in saved mods)
+      const savedMods = JSON.parse(localStorage.getItem('osaka_modified_hotels') || '{}');
+      const savedIds = new Set(Object.keys(savedMods));
+      // If snapshot is shorter than original, some were deleted
+      for (let i = HOTELS.length - 1; i >= 0; i--) {
+        if (!snapshot.includes(HOTELS[i].id)) continue; // new hotel from source, keep it
+        if (!savedIds.has(HOTELS[i].id)) {
+          HOTELS.splice(i, 1); // was in snapshot but removed from mods = deleted
+        }
+      }
+    }
+  } catch {}
 }
 
 // ─────────────────── LOCATION MEASURE TAB ───────────────────
@@ -3996,6 +4576,16 @@ window.filterAttrByRegion = filterAttrByRegion;
 window.filterFoodByTag = filterFoodByTag;
 window.filterFood = filterFood;
 window.filterBuyItems = filterBuyItems;
+window.editShoppingMall = editShoppingMall;
+window.openAddShoppingMall = openAddShoppingMall;
+window.closeShoppingMallEditModal = closeShoppingMallEditModal;
+window.saveShoppingMallEdit = saveShoppingMallEdit;
+window.deleteShoppingMall = deleteShoppingMall;
+window.editMustBuyItem = editMustBuyItem;
+window.openAddMustBuy = openAddMustBuy;
+window.closeMustBuyEditModal = closeMustBuyEditModal;
+window.saveMustBuyEdit = saveMustBuyEdit;
+window.deleteMustBuyItem = deleteMustBuyItem;
 window.addAttrToDay = addAttrToDay;
 window.addFoodToDay = addFoodToDay;
 window.editFoodItem = editFoodItem;
@@ -4039,6 +4629,12 @@ window.closeAddToDayModal = closeAddToDayModal;
 window.geocodeCustomHotel = geocodeCustomHotel;
 window.addCustomHotelToList = addCustomHotelToList;
 window.removeCustomHotel = removeCustomHotel;
+window.editHotelItem = editHotelItem;
+window.openAddHotelFull = openAddHotelFull;
+window.closeHotelEditModal = closeHotelEditModal;
+window.saveHotelEdit = saveHotelEdit;
+window.deleteHotelItem = deleteHotelItem;
+window.geocodeHotelEdit = geocodeHotelEdit;
 // Cute theme exports
 window.toggleThemeStyle = toggleThemeStyle;
 window.openCuteMap = openCuteMap;

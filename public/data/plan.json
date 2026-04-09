@@ -1,7 +1,7 @@
 {
   "version": "2.0",
   "activePlan": "core",
-  "lastSaved": "2026-04-09T09:36:45.720Z",
+  "lastSaved": "2026-04-09T14:02:39.380Z",
   "tripInfo": {
     "ticketNo": "NE2603042020388495",
     "departure": "2026-04-29",
@@ -71,7 +71,7 @@
         },
         "day2": {
           "date": "2026-04-30",
-          "dayLabel": "第���天",
+          "dayLabel": "第二天",
           "title": "大阪城歷史探索・道頓堀夜遊",
           "note": "住宿：Cross Hotel 大阪（第2晚）。上午遊覽大阪城週邊歷史文化景點，下午轉戰道頓堀享受大阪美食街魅力。",
           "items": [
@@ -86,14 +86,15 @@
               "extraNote": "https://www.google.com/maps/dir/%E5%A4%A7%E9%98%AACROSS%E9%A3%AF%E5%BA%97+%E6%97%A5%E6%9C%AC%E3%80%92542-0085+Osaka,+Chuo+Ward,+Shinsaibashisuji,+2+Chome%E2%88%925%E2%88%9215/%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%BE%A1%E5%BA%A7%E8%88%B9%E4%B9%97%E8%88%B9%E8%99%95+%E6%97%A5%E6%9C%AC%E3%80%92540-0002+Osaka,+Chuo+Ward,+Osakajo,+2/@34.6718262,135.4967137,15z/data=!3m1!5s0x6000e713ec70ba25:0xef79997aed699661!4m14!4m13!1m5!1m1!1s0x6000e713eece4c03:0xc6327f067e048a1e!2m2!1d135.5007625!2d34.6697148!1m5!1m1!1s0x6000e0d318412151:0x8afe8fec29f860ce!2m2!1d135.5264959!2d34.6895777!3e3?entry=ttu&g_ep=EgoyMDI2MDQwNi4wIKXMDSoASAFQAw%3D%3D"
             },
             {
-              "type": "custom",
+              "type": "transport",
               "id": "custom_1775723900310",
               "name": "心齋橋站 → 大阪商務園區站→ 大阪城御座船乗船處",
               "lat": 34.67505714563893,
               "lng": 135.50039826293934,
               "time": "",
               "note": "心齋橋站 → 長堀鶴見綠地線 → 大阪商務園區站 2號出口",
-              "extraNote": "- https://www.google.com/maps/dir/%E5%BF%83%E9%BD%8B%E6%A9%8B%E7%AB%99+%E6%97%A5%E6%9C%AC%E3%80%92542-0081+Osaka,+Chuo+Ward,+Minamisenba,+3-ch%C5%8Dme%E2%88%9212/%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%BE%A1%E5%BA%A7%E8%88%B9%E4%B9%97%E8%88%B9%E8%99%95+%E6%97%A5%E6%9C%AC%E3%80%92540-0002+Osaka,+Chuo+Ward,+Osakajo,+2/@34.6888791,135.4948884,14z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x6000e71a7502e511:0xf52ebb1984ed4516!2m2!1d135.5003772!2d34.6750572!1m5!1m1!1s0x6000e0d318412151:0x8afe8fec29f860ce!2m2!1d135.5264959!2d34.6895777!3e3?entry=ttu&g_ep=EgoyMDI2MDQwNi4wIPD2ASoASAFQAw%3D%3D&utm_medium=s2email&skid=17f774d8-4bc6-423a-ad0c-91b9e80de371&shorturl=1"
+              "extraNote": "",
+              "googleMapUrl": "- https://www.google.com/maps/dir/%E5%BF%83%E9%BD%8B%E6%A9%8B%E7%AB%99+%E6%97%A5%E6%9C%AC%E3%80%92542-0081+Osaka,+Chuo+Ward,+Minamisenba,+3-ch%C5%8Dme%E2%88%9212/%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%BE%A1%E5%BA%A7%E8%88%B9%E4%B9%97%E8%88%B9%E8%99%95+%E6%97%A5%E6%9C%AC%E3%80%92540-0002+Osaka,+Chuo+Ward,+Osakajo,+2/@34.6888791,135.4948884,14z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x6000e71a7502e511:0xf52ebb1984ed4516!2m2!1d135.5003772!2d34.6750572!1m5!1m1!1s0x6000e0d318412151:0x8afe8fec29f860ce!2m2!1d135.5264959!2d34.6895777!3e3?entry=ttu&g_ep=EgoyMDI2MDQwNi4wIPD2ASoASAFQAw%3D%3D&utm_medium=s2email&skid=17f774d8-4bc6-423a-ad0c-91b9e80de371&shorturl=1"
             },
             {
               "type": "custom",
@@ -555,7 +556,7 @@
               "id": 9,
               "name": "上方浮世繪館",
               "time": "15:30",
-              "note": "全室內景點！欣賞���戶浮世繪，可體驗版畫製作"
+              "note": "全室內景點！欣賞江戶浮世繪，可體驗版畫製作"
             },
             {
               "type": "shopping",
@@ -576,7 +577,7 @@
               "id": "f2",
               "name": "大阪燒ぼてぢゅう 宵夜",
               "time": "21:00",
-              "note": "室內���板燒，難波大阪燒名店"
+              "note": "室內鐵板燒，難波大阪燒名店"
             }
           ]
         },
@@ -888,14 +889,15 @@
           "extraNote": "https://www.google.com/maps/dir/%E5%A4%A7%E9%98%AACROSS%E9%A3%AF%E5%BA%97+%E6%97%A5%E6%9C%AC%E3%80%92542-0085+Osaka,+Chuo+Ward,+Shinsaibashisuji,+2+Chome%E2%88%925%E2%88%9215/%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%BE%A1%E5%BA%A7%E8%88%B9%E4%B9%97%E8%88%B9%E8%99%95+%E6%97%A5%E6%9C%AC%E3%80%92540-0002+Osaka,+Chuo+Ward,+Osakajo,+2/@34.6718262,135.4967137,15z/data=!3m1!5s0x6000e713ec70ba25:0xef79997aed699661!4m14!4m13!1m5!1m1!1s0x6000e713eece4c03:0xc6327f067e048a1e!2m2!1d135.5007625!2d34.6697148!1m5!1m1!1s0x6000e0d318412151:0x8afe8fec29f860ce!2m2!1d135.5264959!2d34.6895777!3e3?entry=ttu&g_ep=EgoyMDI2MDQwNi4wIKXMDSoASAFQAw%3D%3D"
         },
         {
-          "type": "custom",
+          "type": "transport",
           "id": "custom_1775723900310",
           "name": "心齋橋站 → 大阪商務園區站→ 大阪城御座船乗船處",
           "lat": 34.67505714563893,
           "lng": 135.50039826293934,
           "time": "",
           "note": "心齋橋站 → 長堀鶴見綠地線 → 大阪商務園區站 2號出口",
-          "extraNote": "- https://www.google.com/maps/dir/%E5%BF%83%E9%BD%8B%E6%A9%8B%E7%AB%99+%E6%97%A5%E6%9C%AC%E3%80%92542-0081+Osaka,+Chuo+Ward,+Minamisenba,+3-ch%C5%8Dme%E2%88%9212/%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%BE%A1%E5%BA%A7%E8%88%B9%E4%B9%97%E8%88%B9%E8%99%95+%E6%97%A5%E6%9C%AC%E3%80%92540-0002+Osaka,+Chuo+Ward,+Osakajo,+2/@34.6888791,135.4948884,14z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x6000e71a7502e511:0xf52ebb1984ed4516!2m2!1d135.5003772!2d34.6750572!1m5!1m1!1s0x6000e0d318412151:0x8afe8fec29f860ce!2m2!1d135.5264959!2d34.6895777!3e3?entry=ttu&g_ep=EgoyMDI2MDQwNi4wIPD2ASoASAFQAw%3D%3D&utm_medium=s2email&skid=17f774d8-4bc6-423a-ad0c-91b9e80de371&shorturl=1"
+          "extraNote": "",
+          "googleMapUrl": "- https://www.google.com/maps/dir/%E5%BF%83%E9%BD%8B%E6%A9%8B%E7%AB%99+%E6%97%A5%E6%9C%AC%E3%80%92542-0081+Osaka,+Chuo+Ward,+Minamisenba,+3-ch%C5%8Dme%E2%88%9212/%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%BE%A1%E5%BA%A7%E8%88%B9%E4%B9%97%E8%88%B9%E8%99%95+%E6%97%A5%E6%9C%AC%E3%80%92540-0002+Osaka,+Chuo+Ward,+Osakajo,+2/@34.6888791,135.4948884,14z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x6000e71a7502e511:0xf52ebb1984ed4516!2m2!1d135.5003772!2d34.6750572!1m5!1m1!1s0x6000e0d318412151:0x8afe8fec29f860ce!2m2!1d135.5264959!2d34.6895777!3e3?entry=ttu&g_ep=EgoyMDI2MDQwNi4wIPD2ASoASAFQAw%3D%3D&utm_medium=s2email&skid=17f774d8-4bc6-423a-ad0c-91b9e80de371&shorturl=1"
         },
         {
           "type": "custom",
@@ -973,7 +975,7 @@
           "id": "sc6",
           "name": "驚安殿堂 道頓堀店",
           "time": "18:00",
-          "note": "24小時營���！零食、藥妝、電器齊全，退稅方便",
+          "note": "24小時營業！零食、藥妝、電器齊全，退稅方便",
           "extraNote": ""
         },
         {
@@ -1183,7 +1185,7 @@
         {
           "type": "custom",
           "id": "custom_1775718526549",
-          "name": "奈良��園 餵鹿",
+          "name": "奈良公園 餵鹿",
           "lat": 34.685179306338846,
           "lng": 135.8431300133839,
           "time": "11:30",

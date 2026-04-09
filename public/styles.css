@@ -1183,6 +1183,8 @@ html, body {
 .hca-web:hover { background: var(--success); color: white; }
 .hca-del { background: rgba(235,87,87,0.12); color: var(--danger); border: 1px solid rgba(235,87,87,0.3); }
 .hca-del:hover { background: var(--danger); color: white; }
+.hca-edit { background: rgba(167,139,250,0.12); color: #a78bfa; border: 1px solid rgba(167,139,250,0.3); }
+.hca-edit:hover { background: #a78bfa; color: white; }
 
 /* Right column: map */
 .hotel-mapcol { flex: 1; position: relative; overflow: hidden; }
