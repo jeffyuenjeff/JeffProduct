@@ -1443,6 +1443,7 @@ body.cute-theme .cute-core-area {
 .cute-tl-dot.shopping { background: var(--info); }
 .cute-tl-dot.transport { background: var(--success); }
 .cute-tl-dot.tour { background: var(--accent); }
+.cute-tl-dot.hotel { background: #00bcd4; }
 .cute-tl-dot.custom { background: var(--text2); }
 
 /* Timeline content card */

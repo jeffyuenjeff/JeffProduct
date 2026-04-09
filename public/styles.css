@@ -311,6 +311,7 @@ html, body {
 .pi-icon.shopping   { background: rgba(58,134,255,0.2); color: #3a86ff; }
 .pi-icon.transport  { background: rgba(44,182,125,0.2); color: #2cb67d; }
 .pi-icon.tour       { background: rgba(255,183,3,0.2); color: #ffb703; }
+.pi-icon.hotel      { background: rgba(0,188,212,0.2); color: #00bcd4; }
 .pi-icon.custom     { background: rgba(167,139,250,0.2); color: #a78bfa; }
 
 .pi-body { flex: 1; min-width: 0; }
