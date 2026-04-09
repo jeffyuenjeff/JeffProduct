@@ -46,6 +46,15 @@ const ITEM_ICONS = {
   custom:     '<i class="fa fa-location-pin"></i>'
 };
 
+const ITEM_TYPE_LABELS = {
+  custom: '自訂',
+  attraction: '景點',
+  food: '美食',
+  shopping: '購物',
+  transport: '交通',
+  tour: '導覽'
+};
+
 // ─────────────────── CLOUD SYNC (JSONBin.io) ───────────────────
 // Free JSON storage for static pages. Multiple users see the same data.
 // Setup: 1) Create free account at jsonbin.io  2) Create 3 bins  3) Fill IDs below
@@ -459,6 +468,7 @@ function renderCuteTimeline(dayKey) {
 function renderCuteTimelineItem(item, dayKey, idx) {
   const typeIcon = ITEM_ICONS[item.type] || '<i class="fa fa-circle"></i>';
   const hasCoords = !!getItemCoords(item);
+  const mapIcon = item.googleMapUrl ? `<a href="${item.googleMapUrl}" target="_blank" rel="noopener" class="cute-tl-map-link" onclick="event.stopPropagation()" title="Google Maps"><i class="fa fa-map-location-dot"></i></a>` : '';
   
   return `
     <div class="cute-tl-item" draggable="true"
@@ -475,7 +485,7 @@ function renderCuteTimelineItem(item, dayKey, idx) {
           ${item.time ? `<div class="cute-tl-card-time">⏰ ${item.time}</div>` : ''}
           ${hasCoords ? `<div class="cute-tl-card-loc" onclick="openCuteMapForItem(${JSON.stringify(item).replace(/"/g, '&quot;')})"><i class="fa fa-location-dot"></i> 查看位置</div>` : ''}
         </div>
-        <div class="cute-tl-card-name" onclick="showPlanItemDetail('${dayKey}',${idx})">${item.name}</div>
+        <div class="cute-tl-card-name" onclick="showPlanItemDetail('${dayKey}',${idx})">${item.name} ${mapIcon}</div>
         ${item.note ? `<div class="cute-tl-card-note">${item.note}</div>` : ''}
       </div>
     </div>`;
@@ -867,6 +877,7 @@ function getDayOfWeek(dateStr) {
 
 function renderPlanItem(item, dayKey, idx) {
   const typeIcon = ITEM_ICONS[item.type] || '<i class="fa fa-circle"></i>';
+  const mapIcon = item.googleMapUrl ? `<a href="${item.googleMapUrl}" target="_blank" rel="noopener" class="pi-map-link" onclick="event.stopPropagation()" title="Google Maps"><i class="fa fa-map-location-dot"></i></a>` : '';
   return `
     <div class="plan-item" draggable="true"
          ondragstart="dragStart(event,'${dayKey}',${idx})"
@@ -874,7 +885,7 @@ function renderPlanItem(item, dayKey, idx) {
          ondragend="dragEnd(event)">
       <div class="pi-icon ${item.type}">${typeIcon}</div>
       <div class="pi-body" onclick="showPlanItemDetail('${dayKey}',${idx})">
-        <div class="pi-name">${item.name}</div>
+        <div class="pi-name">${item.name} ${mapIcon}</div>
         <div class="pi-time">${item.time || ''}</div>
         <div class="pi-note">${item.note || ''}</div>
       </div>
@@ -937,6 +948,17 @@ function editPlanItem(dayKey, idx) {
       </div>
       <div class="edit-item-body">
         <div class="edit-item-field">
+          <label>類型</label>
+          <div class="edit-item-type-selector">
+            ${Object.entries(ITEM_TYPE_LABELS).map(([k, v]) => 
+              `<button class="type-chip ${item.type === k ? 'active' : ''}" data-type="${k}" onclick="selectEditItemType(this, '${k}')">
+                ${ITEM_ICONS[k]} ${v}
+              </button>`
+            ).join('')}
+          </div>
+          <input type="hidden" id="editItemType" value="${item.type || 'custom'}" />
+        </div>
+        <div class="edit-item-field">
           <label>名稱</label>
           <input type="text" id="editItemName" value="${item.name || ''}" />
         </div>
@@ -959,6 +981,11 @@ function editPlanItem(dayKey, idx) {
 • 官網預約: https://example.com
 • 提早30分鐘到場
 • 帶護照" class="extra-note-textarea">${(item.extraNote || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+        </div>
+        <div class="edit-item-field">
+          <label><i class="fa fa-map-location-dot" style="color:#4285F4"></i> Google Maps 連結</label>
+          <input type="text" id="editItemGoogleMapUrl" value="${(item.googleMapUrl || '').replace(/"/g, '&quot;')}" placeholder="貼上 Google Maps 連結，例：https://maps.google.com/..." style="font-size:11px" />
+          ${item.googleMapUrl ? `<div style="margin-top:4px;font-size:11px"><a href="${item.googleMapUrl}" target="_blank" rel="noopener" style="color:var(--info);word-break:break-all"><i class="fa fa-external-link"></i> 預覽連結</a></div>` : ''}
         </div>
         <details class="edit-item-loc-section" ${(item.type === 'custom' || item.type === 'tour') ? 'open' : ''}>
           <summary style="cursor:pointer;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px;display:flex;align-items:center;gap:5px">
@@ -1070,6 +1097,12 @@ function closeEditItemModal() {
   if (modal) modal.remove();
 }
 
+function selectEditItemType(btn, type) {
+  document.querySelectorAll('.edit-item-type-selector .type-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('editItemType').value = type;
+}
+
 async function geocodeEditItem() {
   const query = document.getElementById('editItemGeoSearch')?.value?.trim();
   const resultEl = document.getElementById('editItemGeoResult');
@@ -1101,16 +1134,20 @@ function saveEditItem(dayKey, idx) {
   const item = plan.days?.[dayKey]?.items?.[idx];
   if (!item) return;
   
+  const newType = document.getElementById('editItemType')?.value?.trim();
   const name = document.getElementById('editItemName')?.value?.trim();
   const time = document.getElementById('editItemTime')?.value?.trim();
   const note = document.getElementById('editItemNote')?.value?.trim();
   
   const extraNote = document.getElementById('extraEditItemNote')?.value?.trim();
+  const googleMapUrl = document.getElementById('editItemGoogleMapUrl')?.value?.trim();
   
+  if (newType && ITEM_TYPE_LABELS[newType]) item.type = newType;
   if (name) item.name = name;
   item.time = time || '';
   item.note = note || '';
   item.extraNote = extraNote || '';
+  item.googleMapUrl = googleMapUrl || '';
   
   // Save lat/lng for all item types (allows location override)
   const lat = document.getElementById('editItemLat')?.value?.trim();
@@ -1340,6 +1377,17 @@ function renderCustomTab() {
         輸入任意地點名稱，搜尋其位置後加入行程，地圖即可顯示該位置。
       </div>
       <div style="margin-bottom:10px">
+        <label style="font-size:11px;color:var(--text3);font-weight:600;display:block;margin-bottom:4px">🏷️ 類型</label>
+        <div class="edit-item-type-selector" id="customTypeSelector">
+          ${Object.entries(ITEM_TYPE_LABELS).map(([k, v]) => 
+            `<button class="type-chip ${k === 'custom' ? 'active' : ''}" data-type="${k}" onclick="selectCustomItemType(this, '${k}')">
+              ${ITEM_ICONS[k]} ${v}
+            </button>`
+          ).join('')}
+        </div>
+        <input type="hidden" id="customItemType" value="custom" />
+      </div>
+      <div style="margin-bottom:10px">
         <label style="font-size:11px;color:var(--text3);font-weight:600;display:block;margin-bottom:4px">📍 地點名稱（顯示名稱）</label>
         <input id="customName" type="text" placeholder="例：La Collina 近江八幡"
           style="width:100%;padding:8px 12px;border-radius:8px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:12px;outline:none;box-sizing:border-box"/>
@@ -1392,6 +1440,11 @@ function renderCustomTab() {
         <input id="customNote" type="text" placeholder="自由輸入備注..."
           style="width:100%;padding:8px 12px;border-radius:8px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:12px;outline:none;box-sizing:border-box"/>
       </div>
+      <div style="margin-bottom:14px">
+        <label style="font-size:11px;color:var(--text3);font-weight:600;display:block;margin-bottom:4px"><i class="fa fa-map-location-dot" style="color:#4285F4"></i> Google Maps 連結（可留空）</label>
+        <input id="customGoogleMapUrl" type="text" placeholder="貼上 Google Maps 連結..."
+          style="width:100%;padding:8px 12px;border-radius:8px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:11px;outline:none;box-sizing:border-box"/>
+      </div>
       <button onclick="confirmAddCustom()"
         style="width:100%;padding:10px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--accent));border:none;color:white;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px">
         <i class="fa fa-plus"></i> 加入行程
@@ -1415,6 +1468,12 @@ function syncCustomCoordFromDirect() {
     }
     if (noResult) noResult.style.display = 'none';
   }
+}
+
+function selectCustomItemType(btn, type) {
+  document.querySelectorAll('#customTypeSelector .type-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('customItemType').value = type;
 }
 
 function previewCustomCoord() {
@@ -1515,10 +1574,14 @@ function confirmAddCustom() {
   if (customLat === null || customLng === null) { showToast('請先搜尋並確認位置', ''); return; }
   const time = document.getElementById('customTime')?.value?.trim() || '';
   const note = document.getElementById('customNote')?.value?.trim() || '';
+  const selectedType = document.getElementById('customItemType')?.value || 'custom';
+  const googleMapUrl = document.getElementById('customGoogleMapUrl')?.value?.trim() || '';
   if (!plan.days[qaCurrentDay]) plan.days[qaCurrentDay] = { items: [] };
   if (!plan.days[qaCurrentDay].items) plan.days[qaCurrentDay].items = [];
   const customId = `custom_${Date.now()}`;
-  plan.days[qaCurrentDay].items.push({ type: 'custom', id: customId, name, lat: customLat, lng: customLng, time, note });
+  const newItem = { type: selectedType, id: customId, name, lat: customLat, lng: customLng, time, note };
+  if (googleMapUrl) newItem.googleMapUrl = googleMapUrl;
+  plan.days[qaCurrentDay].items.push(newItem);
   if (customPreviewMarker) { map && map.removeLayer(customPreviewMarker); customPreviewMarker = null; }
   customLat = null; customLng = null;
   renderDayContent(qaCurrentDay);
@@ -1759,8 +1822,8 @@ function showPlanItemDetail(dayKey, idx) {
   const item = plan.days?.[dayKey]?.items?.[idx];
   if (!item) return;
 
-  // If the item has extraNote, show it in a dedicated panel
-  if (item.extraNote) {
+  // If the item has extraNote or googleMapUrl, show it in a dedicated panel
+  if (item.extraNote || item.googleMapUrl) {
     showExtraNotePopup(item);
     return;
   }
@@ -1800,11 +1863,12 @@ function showExtraNotePopup(item) {
         <div class="attr-detail-name">${item.name || '未命名'}</div>
         ${item.time ? `<div class="attr-detail-row" style="margin-bottom:8px"><i class="fa fa-clock"></i> <span>${item.time}</span></div>` : ''}
         ${item.note ? `<div class="attr-detail-desc" style="margin-bottom:12px;padding:8px 10px;background:var(--surface,#f5f5f5);border-radius:8px;font-size:12px">${item.note}</div>` : ''}
-        <div class="extra-note-display">
+        ${item.extraNote ? `<div class="extra-note-display">
           <div class="extra-note-label"><i class="fa fa-clipboard-list"></i> 詳細備忘</div>
           <div class="extra-note-content">${formatExtraNote(item.extraNote)}</div>
-        </div>
-        <div class="attr-detail-tags" style="margin-top:12px"><span class="card-tag">${item.type || '自訂'}</span></div>
+        </div>` : ''}
+        ${item.googleMapUrl ? `<div class="attr-detail-actions" style="margin-top:12px"><a href="${item.googleMapUrl}" target="_blank" rel="noopener" class="attr-detail-link"><i class="fa fa-map-location-dot" style="color:#4285F4"></i> 在 Google Maps 查看</a></div>` : ''}
+        <div class="attr-detail-tags" style="margin-top:12px"><span class="card-tag">${ITEM_TYPE_LABELS[item.type] || item.type || '自訂'}</span></div>
       </div>
     </div>`;
   document.body.appendChild(popup);
@@ -1865,7 +1929,8 @@ function showGenericItemPopup(item) {
         <div class="attr-detail-name">${item.name || '未命名'}</div>
         ${item.time ? `<div class="attr-detail-row"><i class="fa fa-clock"></i> <span>${item.time}</span></div>` : ''}
         ${item.note ? `<div class="attr-detail-desc">${item.note}</div>` : ''}
-        <div class="attr-detail-tags"><span class="card-tag">${item.type || '自訂'}</span></div>
+        ${item.googleMapUrl ? `<div class="attr-detail-actions" style="margin-top:8px"><a href="${item.googleMapUrl}" target="_blank" rel="noopener" class="attr-detail-link"><i class="fa fa-map-location-dot" style="color:#4285F4"></i> 在 Google Maps 查看</a></div>` : ''}
+        <div class="attr-detail-tags"><span class="card-tag">${ITEM_TYPE_LABELS[item.type] || item.type || '自訂'}</span></div>
       </div>
     </div>`;
   document.body.appendChild(popup);
@@ -3849,6 +3914,7 @@ window.removeItem = removeItem;
 window.removeItemPrompt = removeItemPrompt;
 window.editPlanItem = editPlanItem;
 window.closeEditItemModal = closeEditItemModal;
+window.selectEditItemType = selectEditItemType;
 window.geocodeEditItem = geocodeEditItem;
 window.saveEditItem = saveEditItem;
 window.editDayNote = editDayNote;
@@ -3881,6 +3947,7 @@ window.dragEnd = dragEnd;
 window.drop = drop;
 window.geocodeCustomLocation = geocodeCustomLocation;
 window.confirmAddCustom = confirmAddCustom;
+window.selectCustomItemType = selectCustomItemType;
 window.syncCustomCoordFromDirect = syncCustomCoordFromDirect;
 window.previewCustomCoord = previewCustomCoord;
 window.switchPlan = switchPlan;

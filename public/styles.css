@@ -1548,3 +1548,27 @@ html, body {
 /* ── Clickable plan item body ── */
 .plan-item .pi-body { cursor: pointer; }
 .plan-item .pi-body:hover .pi-name { color: var(--primary); text-decoration: underline; }
+
+/* ── Type selector chips ── */
+.edit-item-type-selector {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.edit-item-type-selector .type-chip {
+  padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;
+  border: 2px solid var(--border); background: var(--surface); color: var(--text2);
+  cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 4px;
+}
+.edit-item-type-selector .type-chip:hover {
+  border-color: var(--primary); color: var(--primary); background: rgba(232,93,4,0.06);
+}
+.edit-item-type-selector .type-chip.active {
+  border-color: var(--primary); background: var(--primary); color: white;
+}
+
+/* ── Google Maps link icon on plan items ── */
+.pi-map-link, .cute-tl-map-link {
+  display: inline-flex; align-items: center; margin-left: 5px;
+  color: #4285F4; font-size: 12px; vertical-align: middle;
+  transition: color 0.2s;
+}
+.pi-map-link:hover, .cute-tl-map-link:hover { color: #1a73e8; }

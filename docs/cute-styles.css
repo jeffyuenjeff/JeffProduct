@@ -1889,6 +1889,19 @@ body.cute-theme .cute-map-fab {
 .pi-body { cursor: pointer; }
 .pi-body:hover .pi-name { color: var(--primary, #6c63ff); text-decoration: underline; }
 
+/* ── Type selector chips (cute override) ── */
+body.cute-theme .edit-item-type-selector .type-chip {
+  border-radius: 16px; border-width: 2px;
+  font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif;
+}
+body.cute-theme .edit-item-type-selector .type-chip.active {
+  background: var(--primary, #6c63ff); border-color: var(--primary, #6c63ff);
+  box-shadow: 0 2px 8px rgba(108,99,255,0.3);
+}
+
+/* ── Google Maps link icon (cute) ── */
+body.cute-theme .cute-tl-map-link { font-size: 11px; }
+
 /* ======================================================================
    RESPONSIVE — placed AFTER all desktop styles so media queries win
    ====================================================================== */
